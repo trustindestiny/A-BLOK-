@@ -1063,7 +1063,7 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     </section>
 
     <section>
-      <div class="section-head"><div class="section-label">GÜN İÇİ PROGRAM</div><div class="schedule-toolbar-actions screen-only"><button type="button" class="btn" id="clearScheduleBtn">Temizle</button></div></div><input id="eventSearch" type="hidden" value=""><input id="blockSelect" type="hidden" value="A Blok">
+      <div class="section-head"><div class="section-label">GÜN İÇİ PROGRAM</div><div class="schedule-toolbar-actions screen-only"><button type="button" class="btn btn-primary" id="quickNameBtn">Kısa İsim Ekle</button><button type="button" class="btn" id="clearScheduleBtn">Temizle</button></div></div><input id="eventSearch" type="hidden" value=""><input id="blockSelect" type="hidden" value="A Blok">
       <div class="schedule-wrap"><table class="schedule"><thead><tr><th>Saat</th><th>OPU</th><th>DOĞUMHANE</th><th>MR</th></tr></thead><tbody id="scheduleBody"></tbody><tbody><tr class="doctor-row"><td><div class="doctor-row-label"><span>Hekim</span><button type="button" class="clear-doctors-btn screen-only" id="clearDoctorsBtn">Temizle</button></div></td><td><div class="multi-picker" data-multi-picker="doctorSlots" data-index="0" data-role-filter="all"></div></td><td><div class="multi-picker" data-multi-picker="doctorSlots" data-index="1" data-role-filter="all"></div></td><td><div class="multi-picker" data-multi-picker="doctorSlots" data-index="2" data-role-filter="all"></div></td></tr></tbody></table></div>
     </section>
 
@@ -1954,6 +1954,32 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     const t=String(Number(m[1])).padStart(2,'0')+':'+m[2];
     return TIMES.includes(t)?t:'';
   }
+  function openQuickNameDialog(){
+    const serviceNames={'OPU':'OPU','DOĞUMHANE':'DOĞUMHANE','MR':'MR'};
+    const selectedTime=TIMES.includes('08:00')?'08:00':TIMES[0];
+    const timeOptions=TIMES.map(time=>`<option value="${esc(time)}" ${time===selectedTime?'selected':''}>${esc(time)}</option>`).join('');
+    const serviceOptions=SERVICES.map(service=>`<option value="${esc(service)}" ${service==='OPU'?'selected':''}>${esc(serviceNames[service]||service)}</option>`).join('');
+    const body=`<div class="quick-name-dialog-grid">
+      <div class="field"><label for="quickNameTime">Saat</label><select id="quickNameTime">${timeOptions}</select></div>
+      <div class="field"><label for="quickNameService">Birim</label><select id="quickNameService">${serviceOptions}</select></div>
+      <div class="field span-2"><label for="quickNameLabel">Kısa isim</label><input id="quickNameLabel" maxlength="80" value="OPU" placeholder="Örn. OPU, Doğumhane, MR" required></div>
+      <div class="notice span-2">Seçtiğin saat ve birime kısa ad doğrudan eklenir. Kayıttan sonra hücreye dokunarak metni düzenleyebilirsin.</div>
+    </div>`;
+    openModal('Kısa isim ekle',body,false);
+    $('modalForm').onsubmit=function(ev){
+      ev.preventDefault();
+      const time=$('quickNameTime').value,service=$('quickNameService').value,name=$('quickNameLabel').value.trim().toLocaleUpperCase('tr-TR');
+      if(!time||!service||!name){showToast('Saat, birim ve kısa isim gerekli');return}
+      data.events.push({id:makeId('e'),date:$('planDate').value||today(),block:$('blockSelect').value,time,service,name});
+      closeModal();saveData('Kısa isim eklendi');
+    };
+    $('quickNameService').onchange=function(){
+      const field=$('quickNameLabel');
+      if(!field)return;
+      const defaults=['OPU','DOĞUMHANE','MR'];
+      if(!field.value.trim()||defaults.includes(field.value.trim()))field.value=(serviceNames[this.value]||this.value).toLocaleUpperCase('tr-TR');
+    };
+  }
   function openPasteSchedule(){
     const body=`<div class="notice"><strong>Google Sheets'ten aktarım</strong><br>Google Sheets'te başlık satırıyla birlikte Saat, OPU, DOĞUMHANE ve MR sütunlarını kopyalayın. Saatler ve sütun sırası kontrol edilir. Aktarım, seçili tarih ve bloktaki mevcut gün içi programın yerine geçer; işlem öncesi onay istenir.</div><div class="field"><label for="schedulePasteArea">Kopyalanan tablo (Ctrl+V / ⌘V)</label><textarea id="schedulePasteArea" rows="12" placeholder="Saat\tOPU\tDOĞUMHANE\tMR" style="font-family:monospace;white-space:pre;min-height:220px"></textarea></div><div id="pasteScheduleStatus" class="notice">Beklenen sütun sayısı: 4 (Saat + 3 birim). Boş hücreler boş kalır.</div>`;
     openModal('Gün içi programı yapıştır',body,false);
@@ -2301,7 +2327,7 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     finally{ev.target.value='';}
   };
   // Toolbar buttons and dialogs.
-  $('addRosterRow').onclick=addRosterRow;$('manageStaffBtn').onclick=staffManager;$('printBtn').onclick=()=>{const d=$('planDate').value||today();document.title=`${dateLabel(d)} A Blok`;refreshStaffSummaryForOutput();window.print()};$('togglePrintStaffBtn').onclick=()=>{data.settings=data.settings||{};const shown=data.settings.showPersonnelRosterWhenPrinting!==false;data.settings.showPersonnelRosterWhenPrinting=!shown;syncPrintStaffToggle();persistToStorage();showToast(data.settings.showPersonnelRosterWhenPrinting?'Personel listesi çıktı için açıldı':'Personel listesi çıktı için gizlendi')};$('photoExportBtn').onclick=()=>{setBottomNavActive('photo');exportSheetAsPhoto()};$('navPlanBtn').onclick=()=>{setBottomNavActive('plan');closeModal();$('sheet').scrollIntoView({behavior:'smooth',block:'start'})};$('navStaffBtn').onclick=()=>{setBottomNavActive('staff');$('manageStaffBtn').click()};$('closeModal').onclick=closeModal;$('cancelModal').onclick=closeModal;$('clearAssistantsBtn').onclick=clearAssistantAssignments;$('clearDoctorsBtn').onclick=clearDoctorRow;$('clearScheduleBtn').onclick=clearDailySchedule;
+  $('addRosterRow').onclick=addRosterRow;$('quickNameBtn').onclick=openQuickNameDialog;$('manageStaffBtn').onclick=staffManager;$('printBtn').onclick=()=>{const d=$('planDate').value||today();document.title=`${dateLabel(d)} A Blok`;refreshStaffSummaryForOutput();window.print()};$('togglePrintStaffBtn').onclick=()=>{data.settings=data.settings||{};const shown=data.settings.showPersonnelRosterWhenPrinting!==false;data.settings.showPersonnelRosterWhenPrinting=!shown;syncPrintStaffToggle();persistToStorage();showToast(data.settings.showPersonnelRosterWhenPrinting?'Personel listesi çıktı için açıldı':'Personel listesi çıktı için gizlendi')};$('photoExportBtn').onclick=()=>{setBottomNavActive('photo');exportSheetAsPhoto()};$('navPlanBtn').onclick=()=>{setBottomNavActive('plan');closeModal();$('sheet').scrollIntoView({behavior:'smooth',block:'start'})};$('navStaffBtn').onclick=()=>{setBottomNavActive('staff');$('manageStaffBtn').click()};$('closeModal').onclick=closeModal;$('cancelModal').onclick=closeModal;$('clearAssistantsBtn').onclick=clearAssistantAssignments;$('clearDoctorsBtn').onclick=clearDoctorRow;$('clearScheduleBtn').onclick=clearDailySchedule;
 
   async function exportSheetAsPhoto(){
     const btn=$('photoExportBtn');
@@ -2724,5 +2750,87 @@ body.photo-export-mode .schedule .event,body.photo-export-mode .schedule .event:
   background:#fff!important;border:1px solid #dfe5ec!important;border-left:2px solid #c7d2df!important;color:#263548!important
 }
 </style>
+
+<style id="flat-schedule-and-note-fields">
+/* Program metinleri renkli kart olmadan, siyah ve sade görünsün. */
+.schedule .event,
+.schedule .event:nth-child(2),
+body.photo-export-mode .schedule .event {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: 0 !important;
+  border-left: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  min-height: 0 !important;
+  margin: 0 0 1px !important;
+  padding: 0 2px !important;
+  color: #000 !important;
+  font-weight: 400 !important;
+}
+.schedule .event-name,
+body.photo-export-mode .schedule .event-name {
+  display: inline !important;
+  background: transparent !important;
+  color: #000 !important;
+  font-weight: 400 !important;
+  text-transform: uppercase !important;
+}
+.schedule .event-meta { background: transparent !important; color: #000 !important; }
+
+/* İzin/nöbet ertesi/poliklinik bölümünde yalnızca dış çerçeve kalsın. */
+.bottom-notes.top-notes .note-field {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+.bottom-notes.top-notes .note-field label,
+.bottom-notes.top-notes .multi-picker-label,
+.bottom-notes.top-notes .multi-picker-trigger,
+.bottom-notes.top-notes .person-select-line select,
+.bottom-notes.top-notes .clinic-select-line select,
+.bottom-notes.top-notes .assistant-note-text {
+  color: #000 !important;
+}
+.bottom-notes.top-notes .multi-picker-trigger,
+.bottom-notes.top-notes .multi-picker-trigger.has-selection,
+.bottom-notes.top-notes .multi-picker-trigger[aria-expanded="true"] {
+  background: transparent !important;
+  background-color: transparent !important;
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.bottom-notes.top-notes .multi-picker-badge { color: #000 !important; }
+.bottom-notes.top-notes .person-select-line select,
+.bottom-notes.top-notes .clinic-select-line select {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: #000 !important;
+}
+.bottom-notes.top-notes .person-select-line select:hover,
+.bottom-notes.top-notes .clinic-select-line select:hover,
+.bottom-notes.top-notes .person-select-line select:focus,
+.bottom-notes.top-notes .clinic-select-line select:focus {
+  background: transparent !important;
+  border-color: transparent !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+.bottom-notes.top-notes .assistant-note-add,
+.bottom-notes.top-notes .assistant-note-add:hover {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  color: #000 !important;
+}
+@media print {
+  .schedule .event,
+  .schedule .event:nth-child(2),
+  .schedule .event-name { background: transparent !important; border: 0 !important; color: #000 !important; }
+}
+</style>
+
 </body>
 </html>
