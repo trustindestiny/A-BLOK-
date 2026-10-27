@@ -1063,7 +1063,7 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     </section>
 
     <section>
-      <div class="section-head"><div class="section-label">GÜN İÇİ PROGRAM</div><div class="schedule-toolbar-actions screen-only"><button type="button" class="btn btn-primary" id="quickNameBtn">Kısa İsim Ekle</button><button type="button" class="btn" id="clearScheduleBtn">Temizle</button></div></div><input id="eventSearch" type="hidden" value=""><input id="blockSelect" type="hidden" value="A Blok">
+      <div class="section-head"><div class="section-label">GÜN İÇİ PROGRAM</div><div class="schedule-toolbar-actions screen-only"><button type="button" class="btn" id="quickNameBtn" aria-pressed="false" title="Kısa isim ekleme modunu aç veya kapat">Kısa İsim Ekleme Aç</button><button type="button" class="btn" id="clearScheduleBtn">Temizle</button></div></div><input id="eventSearch" type="hidden" value=""><input id="blockSelect" type="hidden" value="A Blok">
       <div class="schedule-wrap"><table class="schedule"><thead><tr><th>Saat</th><th>OPU</th><th>DOĞUMHANE</th><th>MR</th></tr></thead><tbody id="scheduleBody"></tbody><tbody><tr class="doctor-row"><td><div class="doctor-row-label"><span>Hekim</span><button type="button" class="clear-doctors-btn screen-only" id="clearDoctorsBtn">Temizle</button></div></td><td><div class="multi-picker" data-multi-picker="doctorSlots" data-index="0" data-role-filter="all"></div></td><td><div class="multi-picker" data-multi-picker="doctorSlots" data-index="1" data-role-filter="all"></div></td><td><div class="multi-picker" data-multi-picker="doctorSlots" data-index="2" data-role-filter="all"></div></td></tr></tbody></table></div>
     </section>
 
@@ -1610,9 +1610,16 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
   function emptyScheduleCellButton(service){
     return '<button class="add-cell screen-only" type="button" aria-label="Program metni ekle" title="Bu hücreye yaz">＋</button>';
   }
+  function quickNameModeOn(){return !!(data.settings&&data.settings.quickNameMode===true)}
+  function renderScheduleEvent(e){
+    const readOnly=quickNameModeOn();
+    const title=readOnly?'':' title="Metni düzenlemek için tıklayın"';
+    const deleteButton=readOnly?'':`<button type="button" class="event-delete screen-only" data-delete-event="${esc(e.id)}" aria-label="Program kaydını sil" title="Sil">×</button>`;
+    return `<div class="event" data-event-id="${esc(e.id)}"${title}><span class="event-name">${esc(e.name).replace(/\\n/g,'<br>')}</span>${deleteButton}</div>`;
+  }
   function renderSchedule(){
     const date=$('planDate').value||today(),block=$('blockSelect').value;let out='';
-    for(const time of TIMES){out+=`<tr><td>${time}</td>`;for(const service of SERVICES){const found=data.events.filter(e=>e.date===date&&e.block===block&&e.time===time&&e.service===service&&eventMatches(e));out+=`<td class="drop-target" data-time="${time}" data-service="${esc(service)}" title="${esc(time+' · '+service+' için tıklayıp yazın')}">`;if(found.length){out+=found.map(e=>`<div class="event" data-event-id="${esc(e.id)}" title="Metni düzenlemek için tıklayın"><span class="event-name">${esc(e.name).replace(/\n/g,'<br>')}</span><button type="button" class="event-delete screen-only" data-delete-event="${esc(e.id)}" aria-label="Program kaydını sil" title="Sil">×</button></div>`).join('')}else out+=emptyScheduleCellButton(service);out+='</td>'}out+='</tr>'}
+    for(const time of TIMES){out+=`<tr><td>${time}</td>`;for(const service of SERVICES){const found=data.events.filter(e=>e.date===date&&e.block===block&&e.time===time&&e.service===service&&eventMatches(e));out+=`<td class="drop-target" data-time="${time}" data-service="${esc(service)}" title="${esc(time+' · '+service+' için tıklayıp yazın')}">`;if(found.length){out+=found.map(renderScheduleEvent).join('')}else out+=emptyScheduleCellButton(service);out+='</td>'}out+='</tr>'}
     $('scheduleBody').innerHTML=out;
   }
   function renderNotes(){
@@ -1768,7 +1775,23 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
       document.querySelectorAll('.multi-picker-trigger').forEach(b=>b.setAttribute('aria-expanded','false'));
     }
   });
-  function renderAll(){syncMetadata();renderRoster();renderSchedule();renderNotes();renderMultiPickers();renderStaffSummary();syncPrintStaffToggle()}
+  function syncQuickNameToggle(){
+    const button=$('quickNameBtn');
+    if(!button)return;
+    const enabled=quickNameModeOn();
+    button.textContent=enabled?'Kısa İsim Ekleme Kapat':'Kısa İsim Ekleme Aç';
+    button.setAttribute('aria-pressed',enabled?'true':'false');
+    button.classList.toggle('btn-primary',enabled);
+    button.title=enabled
+      ?'Açık: OPU, DOĞUMHANE ve MR artılarına basınca sabit ad eklenir. Kapatınca elle düzenleyebilirsiniz.'
+      :'Kapalı: OPU artısı OPU ekler; DOĞUMHANE ve MR alanlarına metni elle yazabilirsiniz.';
+  }
+  function toggleQuickNameMode(){
+    data.settings=data.settings||{};
+    data.settings.quickNameMode=!quickNameModeOn();
+    saveData(data.settings.quickNameMode?'Kısa isim ekleme açıldı':'Kısa isim ekleme kapatıldı');
+  }
+  function renderAll(){syncMetadata();syncQuickNameToggle();renderRoster();renderSchedule();renderNotes();renderMultiPickers();renderStaffSummary();syncPrintStaffToggle()}
   function addRosterRow(){data.rooms.push({id:makeId('r'),name:'',groupLabel:'Ek satır',expert:'',assistant:'',rotation:''});saveData('Oda satırı eklendi')}
   function openModal(title,body,editing=false){$('modalTitle').textContent=title;$('modalBody').innerHTML=body;$('modalBackdrop').classList.add('open');$('modalBackdrop').setAttribute('aria-hidden','false');$('deleteModal').classList.toggle('hidden',!editing);setTimeout(()=>{const input=$('modalBody').querySelector('input,select,textarea');if(input)input.focus()},20)}
   function closeModal(){$('modalBackdrop').classList.remove('open');$('modalBackdrop').setAttribute('aria-hidden','true');$('modalForm').onsubmit=null;editingEvent=null}
@@ -1954,32 +1977,6 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     const t=String(Number(m[1])).padStart(2,'0')+':'+m[2];
     return TIMES.includes(t)?t:'';
   }
-  function openQuickNameDialog(){
-    const serviceNames={'OPU':'OPU','DOĞUMHANE':'DOĞUMHANE','MR':'MR'};
-    const selectedTime=TIMES.includes('08:00')?'08:00':TIMES[0];
-    const timeOptions=TIMES.map(time=>`<option value="${esc(time)}" ${time===selectedTime?'selected':''}>${esc(time)}</option>`).join('');
-    const serviceOptions=SERVICES.map(service=>`<option value="${esc(service)}" ${service==='OPU'?'selected':''}>${esc(serviceNames[service]||service)}</option>`).join('');
-    const body=`<div class="quick-name-dialog-grid">
-      <div class="field"><label for="quickNameTime">Saat</label><select id="quickNameTime">${timeOptions}</select></div>
-      <div class="field"><label for="quickNameService">Birim</label><select id="quickNameService">${serviceOptions}</select></div>
-      <div class="field span-2"><label for="quickNameLabel">Kısa isim</label><input id="quickNameLabel" maxlength="80" value="OPU" placeholder="Örn. OPU, Doğumhane, MR" required></div>
-      <div class="notice span-2">Seçtiğin saat ve birime kısa ad doğrudan eklenir. Kayıttan sonra hücreye dokunarak metni düzenleyebilirsin.</div>
-    </div>`;
-    openModal('Kısa isim ekle',body,false);
-    $('modalForm').onsubmit=function(ev){
-      ev.preventDefault();
-      const time=$('quickNameTime').value,service=$('quickNameService').value,name=$('quickNameLabel').value.trim().toLocaleUpperCase('tr-TR');
-      if(!time||!service||!name){showToast('Saat, birim ve kısa isim gerekli');return}
-      data.events.push({id:makeId('e'),date:$('planDate').value||today(),block:$('blockSelect').value,time,service,name});
-      closeModal();saveData('Kısa isim eklendi');
-    };
-    $('quickNameService').onchange=function(){
-      const field=$('quickNameLabel');
-      if(!field)return;
-      const defaults=['OPU','DOĞUMHANE','MR'];
-      if(!field.value.trim()||defaults.includes(field.value.trim()))field.value=(serviceNames[this.value]||this.value).toLocaleUpperCase('tr-TR');
-    };
-  }
   function openPasteSchedule(){
     const body=`<div class="notice"><strong>Google Sheets'ten aktarım</strong><br>Google Sheets'te başlık satırıyla birlikte Saat, OPU, DOĞUMHANE ve MR sütunlarını kopyalayın. Saatler ve sütun sırası kontrol edilir. Aktarım, seçili tarih ve bloktaki mevcut gün içi programın yerine geçer; işlem öncesi onay istenir.</div><div class="field"><label for="schedulePasteArea">Kopyalanan tablo (Ctrl+V / ⌘V)</label><textarea id="schedulePasteArea" rows="12" placeholder="Saat\tOPU\tDOĞUMHANE\tMR" style="font-family:monospace;white-space:pre;min-height:220px"></textarea></div><div id="pasteScheduleStatus" class="notice">Beklenen sütun sayısı: 4 (Saat + 3 birim). Boş hücreler boş kalır.</div>`;
     openModal('Gün içi programı yapıştır',body,false);
@@ -2046,10 +2043,19 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     currentNotes().doctorSlots=Array.from({length:SERVICES.length},()=>[]);
     saveData('Gün içi program temizlendi');
   }
+  function addQuickScheduleEvent(cell,service){
+    if(!cell||!['OPU','DOĞUMHANE','MR'].includes(service))return;
+    const date=$('planDate').value||today(),block=$('blockSelect').value,time=cell.dataset.time;
+    if(data.events.some(event=>event.date===date&&event.block===block&&event.time===time&&event.service===service&&eventMatches(event))){
+      return;
+    }
+    data.events.push({id:makeId('e'),date,block,time,service,name:service});
+    saveData(service+' eklendi');
+  }
   function renderScheduleCell(cell){
     const date=$('planDate').value||today(),block=$('blockSelect').value,time=cell.dataset.time,service=cell.dataset.service;
     const found=data.events.filter(e=>e.date===date&&e.block===block&&e.time===time&&e.service===service&&eventMatches(e));
-    if(found.length)cell.innerHTML=found.map(e=>`<div class="event" data-event-id="${esc(e.id)}" title="Metni düzenlemek için tıklayın"><span class="event-name">${esc(e.name).replace(/\n/g,'<br>')}</span><button type="button" class="event-delete screen-only" data-delete-event="${esc(e.id)}" aria-label="Program kaydını sil" title="Sil">×</button></div>`).join('');
+    if(found.length)cell.innerHTML=found.map(renderScheduleEvent).join('');
     else cell.innerHTML=emptyScheduleCellButton(service);
   }
   // Edit existing text directly; quick-add buttons above create a saved short name immediately.
@@ -2082,12 +2088,32 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     editor.focus();if(!existing&&initialText)editor.setSelectionRange(0,editor.value.length);else editor.setSelectionRange(editor.value.length,editor.value.length);
   }
   $('scheduleBody').addEventListener('click',ev=>{
+    const cell=ev.target.closest('td[data-time]');
     const deleteButton=ev.target.closest('[data-delete-event]');
-    if(deleteButton){ev.preventDefault();ev.stopPropagation();const id=deleteButton.dataset.deleteEvent;data.events=data.events.filter(e=>e.id!==id);saveData('Program kaydı silindi');return}
-    const cell=ev.target.closest('td[data-time]');if(!cell)return;
+    if(deleteButton&&!quickNameModeOn()){
+      ev.preventDefault();ev.stopPropagation();
+      const id=deleteButton.dataset.deleteEvent;
+      data.events=data.events.filter(e=>e.id!==id);
+      saveData('Program kaydı silindi');
+      return;
+    }
+    if(!cell)return;
+    const service=cell.dataset.service;
+    const addButton=ev.target.closest('.add-cell');
+    if(quickNameModeOn()){
+      if(addButton)addQuickScheduleEvent(cell,service);
+      return;
+    }
     const eventEl=ev.target.closest('[data-event-id]');
-    if(eventEl){const event=data.events.find(e=>e.id===eventEl.dataset.eventId);if(event)startInlineEditor(cell,event);return}
-    if(ev.target.closest('.add-cell')||ev.target===cell)startInlineEditor(cell,null);
+    if(eventEl){
+      const event=data.events.find(e=>e.id===eventEl.dataset.eventId);
+      if(event)startInlineEditor(cell,event);
+      return;
+    }
+    if(addButton||ev.target===cell){
+      if(service==='OPU')addQuickScheduleEvent(cell,'OPU');
+      else startInlineEditor(cell,null);
+    }
   });
   // Room menu interaction and staff selection.
   $('rosterBody').addEventListener('click',ev=>{
@@ -2327,7 +2353,7 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     finally{ev.target.value='';}
   };
   // Toolbar buttons and dialogs.
-  $('addRosterRow').onclick=addRosterRow;$('quickNameBtn').onclick=openQuickNameDialog;$('manageStaffBtn').onclick=staffManager;$('printBtn').onclick=()=>{const d=$('planDate').value||today();document.title=`${dateLabel(d)} A Blok`;refreshStaffSummaryForOutput();window.print()};$('togglePrintStaffBtn').onclick=()=>{data.settings=data.settings||{};const shown=data.settings.showPersonnelRosterWhenPrinting!==false;data.settings.showPersonnelRosterWhenPrinting=!shown;syncPrintStaffToggle();persistToStorage();showToast(data.settings.showPersonnelRosterWhenPrinting?'Personel listesi çıktı için açıldı':'Personel listesi çıktı için gizlendi')};$('photoExportBtn').onclick=()=>{setBottomNavActive('photo');exportSheetAsPhoto()};$('navPlanBtn').onclick=()=>{setBottomNavActive('plan');closeModal();$('sheet').scrollIntoView({behavior:'smooth',block:'start'})};$('navStaffBtn').onclick=()=>{setBottomNavActive('staff');$('manageStaffBtn').click()};$('closeModal').onclick=closeModal;$('cancelModal').onclick=closeModal;$('clearAssistantsBtn').onclick=clearAssistantAssignments;$('clearDoctorsBtn').onclick=clearDoctorRow;$('clearScheduleBtn').onclick=clearDailySchedule;
+  $('addRosterRow').onclick=addRosterRow;$('quickNameBtn').onclick=toggleQuickNameMode;$('manageStaffBtn').onclick=staffManager;$('printBtn').onclick=()=>{const d=$('planDate').value||today();document.title=`${dateLabel(d)} A Blok`;refreshStaffSummaryForOutput();window.print()};$('togglePrintStaffBtn').onclick=()=>{data.settings=data.settings||{};const shown=data.settings.showPersonnelRosterWhenPrinting!==false;data.settings.showPersonnelRosterWhenPrinting=!shown;syncPrintStaffToggle();persistToStorage();showToast(data.settings.showPersonnelRosterWhenPrinting?'Personel listesi çıktı için açıldı':'Personel listesi çıktı için gizlendi')};$('photoExportBtn').onclick=()=>{setBottomNavActive('photo');exportSheetAsPhoto()};$('navPlanBtn').onclick=()=>{setBottomNavActive('plan');closeModal();$('sheet').scrollIntoView({behavior:'smooth',block:'start'})};$('navStaffBtn').onclick=()=>{setBottomNavActive('staff');$('manageStaffBtn').click()};$('closeModal').onclick=closeModal;$('cancelModal').onclick=closeModal;$('clearAssistantsBtn').onclick=clearAssistantAssignments;$('clearDoctorsBtn').onclick=clearDoctorRow;$('clearScheduleBtn').onclick=clearDailySchedule;
 
   async function exportSheetAsPhoto(){
     const btn=$('photoExportBtn');
@@ -2830,6 +2856,12 @@ body.photo-export-mode .schedule .event-name {
   .schedule .event:nth-child(2),
   .schedule .event-name { background: transparent !important; border: 0 !important; color: #000 !important; }
 }
+</style>
+
+
+<style id="quick-name-toggle-style">
+#quickNameBtn[aria-pressed="true"]{border-color:#8aa9cd!important}
+#quickNameBtn[aria-pressed="false"]{background:#fff!important}
 </style>
 
 </body>
