@@ -1825,6 +1825,60 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     $('modalBody').ondragover=function(ev){const row=ev.target.closest('[data-person-row]');if(row&&draggedId&&row.dataset.personRow!==draggedId){ev.preventDefault();$('modalBody').querySelectorAll('.drag-over').forEach(x=>x.classList.remove('drag-over'));row.classList.add('drag-over');if(ev.dataTransfer)ev.dataTransfer.dropEffect='move'}};
     $('modalBody').ondragleave=function(ev){const row=ev.target.closest('[data-person-row]');if(row&&!row.contains(ev.relatedTarget))row.classList.remove('drag-over')};
     $('modalBody').ondrop=function(ev){const row=ev.target.closest('[data-person-row]');if(!row||!draggedId)return;ev.preventDefault();const from=data.staff.findIndex(x=>x.id===draggedId),to=data.staff.findIndex(x=>x.id===row.dataset.personRow);if(from<0||to<0||from===to)return;const [person]=data.staff.splice(from,1);data.staff.splice(from<to?to-1:to,0,person);openStaffManagerAfterSave('Personel sıralaması güncellendi')};
+    // Dokunmatik ekranda sürükleme: mobil tarayıcıların native HTML drag desteğine bağlı kalma.
+    let touchDrag=null;
+    const modalBody=$('modalBody');
+    function finishTouchStaffDrag(ev){
+      if(!touchDrag||(ev&&ev.pointerId!==touchDrag.pointerId))return;
+      const drag=touchDrag;touchDrag=null;
+      modalBody.querySelectorAll('.dragging,.drag-over').forEach(el=>el.classList.remove('dragging','drag-over'));
+      if(!drag.moved||!drag.targetId)return;
+      const from=data.staff.findIndex(p=>p.id===drag.id);
+      const target=data.staff.findIndex(p=>p.id===drag.targetId);
+      if(from<0||target<0)return;
+      let insertAt=target+(drag.insertAfter?1:0);
+      const [person]=data.staff.splice(from,1);
+      if(from<insertAt)insertAt--;
+      insertAt=Math.max(0,Math.min(insertAt,data.staff.length));
+      if(from===insertAt)return;
+      data.staff.splice(insertAt,0,person);
+      openStaffManagerAfterSave('Personel sıralaması güncellendi');
+    }
+    modalBody.addEventListener('pointerdown',function(ev){
+      const handle=ev.target.closest('[data-drag-handle]');
+      if(!handle||ev.pointerType==='mouse')return;
+      touchDrag={id:handle.dataset.dragHandle,pointerId:ev.pointerId,startX:ev.clientX,startY:ev.clientY,moved:false,targetId:'',insertAfter:false};
+      try{handle.setPointerCapture(ev.pointerId)}catch(e){}
+      ev.preventDefault();
+    },{passive:false});
+    modalBody.addEventListener('pointermove',function(ev){
+      if(!touchDrag||ev.pointerId!==touchDrag.pointerId)return;
+      if(!touchDrag.moved&&Math.hypot(ev.clientX-touchDrag.startX,ev.clientY-touchDrag.startY)<5)return;
+      touchDrag.moved=true;
+      ev.preventDefault();
+      const hit=document.elementFromPoint(ev.clientX,ev.clientY);
+      const row=hit&&hit.closest('[data-person-row]');
+      modalBody.querySelectorAll('.drag-over').forEach(el=>el.classList.remove('drag-over'));
+      if(row&&row.dataset.personRow!==touchDrag.id){
+        row.classList.add('drag-over');
+        const rect=row.getBoundingClientRect();
+        touchDrag.targetId=row.dataset.personRow;
+        touchDrag.insertAfter=ev.clientY>rect.top+rect.height/2;
+      }else touchDrag.targetId='';
+    },{passive:false});
+    modalBody.addEventListener('pointerup',finishTouchStaffDrag);
+    modalBody.addEventListener('pointercancel',function(ev){
+      if(!touchDrag||(ev&&ev.pointerId!==touchDrag.pointerId))return;
+      touchDrag=null;
+      modalBody.querySelectorAll('.dragging,.drag-over').forEach(el=>el.classList.remove('dragging','drag-over'));
+    });
+    modalBody.addEventListener('lostpointercapture',function(ev){
+      if(touchDrag&&ev.pointerId===touchDrag.pointerId){
+        touchDrag=null;
+        modalBody.querySelectorAll('.dragging,.drag-over').forEach(el=>el.classList.remove('dragging','drag-over'));
+      }
+    });
+
     $('modalBody').onclick=function(ev){
       const add=ev.target.closest('#addPersonNow');
       if(add){const name=$('newPersonName').value.trim();if(!name)return;if(data.staff.some(p=>p.name.toLocaleLowerCase('tr-TR')===name.toLocaleLowerCase('tr-TR'))){showToast('Bu personel zaten listede');return}const role=$('newPersonRole').value;const selectedRotation=$('newPersonRotation').value.trim();data.staff.push({id:makeId('s'),name,role,rotation:selectedRotation});openStaffManagerAfterSave('Personel eklendi');return}
@@ -2048,7 +2102,12 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
   function addQuickScheduleEvent(cell,service){
     if(!cell||!['OPU','DOĞUMHANE','MR'].includes(service))return;
     const date=$('planDate').value||today(),block=$('blockSelect').value,time=cell.dataset.time;
-    if(data.events.some(event=>event.date===date&&event.block===block&&event.time===time&&event.service===service)){
+    const existing=data.events.find(event=>event.date===date&&event.block===block&&event.time===time&&event.service===service);
+    if(existing){
+      if(String(existing.name||'').trim().toLocaleUpperCase('tr-TR')===service){
+        data.events=data.events.filter(event=>event.id!==existing.id);
+        saveData(service+' silindi');
+      }
       return;
     }
     data.events.push({id:makeId('e'),date,block,time,service,name:service});
@@ -2102,14 +2161,27 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     if(!cell)return;
     const service=cell.dataset.service;
     const addButton=ev.target.closest('.add-cell');
+    const eventEl=ev.target.closest('[data-event-id]');
     if(quickNameModeOn()){
+      if(eventEl){
+        const event=data.events.find(e=>e.id===eventEl.dataset.eventId);
+        if(event&&event.name===service){
+          data.events=data.events.filter(e=>e.id!==event.id);
+          saveData(service+' silindi');
+        }
+        return;
+      }
       if(addButton)addQuickScheduleEvent(cell,service);
       return;
     }
-    const eventEl=ev.target.closest('[data-event-id]');
     if(eventEl){
       const event=data.events.find(e=>e.id===eventEl.dataset.eventId);
-      if(event)startInlineEditor(cell,event);
+      if(event){
+        if(service==='OPU'&&event.name==='OPU'){
+          data.events=data.events.filter(e=>e.id!==event.id);
+          saveData('OPU silindi');
+        }else startInlineEditor(cell,event);
+      }
       return;
     }
     if(addButton||ev.target===cell){
@@ -2888,6 +2960,84 @@ body.photo-export-mode .schedule .event-name {
   text-overflow: clip !important;
   color: #000 !important;
 }
+</style>
+
+
+<style id="mobile-staff-single-row-and-clinic-alignment">
+@media(max-width:760px){
+  .modal{width:100%!important;max-width:100%!important;overflow-x:hidden!important}
+  .modal-body{padding:10px 7px!important;overflow-x:hidden!important}
+  .manage-list{display:grid!important;gap:4px!important;min-width:0!important}
+  .manage-header,.manage-person{
+    display:grid!important;
+    grid-template-columns:16px minmax(0,1.35fr) minmax(0,1fr) minmax(0,.95fr) 27px!important;
+    gap:3px!important;align-items:center!important;width:100%!important;min-width:0!important;
+  }
+  .manage-header{font-size:7px!important;line-height:1!important;white-space:nowrap!important;margin-bottom:3px!important;padding:0!important}
+  .manage-header>span:first-child{display:block!important}
+  .manage-header>span:nth-child(4){display:block!important;font-size:6px!important;white-space:nowrap!important;overflow:hidden!important}
+  .manage-person{min-height:28px!important}
+  .manage-person .drag-handle{
+    display:flex!important;align-items:center!important;justify-content:center!important;
+    width:16px!important;height:26px!important;min-height:26px!important;flex:0 0 16px!important;
+    padding:0!important;font-size:13px!important;line-height:1!important;touch-action:none!important;
+    -webkit-user-select:none!important;user-select:none!important;cursor:grab!important;
+  }
+  .manage-person input,.manage-person select{
+    display:block!important;grid-column:auto!important;min-width:0!important;width:100%!important;max-width:100%!important;
+    height:26px!important;min-height:26px!important;padding:2px 3px!important;
+    font-size:8px!important;line-height:1.1!important;white-space:nowrap!important;
+  }
+  .manage-person [data-person-rotation]{grid-column:auto!important}
+  .manage-person [data-person-role]{font-size:7.5px!important;padding-right:0!important}
+  .manage-person .btn,.manage-person .btn-danger{
+    display:flex!important;align-items:center!important;justify-content:center!important;
+    min-width:0!important;width:27px!important;height:26px!important;min-height:26px!important;
+    padding:2px!important;font-size:7.5px!important;line-height:1!important;
+  }
+  .person-modal-add{
+    display:grid!important;grid-template-columns:minmax(0,1.25fr) minmax(0,.95fr) minmax(0,.95fr) 31px!important;
+    gap:3px!important;min-width:0!important;
+  }
+  .person-modal-add input,.person-modal-add select{
+    min-width:0!important;width:100%!important;height:27px!important;min-height:27px!important;
+    padding:2px!important;font-size:8px!important;line-height:1.1!important;
+  }
+  .person-modal-add .btn{min-width:0!important;width:31px!important;padding:2px!important;font-size:8px!important}
+  .drag-handle{touch-action:none!important}
+}
+@media(max-width:360px){
+  .manage-header,.manage-person{
+    grid-template-columns:14px minmax(0,1.2fr) minmax(0,.95fr) minmax(0,.85fr) 25px!important;
+    gap:2px!important
+  }
+  .manage-person .drag-handle{width:14px!important;flex-basis:14px!important}
+  .manage-person input,.manage-person select{font-size:7.5px!important;padding:2px!important}
+  .manage-person [data-person-role]{font-size:7px!important}
+  .manage-person .btn,.manage-person .btn-danger{width:25px!important}
+  .person-modal-add{grid-template-columns:minmax(0,1.2fr) minmax(0,.9fr) minmax(0,.85fr) 28px!important;gap:2px!important}
+  .person-modal-add .btn{width:28px!important}
+}
+/* A ve C Blok satırları aynı ritimde dursun; seçili isimlerin alt uzantıları kesilmesin. */
+.bottom-notes.top-notes .notes-col{gap:2px!important}
+.bottom-notes.top-notes .note-field{
+  min-height:30px!important;height:30px!important;padding:0 5px!important;
+  box-sizing:border-box!important;align-items:center!important;
+}
+.bottom-notes.top-notes .clinic-note-field{min-height:30px!important;height:30px!important;padding:0 5px!important}
+.bottom-notes.top-notes .clinic-note-stack{gap:0!important;min-height:29px!important;height:29px!important;justify-content:center!important}
+.bottom-notes.top-notes .clinic-select-line{
+  height:29px!important;min-height:29px!important;overflow:visible!important;align-items:center!important;
+}
+.bottom-notes.top-notes .clinic-select-line select,
+.bottom-notes.top-notes #noteClinicA,
+.bottom-notes.top-notes #noteClinicC{
+  box-sizing:border-box!important;height:29px!important;min-height:29px!important;
+  padding:3px 23px 4px 4px!important;font-size:10px!important;line-height:normal!important;
+  vertical-align:middle!important;overflow:visible!important;text-overflow:clip!important;color:#000!important;
+}
+.bottom-notes.top-notes .clinic-note-action-line,
+.bottom-notes.top-notes .clinic-note-display-line{margin-top:0!important}
 </style>
 
 </body>
