@@ -1,0 +1,2473 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#234b78">
+<meta name="description" content="A Blok ameliyathane günlük planlama uygulaması">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<title>A Blok</title>
+<style>
+:root{--ink:#202020;--muted:#646464;--line:#9b9b9b;--paper:#fffefa;--bg:#e9e6df;--accent:#234b78;--soft:#f4f6f8;--red:#a33d3d}
+*{box-sizing:border-box}html{background:var(--bg)}body{margin:0;color:var(--ink);font-family:Arial,Helvetica,sans-serif;font-size:12px;background:var(--bg)}button,input,select,textarea{font:inherit}button{cursor:pointer}.app{max-width:1240px;margin:0 auto;padding:18px}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:0 0 14px}.toolbar-title{display:flex;align-items:center;gap:10px}.toolbar-title .mark{height:38px;width:38px;border-radius:8px;display:grid;place-items:center;background:var(--accent);color:white;font-size:19px;font-weight:bold}.toolbar-title h1{font-size:19px;margin:0;letter-spacing:-.3px}.toolbar-title p{margin:3px 0 0;color:#555;font-size:11px}.toolbar-actions{display:flex;gap:7px;flex-wrap:wrap}.btn{border:1px solid #c4cbd2;background:#fff;color:#202830;padding:8px 11px;border-radius:6px;font-weight:700;font-size:11px}.btn:hover{background:#eef3f8}.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}.btn-primary:hover{background:#193d65}.btn-danger{color:var(--red);border-color:#e3c6c6}.sheet{width:100%;background:var(--paper);padding:18px 20px 16px;box-shadow:0 5px 22px #00000014;border:1px solid #ddd9d1}.sheet-head{border-bottom:1px solid var(--line);padding-bottom:7px;margin-bottom:10px}.sheet-head-top{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;gap:8px;margin-bottom:8px;min-height:28px}.micro-title{font-size:10px;color:var(--muted)}.sheet-title{text-align:center;font-weight:800;letter-spacing:1.3px;font-size:14px;align-self:center}.date-box{display:flex;align-items:center;justify-content:flex-end;gap:6px}.date-box label{font-size:10px;color:#444;font-weight:700}.date-box input{border:0;border-bottom:1px solid #777;background:transparent;padding:3px 2px;max-width:132px;color:#222;font-weight:700}.metadata-line{display:grid;grid-template-columns:112px minmax(0,1fr);align-items:center;min-height:25px;gap:7px}.meta-label{font-weight:700;color:#333}.line-input{width:100%;border:0;border-bottom:1px solid #c2c2c2;background:transparent;padding:4px 3px;color:#222;min-width:0;outline:none}.line-input:focus{border-bottom:2px solid var(--accent);background:#f5f8fc}.small-note{font-size:9px;color:#777;margin:4px 0 0 119px}.section-label{font-size:11px;font-weight:800;letter-spacing:.45px;margin:11px 0 4px}.roster-layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(260px,1fr);gap:10px;align-items:start}.roster-wrap{overflow-x:auto}.roster{width:100%;border-collapse:collapse;table-layout:fixed;font-size:11px}.roster th,.roster td{border:1px solid var(--line);padding:2px 5px;height:24px;text-align:left}.roster th{font-size:10px;background:#f2f2f0;font-weight:800}.roster th:first-child,.roster td:first-child{width:58px}.roster th:nth-child(2),.roster td:nth-child(2){width:42%}.roster th:nth-child(3),.roster td:nth-child(3){width:42%}.roster th:nth-child(4),.roster td:nth-child(4){width:28px}.roster td:first-child{font-weight:700}.roster select,.roster input{width:100%;border:0;background:transparent;padding:2px 0;outline:none;color:#202020;min-width:0;font-size:11px}.roster select:focus,.roster input:focus{background:#edf4ff;outline:1px solid #98b4d8}.row-tools{width:28px!important;text-align:center!important}.icon-btn{border:0;background:transparent;color:#666;padding:1px 4px;font-size:14px}.icon-btn:hover{color:var(--red)}.rotation-panel{border:1px solid var(--line);background:#fffefa;min-width:0}.rotation-panel-head{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:5px 6px;background:#f2f2f0;border-bottom:1px solid var(--line)}.rotation-panel-title{font-size:10px;font-weight:800;letter-spacing:.35px}.rotation-list-head,.rotation-item{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 24px;gap:4px;align-items:center}.rotation-list-head{padding:4px 5px;background:#f7f7f4;border-bottom:1px solid #c7c7c7;font-size:9px;font-weight:800}.rotation-item{padding:3px 5px;border-bottom:1px solid #dedede;min-height:28px}.rotation-item:last-child{border-bottom:0}.rotation-item select,.rotation-item input{width:100%;min-width:0;border:0;background:transparent;padding:3px 1px;font-size:10px;outline:none}.rotation-item select:focus,.rotation-item input:focus{background:#edf4ff;outline:1px solid #98b4d8}.rotation-empty{padding:10px 6px;color:#777;font-size:10px}.rotation-add{padding:5px 7px;font-size:10px}.rotation-remove{border:0;background:transparent;color:#777;font-size:14px;padding:2px}.rotation-remove:hover{color:var(--red)}.section-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:12px 0 4px}.section-head .section-label{margin:0}.schedule-wrap{overflow:auto}.schedule{width:100%;border-collapse:collapse;table-layout:fixed;font-size:10.5px}.schedule th,.schedule td{border:1px solid var(--line)}.schedule thead th{background:#f1f1ef;padding:6px 5px;text-align:left;font-size:10px;font-weight:800;height:30px}.schedule thead th:first-child{width:60px;text-align:center}.schedule tbody td{height:29px;padding:2px 3px;vertical-align:top}.schedule tbody td:first-child{background:#f7f7f4;font-weight:700;text-align:center;vertical-align:middle;padding:2px}.schedule td.drop-target{cursor:pointer;position:relative;background:transparent}.schedule td.drop-target:hover{background:#edf4ff}.add-cell{opacity:0;border:1px dashed #9fb4d0;background:#f7faff;color:var(--accent);border-radius:4px;width:100%;height:100%;min-height:22px;font-size:15px}.schedule td.drop-target:hover .add-cell{opacity:1}.event{background:#edf3fa;border-left:3px solid #376b9d;padding:3px 4px;margin:1px 0 2px;min-height:23px;line-height:1.18;border-radius:1px;cursor:pointer;overflow-wrap:anywhere}.event:nth-child(2){background:#f0f5f2;border-color:#53806a}.event-name{display:block;font-weight:700;font-size:10px}.event-meta{display:block;color:#555;font-size:8.5px;margin-top:2px;line-height:1.2}.doctor-row td{height:28px!important;background:#f7f7f4}.doctor-row td:not(:first-child){padding:2px}.doctor-row input{width:100%;height:22px;border:0;background:transparent;outline:none;min-width:0;font-size:10px}.doctor-row input:focus{background:#edf4ff}.bottom-notes{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:12px}.notes-col{display:grid;gap:3px;align-content:start}.note-field{display:grid;grid-template-columns:145px minmax(0,1fr);gap:6px;align-items:center;min-height:23px}.note-field label{font-size:10px;color:#333;font-weight:700}.note-field input,.note-field select,.note-field textarea{width:100%;min-width:0;border:0;background:transparent;padding:3px 2px;outline:none;font-size:10.5px;color:#202020}.note-field textarea{resize:vertical;min-height:22px;line-height:1.35;font-family:inherit}.note-field input:focus,.note-field select:focus,.note-field textarea:focus{background:#edf4ff;outline:1px solid #c3d5e8}.print-footer{display:flex;justify-content:space-between;gap:10px;margin-top:8px;padding-top:5px;border-top:1px solid #c9c9c9;color:#777;font-size:9px}.save-state{color:#467155}.hint-strip{margin:10px 0 0;color:#5d6470;font-size:10px;line-height:1.45}.hidden{display:none!important}
+/* Modal */.modal-backdrop{position:fixed;inset:0;background:#121c2bcc;display:none;align-items:center;justify-content:center;padding:16px;z-index:50}.modal-backdrop.open{display:flex}.modal{background:#fff;border-radius:12px;width:min(600px,100%);max-height:92vh;overflow:auto;box-shadow:0 24px 70px #0005}.modal-head{display:flex;justify-content:space-between;align-items:center;padding:16px 19px;border-bottom:1px solid #e4e7eb}.modal-head h2{font-size:16px;margin:0}.close{border:0;background:#f0f2f5;border-radius:6px;width:30px;height:30px;font-size:20px}.modal-body{padding:16px 19px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.span-2{grid-column:1/-1}.field{display:grid;gap:5px;margin-bottom:12px}.field label{font-weight:700;font-size:11px;color:#535d69}.field input,.field select,.field textarea{border:1px solid #cbd2da;border-radius:6px;padding:9px 10px;min-width:0;width:100%;background:white;color:#222}.modal-actions{border-top:1px solid #e4e7eb;padding:12px 19px;display:flex;justify-content:space-between;gap:8px}.modal-actions-right{display:flex;gap:7px;margin-left:auto}.notice{background:#f1f5f9;padding:9px 10px;border-radius:6px;color:#515c69;font-size:11px;line-height:1.4;margin-bottom:12px}.manage-list{display:grid;gap:9px}.manage-person{display:grid;grid-template-columns:minmax(0,1fr) 130px auto;gap:7px;align-items:center}.manage-person input,.manage-person select{width:100%;min-width:0;border:1px solid #d4dae1;border-radius:5px;padding:7px}.manage-person .btn{padding:7px}.person-modal-add{display:grid;grid-template-columns:minmax(0,1fr) 130px auto;gap:7px;margin-top:12px}.person-modal-add input,.person-modal-add select{width:100%;min-width:0;border:1px solid #d4dae1;border-radius:5px;padding:8px}.toast{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);background:#1e354f;color:#fff;border-radius:7px;padding:9px 13px;font-size:11px;box-shadow:0 6px 24px #0002;display:none;z-index:80}.toast.show{display:block}
+@media(max-width:760px){.app{padding:8px}.sheet{padding:12px 10px}.toolbar-title h1{font-size:15px}.toolbar-title p{max-width:190px}.toolbar-actions{width:100%}.toolbar-actions .btn{flex:1}.sheet-head-top{grid-template-columns:1fr auto}.micro-title{display:none}.sheet-title{grid-column:1;grid-row:1;text-align:left}.date-box{grid-column:2;grid-row:1}.metadata-line{grid-template-columns:94px 1fr}.bottom-notes{gap:12px;grid-template-columns:1fr}.note-field{grid-template-columns:135px minmax(0,1fr)}.roster-layout{grid-template-columns:1fr}.roster{min-width:0}.schedule{min-width:760px}.form-grid{grid-template-columns:1fr}.span-2{grid-column:auto}.manage-person,.person-modal-add{grid-template-columns:minmax(0,1fr) 108px auto}}
+@media print{@page{size:A4 portrait;margin:6mm}html,body{background:#fff!important;width:100%;height:auto}.app{max-width:none;margin:0;padding:0}.toolbar,.hint-strip,.screen-only,.toast{display:none!important}.sheet{border:0;box-shadow:none;padding:0;width:100%;background:white}.sheet-head{margin-bottom:4px;padding-bottom:4px}.sheet-head-top{margin-bottom:3px;min-height:22px}.sheet-title{font-size:11px}.date-box input{font-size:9px;max-width:92px;padding:1px}.metadata-line{min-height:19px;font-size:9px;grid-template-columns:82px 1fr;gap:4px}.line-input{font-size:9px;padding:2px}.small-note{display:none}.section-label{font-size:8px;margin:5px 0 2px}.section-head{margin:5px 0 2px}.roster-layout{grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:5px}.rotation-panel-title{font-size:7px}.rotation-list-head{font-size:6.5px}.rotation-item select,.rotation-item input{font-size:7px}.rotation-item{padding:1px 3px;min-height:14px}.rotation-empty{font-size:7px;padding:4px}.rotation-panel .btn{display:none!important}.roster{font-size:8px}.roster th,.roster td{height:17px;padding:0 3px;font-size:8px}.roster th{font-size:8px}.roster select,.roster input{font-size:8px;padding:0;-webkit-appearance:none;appearance:none}.room-check{font-size:7px;padding:0 2px;border:0}.room-check input{width:8px;height:8px}.room-group-label{font-size:7px}.roster th:first-child,.roster td:first-child{width:42px}.roster th:nth-child(2),.roster td:nth-child(2){width:42%}.roster th:nth-child(3),.roster td:nth-child(3){width:42%}.roster th:nth-child(4),.roster td:nth-child(4){width:28px}.row-tools{display:none!important}.schedule{font-size:7.5px}.schedule thead th{height:20px;padding:2px;font-size:7px}.schedule thead th:first-child{width:38px}.schedule tbody td{height:19px;padding:1px 2px}.schedule tbody td:first-child{font-size:7px}.add-cell{display:none!important}.event{min-height:0;padding:1px 2px;margin:0 0 1px;border-left-width:2px;background:#f6f7f8!important;break-inside:avoid}.event-name{font-size:7px}.event-meta{font-size:6px;margin-top:1px}.doctor-row td{height:18px!important}.doctor-row input{height:15px;font-size:7px}.bottom-notes{gap:12px;margin-top:6px;grid-template-columns:1fr 1fr}.notes-col{gap:1px}.note-field{grid-template-columns:91px minmax(0,1fr);min-height:16px;gap:3px}.note-field label{font-size:7px}.note-field input,.note-field select,.note-field textarea{font-size:7px;padding:1px}.note-field textarea{min-height:13px;resize:none;line-height:1.15}.print-footer{font-size:7px;margin-top:5px;padding-top:3px}.btn{display:none!important}.roster-wrap,.schedule-wrap{overflow:visible}.roster,.schedule{break-inside:avoid}}
+
+/* Refined layout requested for the operating-room sheet */
+.rotation-panel-top{width:100%;margin:0 0 9px}
+.rotation-panel-top .rotation-list-head,.rotation-panel-top .rotation-item{grid-template-columns:minmax(170px,.8fr) minmax(0,1.8fr) 26px}
+.rotation-panel-top .rotation-item{min-height:26px}
+.sheet-head{margin-bottom:8px}
+.bottom-notes.top-notes{margin:8px 0 10px;padding:7px 9px;border:1px solid #c9c9c4;background:#fbfbf8;grid-template-columns:1fr 1fr;gap:16px}
+.roster-wrap{overflow-x:visible}
+.schedule-wrap{overflow:visible}
+.doctor-row .multi-picker-menu{top:auto;bottom:calc(100% + 3px)}
+.roster{table-layout:fixed}
+.roster th:nth-child(2),.roster td:nth-child(2),.roster th:nth-child(3),.roster td:nth-child(3){width:auto}
+.roster th:first-child,.roster td:first-child{width:76px}
+.roster th:last-child,.roster td:last-child{width:28px}
+.roster td{height:28px}
+.room-select-wrap{position:relative;min-width:0}.room-picker-trigger{width:100%;min-height:25px;display:flex;align-items:center;justify-content:space-between;gap:5px;padding:3px 5px;border:1px solid #cbd3dc;border-radius:4px;background:#fff;color:#202830;text-align:left;font-size:11px}.room-picker-trigger:hover,.room-picker-trigger[aria-expanded="true"]{background:#f2f6fa;border-color:#91a6bd}.room-picker-value{min-width:0;flex:1;overflow-wrap:anywhere}.room-picker-arrow{flex:0 0 auto;font-size:14px;line-height:1;color:#44515f}.room-picker-menu{position:absolute;left:0;top:calc(100% + 3px);min-width:210px;width:max-content;max-width:min(320px,85vw);display:grid;grid-template-columns:repeat(3,minmax(45px,1fr));gap:3px;padding:7px;background:#fff;border:1px solid #b9c4d1;border-radius:7px;box-shadow:0 8px 26px #0002;z-index:45}.room-picker-menu.hidden{display:none!important}.room-check{display:flex;align-items:center;gap:5px;padding:5px 6px;border:1px solid #d4dae1;border-radius:4px;background:#fff;font-size:11px;cursor:pointer}.room-check input{width:13px;height:13px;margin:0;accent-color:#267747}.room-check:has(input:checked){background:#edf8f0;border-color:#83bb91;font-weight:700}.room-picker-trigger .room-picker-value:empty{min-height:14px}
+.staff-choice{display:flex;align-items:center;gap:5px;min-width:0}
+.staff-choice select{flex:1;min-width:0}
+.attendance-line{align-items:start;padding:3px 0}
+.attendance-line .meta-label{padding-top:5px}
+.attendance-picker{display:flex;flex-wrap:wrap;align-items:center;gap:4px 5px;min-width:0;padding:1px 0}
+.attendance-person{display:inline-flex;align-items:center;gap:4px;border:1px solid #d6dce2;background:#fff;border-radius:5px;padding:3px 6px;font-size:10px;line-height:1.2;color:#33404c;white-space:nowrap}
+.attendance-person:hover{background:#f2f6fa}
+.attendance-person.is-selected{background:#f0f8f2;border-color:#a8cfb4;color:#214e32;font-weight:700}
+.attendance-mark{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border:1px solid #c5cbd0;border-radius:4px;color:transparent;background:#fff;font-size:10px;font-weight:900;flex:0 0 14px}
+.attendance-person.is-selected .attendance-mark{background:#dcf3e4;border-color:#8ac49b;color:#147541}
+.attendance-empty{font-size:10px;color:#777;padding:4px 0}
+.staff-summary{display:grid;grid-template-columns:minmax(0,1fr);align-items:start;gap:1px;min-width:0;padding:1px 0;line-height:1.18}
+.staff-summary-person{display:flex;align-items:center;justify-content:flex-start;gap:4px;font-size:9px;color:#263340;white-space:normal;min-height:11px}
+.staff-summary-person.is-used .staff-summary-name{font-weight:700;color:#214e32}
+.staff-summary-tick{display:inline-flex;align-items:center;justify-content:center;width:13px;height:13px;border-radius:3px;border:1px solid #8ac49b;background:#dcf3e4;color:#147541;font-weight:900;font-size:10px;line-height:1}
+.staff-summary-tick.unused{display:none}.staff-summary-status{display:inline-block;margin-left:2px;padding:0 4px;border:1px solid #d7c29e;border-radius:6px;background:#fff7e8;color:#81531b;font-size:8px;font-weight:800;line-height:1.35;white-space:nowrap}
+.multi-picker{position:relative;min-width:0;width:100%;font-size:9px}
+.multi-picker-trigger{width:100%;min-height:25px;display:flex;align-items:center;gap:4px;justify-content:space-between;padding:3px 4px;border:1px solid #cbd3dc;background:#fff;border-radius:4px;color:#253444;text-align:left;font-size:9px;line-height:1.2}
+.multi-picker-trigger.has-selection{background:#f0f8f2;border-color:#a8cfb4}
+.multi-picker-label{overflow-wrap:anywhere;flex:1;min-width:0}
+.multi-picker-badge{flex:0 0 auto;color:#217a49;font-weight:800;font-size:9px;padding-left:2px}
+.multi-picker-menu{position:absolute;left:0;top:calc(100% + 3px);min-width:220px;width:max-content;max-width:min(320px,85vw);max-height:290px;overflow:auto;z-index:40;background:white;border:1px solid #b9c4d1;border-radius:7px;box-shadow:0 8px 26px #0002;padding:5px}
+.multi-picker-menu.hidden{display:none!important}
+.multi-picker-hint{font-size:9px;color:#67717d;padding:4px 5px;border-bottom:1px solid #e6e9ed;margin-bottom:3px}
+.multi-group-title{font-size:9px;font-weight:800;letter-spacing:.35px;color:#54616f;background:#f2f5f8;padding:5px;margin-top:4px}
+.multi-option{display:flex;align-items:center;gap:7px;width:100%;text-align:left;background:#fff;border:0;border-bottom:1px solid #f0f1f3;padding:6px 5px;font-size:10px;color:#202830;border-radius:3px}
+.multi-option:hover{background:#f2f6fa}
+.multi-check{flex:0 0 17px;width:17px;height:17px;border:1px solid #c5cbd0;border-radius:5px;display:inline-flex;align-items:center;justify-content:center;color:transparent;font-size:12px;font-weight:900;background:#fff}
+.multi-option.checked .multi-check{background:#dcf3e4;border-color:#8ac49b;color:#147541;box-shadow:0 0 0 2px #dcf3e455}
+.multi-option.checked{font-weight:700;background:#f7fcf8}
+.doctor-row td{vertical-align:top!important;padding:3px!important}
+.doctor-row td:first-child{vertical-align:middle!important}
+.doctor-row .multi-picker-trigger{min-height:27px}
+.schedule-inline-editor{width:100%;min-width:0;min-height:26px;resize:vertical;border:1px solid #86a5c7;border-radius:3px;background:#fff;padding:4px;font-size:10px;line-height:1.25;outline:2px solid #dceafa;display:block}
+.schedule td.drop-target:focus-within{background:#edf4ff}
+.schedule .event{min-height:22px;white-space:pre-wrap}
+.schedule .event-name{white-space:pre-wrap;overflow-wrap:anywhere}
+.lesson-doctors-field{align-items:start}
+.lesson-doctors-field .multi-picker{margin-top:0}
+@media(max-width:760px){
+  .bottom-notes.top-notes{grid-template-columns:1fr;gap:3px}
+  .rotation-panel-top .rotation-list-head,.rotation-panel-top .rotation-item{grid-template-columns:minmax(100px,.9fr) minmax(0,1.1fr) 22px}
+  .roster-wrap{overflow-x:auto}
+  .schedule-wrap{overflow-x:auto;overflow-y:visible}
+  .doctor-row .multi-picker-menu{top:auto;bottom:calc(100% + 3px)}
+  .roster{min-width:560px}
+  .multi-picker-menu{min-width:205px}
+}
+@media print{
+  .rotation-panel-top{margin-bottom:4px}
+  .rotation-panel-top .rotation-add{display:none!important}
+  .bottom-notes.top-notes{margin:4px 0;padding:4px 5px;grid-template-columns:1fr 1fr;gap:8px}
+  .roster th:first-child,.roster td:first-child{width:48px}
+  .attendance-picker{display:block;padding:0}
+  .staff-summary{display:grid;grid-template-columns:minmax(0,1fr);gap:0;padding:0;font-size:7px;line-height:1.12}
+  .staff-summary-person{display:flex;border:0!important;background:transparent!important;padding:0!important;margin:0!important;font-size:7px;color:#202020!important;font-weight:400!important}
+  .staff-summary-tick{display:none!important}
+  .attendance-person{display:none!important}
+  .attendance-person.is-selected{display:inline!important;border:0!important;background:transparent!important;padding:0!important;margin:0 8px 0 0!important;font-weight:700;color:#202020!important}
+  .attendance-mark{display:none!important}
+  .attendance-empty{display:none!important}
+  .multi-picker-trigger{border:0;background:transparent!important;padding:0;font-size:7px;min-height:0}
+  .multi-picker-trigger:not(.has-selection){display:none!important}
+  .multi-picker-badge{display:none!important}
+  .print-empty-select{color:transparent!important}
+  select{-webkit-appearance:none!important;appearance:none!important;background-image:none!important}
+  .roster-wrap,.schedule-wrap,.rotation-panel,.multi-picker-menu{overflow:visible!important}
+  .multi-picker-menu{display:none!important}
+  .schedule-inline-editor{display:none!important}
+  .roster-wrap{overflow:visible}
+}
+
+
+/* Latest layout refinements: side-by-side staff summaries and compact, readable names. */
+.staff-overview-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px;margin:3px 0 5px;align-items:start}
+.staff-overview-column{min-width:0;border:1px solid #c8c8c8;background:#fffefa;padding:5px 7px}
+.staff-overview-column>.meta-label{display:block;font-size:11px;font-weight:800;margin:0 0 4px;color:#333}
+.staff-overview-column .staff-summary{font-size:10px;gap:2px;line-height:1.22}
+.staff-overview-column .staff-summary-person{font-size:10px;min-height:14px;gap:5px;white-space:normal;overflow-wrap:anywhere}
+.staff-overview-column .staff-summary-tick{width:13px;height:13px;font-size:10px;flex:0 0 13px}
+.roster{font-size:12px}
+.roster th{font-size:11px}
+.roster select,.roster input{font-size:12px}
+.roster th:first-child,.roster td:first-child{width:105px}
+@media(max-width:560px){.staff-overview-grid{grid-template-columns:1fr;gap:5px}.staff-overview-column .staff-summary-person{font-size:11px}}
+@media print{.staff-overview-grid{grid-template-columns:1fr 1fr;gap:8px;margin:2px 0 4px}.staff-overview-column{padding:3px 5px}.staff-overview-column>.meta-label{font-size:9px;margin-bottom:2px}.staff-overview-column .staff-summary-person{font-size:7px;min-height:9px}.staff-overview-column .staff-summary-tick{display:none!important}}
+
+
+/* Current requirements: independent rooms, assistant rotation beside names, status markers before names. */
+.staff-overview-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}
+.staff-summary{display:flex;flex-direction:column;gap:2px;min-width:0}
+.staff-summary-person{display:grid;grid-template-columns:118px minmax(0,1fr);align-items:center;gap:5px;min-width:0;min-height:17px;font-size:11px;line-height:1.2;color:#263340}
+.staff-summary-prefix{display:flex;flex-wrap:wrap;gap:2px;align-items:center;min-width:0;min-height:14px}
+.staff-summary-prefix:empty:after{content:"";display:inline-block;width:13px;height:12px}
+.staff-summary-name{min-width:0;overflow-wrap:anywhere}
+.staff-summary-tick{display:inline-flex;align-items:center;justify-content:center;width:13px;height:13px;border-radius:3px;border:1px solid #8ac49b;background:#dcf3e4;color:#147541;font-weight:900;font-size:10px;line-height:1;flex:0 0 13px}
+.staff-summary-status{display:inline-block;padding:1px 3px;border:1px solid #d7c29e;border-radius:6px;background:#fff7e8;color:#81531b;font-size:8px;font-weight:800;line-height:1.25;white-space:nowrap}
+.staff-summary-person.is-used .staff-summary-name{font-weight:700;color:#214e32}
+#expertSummary .staff-summary-person,#assistantSummary .staff-summary-person{grid-template-columns:118px minmax(105px,1fr) minmax(105px,.85fr);align-items:center}
+.staff-summary-rotation{color:#52616f;font-size:10px;min-width:0;overflow-wrap:anywhere;border-left:1px solid #d1d5da;padding-left:7px;min-height:13px}
+.manage-person{grid-template-columns:minmax(0,1fr) 118px minmax(100px,.7fr) auto}
+.manage-header{display:grid;grid-template-columns:minmax(0,1fr) 118px minmax(100px,.7fr) auto;gap:7px;align-items:center;font-size:9px;font-weight:800;color:#596572;margin:0 0 5px;padding:0 2px}
+.manage-person input,.manage-person select{width:100%;min-width:0;border:1px solid #d4dae1;border-radius:5px;padding:7px}
+.manage-person .btn{padding:7px}
+.person-modal-add{grid-template-columns:minmax(0,1fr) 118px minmax(100px,.7fr) auto}
+.person-modal-add input,.person-modal-add select{width:100%;min-width:0;border:1px solid #d4dae1;border-radius:5px;padding:8px}
+.rotation-placeholder{display:block;min-height:27px}
+.expert-choice{display:flex;flex-direction:row;align-items:center;gap:5px;min-width:0}
+.expert-choice select{flex:1 1 0;width:50%;min-width:0}
+.expert-person-choice{display:flex;flex-wrap:wrap;align-items:center;gap:2px;flex:1 1 0;min-width:0}
+.expert-select-line{display:flex;align-items:center;gap:3px;width:100%;min-width:0}
+.expert-select-line select{flex:1 1 0;width:auto;min-width:0}
+.expert-person-choice .assistant-note-text{flex:0 1 auto;width:auto;display:inline;white-space:normal;overflow-wrap:anywhere}.expert-person-choice .assistant-note-input{flex:0 1 115px;width:115px;max-width:35%;display:inline-block}
+.expert-choice select+select{border-top:0!important;padding-top:5px!important}
+.expert-add-second{flex:0 0 18px;width:18px;height:18px;padding:0;border:0;border-radius:50%;background:#eef3f8;color:#355a7c;font-size:13px;line-height:18px}
+@media print{.expert-add-second{display:none!important}.expert-choice{gap:3px}.expert-choice select{width:50%;min-width:0}.expert-choice select+select{border-top:0!important;padding-top:0!important}}
+.event{position:relative;padding-right:20px!important}.event-delete{position:absolute;right:3px;top:2px;width:15px;height:15px;padding:0;border:0;border-radius:50%;background:#fff;color:#9a3d3d;font-size:13px;line-height:14px;opacity:0;pointer-events:none;cursor:pointer}.event:hover .event-delete,.event:focus-within .event-delete{opacity:1;pointer-events:auto}.event-delete:hover{background:#fbeaea;color:#b42318}@media print{.event{padding-right:4px!important}.event-delete{display:none!important}}
+/* Personel yönetimi ve alt bilgi alanı iyileştirmeleri */
+.staff-overview-column>.meta-label,.staff-overview-head>.meta-label{font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:800;line-height:1.2;color:#333}
+.staff-overview-head{min-height:16px}
+.note-value-wrap{display:flex;align-items:center;gap:5px;min-width:0}
+.note-value-wrap select{flex:1;min-width:0}
+.note-clear-btn{flex:0 0 auto;border:1px solid #d2d7dd;background:#fff;border-radius:4px;padding:3px 6px;color:#59616a;font-size:9px;font-weight:700}
+.note-clear-btn:hover{background:#f1f5f9}
+.notes-column-head{display:flex;justify-content:flex-end;min-height:23px;margin-bottom:2px}
+.notes-global-head{grid-column:1 / -1;display:flex;justify-content:flex-end;align-items:center;margin:0 0 4px}
+.notes-global-clear{border:1px solid #d2d7dd;background:#fff;border-radius:4px;padding:4px 9px;color:#59616a;font-size:10px;font-weight:700}
+.notes-global-clear:hover{background:#f1f5f9}
+@media print{.notes-column-head,.notes-global-head{display:none!important}}
+.multi-picker{position:relative;min-width:0}
+.note-field .multi-picker{width:100%}
+.note-field .multi-picker-trigger{min-height:23px;padding:3px 2px;border:0;background:transparent;font-size:10.5px}
+.note-field .multi-picker-trigger[aria-expanded="true"]{background:#eaf2ff!important;border:1px solid #9bb9e4!important;border-radius:4px;padding:2px 3px;box-shadow:0 0 0 1px #d5e4fa}
+.note-field .multi-picker-trigger:focus-visible{outline:2px solid #9bb9e4;outline-offset:1px}
+.note-field .multi-picker-menu{z-index:30;max-height:260px;overflow:auto}
+.manage-person{grid-template-columns:24px minmax(0,1fr) 150px 145px auto}
+.manage-header{grid-template-columns:24px minmax(0,1fr) 150px 145px auto}
+.person-modal-add{grid-template-columns:minmax(0,1fr) 160px 145px auto}
+.drag-handle{border:1px solid #d4dae1;background:#f7f9fb;border-radius:4px;color:#627080;padding:6px 3px;cursor:grab;font-size:14px;line-height:1}
+.drag-handle:active{cursor:grabbing}
+.manage-person.dragging{opacity:.45}
+.manage-person.drag-over{outline:2px solid #9ab7d8;background:#f3f8fe}
+@media(max-width:760px){.manage-person,.manage-header{grid-template-columns:24px minmax(0,1fr) 105px 110px auto}.person-modal-add{grid-template-columns:minmax(0,1fr) 110px 110px auto}}
+@media print{.note-clear-btn{display:none!important}}
+@media(max-width:760px){.staff-overview-grid{grid-template-columns:1fr}.staff-summary-person{grid-template-columns:104px minmax(0,1fr)}#expertSummary .staff-summary-person,#assistantSummary .staff-summary-person{grid-template-columns:104px minmax(90px,1fr) minmax(88px,.85fr)}.manage-person,.manage-header{grid-template-columns:minmax(0,1fr) 108px minmax(85px,.7fr) auto}.person-modal-add{grid-template-columns:minmax(0,1fr) 108px minmax(85px,.7fr) auto}}
+@media print{
+  .staff-overview-grid{grid-template-columns:1fr 1fr;gap:8px}
+  .staff-overview-column{padding:2px 3px;border:0;background:transparent}
+  .staff-summary-person{grid-template-columns:0 minmax(0,1fr)!important;gap:0;min-height:0;font-size:7px!important;color:#202020!important}
+  #assistantSummary .staff-summary-person{grid-template-columns:0 minmax(0,1fr)!important}
+  .staff-summary-prefix,.staff-summary-rotation{display:none!important}
+  .staff-summary-name{font-weight:400!important;color:#202020!important}
+  .staff-summary-rotation{font-size:7px;color:#202020;border-left:0;padding-left:4px}
+  .staff-summary-person.is-used .staff-summary-name{font-weight:400;color:#202020}
+  .bottom-notes.top-notes{margin:4px 0;padding:4px 5px;grid-template-columns:1fr 1fr;gap:8px}
+  .manage-person,.manage-header,.person-modal-add{display:none!important}
+}
+
+
+/* Room rows remain visually grouped; each dropdown selects one individual room only. */
+.room-select-wrap{display:grid;gap:2px;min-width:0}
+.room-group-label{font-size:9px;font-weight:800;line-height:1.1;color:#526171;white-space:nowrap}
+.roster th:first-child,.roster td:first-child{width:92px}
+.roster th:nth-child(2),.roster td:nth-child(2){width:40%}
+.roster th:nth-child(3),.roster td:nth-child(3){width:40%}
+@media print{.room-picker-trigger{border:0!important;background:transparent!important;padding:0!important;min-height:0!important;font-size:8px!important;color:#202020!important}.room-picker-arrow{display:none!important}.room-picker-menu{display:none!important}.roster th:first-child,.roster td:first-child{width:64px}}
+
+/* Clear actions for staff summary and doctor assignment row. */
+.staff-overview-head{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:4px}.staff-overview-head>.meta-label{margin:0}.clear-section-btn,.clear-doctors-btn{border:1px solid #cbd3dc;background:#fff;color:#4c5865;border-radius:4px;padding:3px 7px;font-size:9px;font-weight:700;line-height:1.2;white-space:nowrap}.clear-section-btn:hover,.clear-doctors-btn:hover{background:#f2f6fa;border-color:#98aabb}.doctor-row-label{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}.clear-doctors-btn{font-size:8px;padding:2px 3px;width:100%}@media print{.staff-overview-head{margin-bottom:2px}.clear-section-btn,.clear-doctors-btn{display:none!important}}
+
+/* Print fix: summary names must remain horizontal; hide all markers and rotation labels. */
+@media print {
+  .staff-overview-grid { grid-template-columns: 1fr 1fr !important; align-items:start !important; }
+  .staff-overview-column { min-width:0 !important; overflow:visible !important; }
+  .staff-overview-column .staff-summary { display:block !important; width:100% !important; min-width:0 !important; }
+  .staff-overview-column .staff-summary-person,
+  #expertSummary .staff-summary-person,
+  #assistantSummary .staff-summary-person {
+    display:block !important;
+    width:100% !important;
+    min-width:0 !important;
+    min-height:0 !important;
+    padding:0 !important;
+    margin:0 !important;
+    grid-template-columns:none !important;
+    gap:0 !important;
+    white-space:normal !important;
+    writing-mode:horizontal-tb !important;
+    word-break:normal !important;
+    overflow-wrap:normal !important;
+    font-size:7.5px !important;
+    line-height:1.15 !important;
+    color:#202020 !important;
+  }
+  .staff-summary-prefix,
+  .staff-summary-tick,
+  .staff-summary-status,
+  .staff-summary-rotation { display:none !important; }
+  .staff-summary-name {
+    display:block !important;
+    width:auto !important;
+    min-width:0 !important;
+    white-space:normal !important;
+    writing-mode:horizontal-tb !important;
+    word-break:normal !important;
+    overflow-wrap:normal !important;
+    font-weight:400 !important;
+    color:#202020 !important;
+  }
+}
+
+
+.roster-assistant-head{display:flex;align-items:center;justify-content:space-between;gap:4px;min-width:0}
+.roster-assistant-head .clear-section-btn{padding:2px 5px;font-size:8px;line-height:1.15}
+@media print{.roster-assistant-head .clear-section-btn{display:none!important}}
+@media print{.print-footer{display:none!important}}
+
+/* Final presentation refinements requested for the daily working list. */
+.roster:not(.has-extra-rows) .row-tools{display:none!important}
+.toolbar-title h1{font-size:19px;letter-spacing:-.25px}
+.toolbar-title p{display:none!important}
+.date-box{gap:7px;white-space:nowrap}
+.weekday-name{font-size:10px;font-weight:700;color:#444;min-width:42px;text-align:left}
+.room-picker-trigger{border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;padding:2px 0!important;min-height:22px!important;color:#202020!important}
+.room-picker-trigger:hover,.room-picker-trigger[aria-expanded="true"]{border-color:transparent!important;background:#f5f7f8!important}
+.room-picker-value{font-size:11px}
+@media print{
+  .toolbar-title h1{display:none!important}
+  .weekday-name{font-size:9px!important;color:#202020!important}
+  .room-picker-trigger{border:0!important;background:transparent!important;padding:0!important;min-height:0!important}
+  .room-picker-value{font-size:8px!important;color:#202020!important}
+  .staff-overview-grid{grid-template-columns:1fr 1fr!important;gap:8px!important}
+  .staff-summary-person,#expertSummary .staff-summary-person,#assistantSummary .staff-summary-person{
+    display:flex!important;flex-direction:row!important;align-items:baseline!important;justify-content:flex-start!important;gap:4px!important;
+    width:100%!important;min-width:0!important;min-height:0!important;margin:0!important;padding:0!important;
+    white-space:normal!important;writing-mode:horizontal-tb!important;word-break:normal!important;overflow-wrap:normal!important;
+    font-size:7.5px!important;line-height:1.2!important;color:#202020!important;
+  }
+  .staff-summary-prefix{display:inline-flex!important;order:2!important;flex:0 0 auto!important;min-height:0!important;width:auto!important;gap:3px!important;}
+  .staff-summary-prefix:empty:after{display:none!important}
+  .staff-summary-name{display:inline!important;order:1!important;width:auto!important;min-width:0!important;white-space:normal!important;writing-mode:horizontal-tb!important;word-break:normal!important;overflow-wrap:normal!important;font-weight:400!important;color:#202020!important;}
+  .staff-summary-status{display:inline-block!important;border:1px solid #777!important;border-radius:5px!important;background:#fff!important;color:#202020!important;padding:1px 4px!important;margin:0 0 0 3px!important;font-size:7px!important;font-weight:700!important;line-height:1.2!important;white-space:normal!important;box-decoration-break:clone!important;-webkit-box-decoration-break:clone!important;}
+  .staff-summary-tick,.staff-summary-rotation{display:none!important}
+}
+
+
+/* Asistan hekimi notu: ekranda sade bir metin alanı, yazdırmada not metni korunur. */
+.assistant-choice{display:flex;align-items:center;gap:4px;flex-wrap:wrap;min-width:0}
+.assistant-choice select{flex:1 1 90px;min-width:0;width:auto}
+.assistant-note-add{flex:0 0 18px;width:18px;height:18px;padding:0;border:1px solid #cbd5df;border-radius:4px;background:#fff;color:#355a7c;font-size:14px;font-weight:700;line-height:16px}
+.assistant-note-add:hover{background:#eef5fb}
+.assistant-note-text{display:inline;font-size:10px;color:#52616f;white-space:normal;overflow-wrap:anywhere;flex:0 1 auto;margin:0 1px}
+.assistant-note-input{flex:0 1 115px;max-width:35%;min-width:0;border:0!important;border-radius:0!important;box-shadow:none!important;outline:none!important;padding:2px 0!important;font-size:10px!important;background:transparent!important}
+.assistant-note-input:focus{border:0!important;outline:none!important;box-shadow:none!important;background:transparent!important}
+@media print{
+  .assistant-note-add,.assistant-note-input{display:none!important}
+  .assistant-note-text{display:inline!important;flex:0 1 auto!important;margin:0 1px!important;padding:0!important;border:0!important;background:transparent!important;border-radius:0!important;box-shadow:none!important;color:#202020!important;font-size:7px!important;line-height:1.2!important;white-space:normal!important;overflow-wrap:anywhere!important}
+}
+
+
+@media print { .bottom-notes.top-notes { border: 0 !important; outline: 0 !important; box-shadow: none !important; background: transparent !important; } }
+
+/* Poliklinik seçiminin altında açılan not alanı */
+.bottom-notes.top-notes .clinic-select-line .assistant-note-add{flex:0 0 20px!important;margin-left:0!important;width:20px!important;height:20px!important;padding:0!important;font-size:14px!important;line-height:16px!important;}
+
+.bottom-notes.top-notes .clinic-note-stack{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:2px!important;min-width:0!important;width:100%!important;}
+.bottom-notes.top-notes .clinic-select-line{display:flex!important;align-items:center!important;gap:4px!important;min-width:0!important;width:100%!important;}
+.bottom-notes.top-notes .clinic-select-line select{flex:1 1 auto!important;min-width:0!important;width:100%!important;}
+.bottom-notes.top-notes .clinic-note-action-line{display:flex!important;align-items:center!important;min-width:0!important;min-height:0!important;margin:1px 0 0 2px!important;}
+.bottom-notes.top-notes .clinic-note-action-line .assistant-note-add{display:inline-flex!important;align-items:center!important;gap:3px!important;width:auto!important;height:18px!important;min-height:18px!important;padding:0 5px!important;margin:0!important;border:1px solid #cbd5df!important;border-radius:4px!important;background:#fff!important;color:#355a7c!important;font-size:9px!important;line-height:16px!important;}
+.bottom-notes.top-notes .clinic-note-action-line .assistant-note-add.hidden{display:none!important;}
+.bottom-notes.top-notes .clinic-note-display-line{display:inline-flex!important;align-items:center!important;gap:3px!important;max-width:100%!important;vertical-align:middle!important;margin:1px 0 0 2px!important;}
+.bottom-notes.top-notes .clinic-note-display-line.hidden{display:none!important;}
+.bottom-notes.top-notes .clinic-note-display-line .assistant-note-text{display:inline!important;white-space:pre-wrap!important;overflow-wrap:anywhere!important;}
+.bottom-notes.top-notes .clinic-note-input:not(.hidden){display:block!important;width:100%!important;max-width:none!important;min-width:0!important;min-height:18px!important;height:auto!important;box-sizing:border-box!important;padding:2px 5px!important;border:1px solid #9eb8d8!important;border-radius:4px!important;background:#fff!important;font-size:10px!important;line-height:1.2!important;}
+.bottom-notes.top-notes .clinic-note-input.hidden{display:none!important;}
+/* All custom dropdowns always open downwards, including the Hekim row. */
+.multi-picker-menu,.room-picker-menu,.calendar-popup{top:calc(100% + 3px)!important;bottom:auto!important;}
+@media print{
+  .bottom-notes.top-notes .clinic-note-stack{gap:0!important;}
+  .bottom-notes.top-notes .clinic-note-action-line,.bottom-notes.top-notes .clinic-note-input,.bottom-notes.top-notes .clinic-note-display-line .assistant-note-delete{display:none!important;}
+  .bottom-notes.top-notes .clinic-note-display-line{display:inline!important;margin:0 0 0 2px!important;}
+  .bottom-notes.top-notes .clinic-note-display-line.hidden{display:none!important;}
+  .bottom-notes.top-notes .clinic-note-display-line .assistant-note-text{font-size:7px!important;line-height:1.1!important;color:#202020!important;white-space:pre-wrap!important;overflow-wrap:anywhere!important;}
+  .multi-picker-menu,.room-picker-menu,.calendar-popup{display:none!important;}
+}
+
+</style>
+<style>
+/* Compact spacing between personnel ticks and names. */
+.staff-overview-column .staff-summary{gap:0!important;row-gap:0!important;line-height:1.05!important}
+.staff-overview-column .staff-summary-person{min-height:11px!important;height:auto!important;margin:0!important;padding-top:0!important;padding-bottom:0!important;gap:4px!important;line-height:1.05!important}
+.staff-overview-column .staff-summary-tick{width:12px!important;height:12px!important;flex:0 0 12px!important;font-size:9px!important;line-height:1!important}
+@media print{.staff-overview-column .staff-summary{gap:0!important;line-height:1.02!important}.staff-overview-column .staff-summary-person{min-height:8px!important;line-height:1.02!important}}
+
+/* Not ekleme alanı: yalnızca + ile düzenlenirken kutu görünür; kaydedilmiş not düz metindir. */
+.expert-person-choice .assistant-note-input:not(.hidden),
+.assistant-choice .assistant-note-input:not(.hidden){
+  display:inline-block!important;
+  flex:0 1 145px!important;
+  width:145px!important;
+  max-width:45%!important;
+  min-width:75px!important;
+  padding:4px 7px!important;
+  border:1px solid #9eb8d8!important;
+  border-radius:5px!important;
+  background:#fff!important;
+  color:#202020!important;
+  box-shadow:none!important;
+  outline:none!important;
+  font-size:10px!important;
+}
+.expert-person-choice .assistant-note-input:not(.hidden):focus,
+.assistant-choice .assistant-note-input:not(.hidden):focus{
+  border-color:#6e9bcf!important;
+  background:#edf4ff!important;
+  outline:2px solid #d7e7fa!important;
+}
+.assistant-note-input.hidden{display:none!important}
+.assistant-note-text{display:inline!important;border:0!important;outline:0!important;box-shadow:none!important;background:transparent!important;border-radius:0!important;padding:0!important;color:#202020!important}
+@media print{
+  .assistant-note-add,.assistant-note-input{display:none!important}
+  .assistant-note-text{display:inline!important;border:0!important;outline:0!important;box-shadow:none!important;background:transparent!important;border-radius:0!important;padding:0!important;color:#202020!important}
+}
+</style>
+<style>
+
+/* Hekim notu: seçim kutusu seçili ismin uzunluğuna göre daralır; not hemen yanına, + en sağa yerleşir. */
+.expert-person-choice,
+.assistant-choice{display:flex!important;align-items:center!important;flex-wrap:nowrap!important;gap:4px!important;min-width:0!important;}
+.expert-person-choice{flex:1 1 0!important;}
+.expert-person-choice select,
+.assistant-choice select{flex:0 1 auto!important;min-width:0!important;max-width:calc(100% - 22px)!important;}
+.expert-person-choice .assistant-note-text,
+.assistant-choice .assistant-note-text{flex:0 1 auto!important;min-width:0!important;margin:0 1px!important;white-space:normal!important;overflow-wrap:anywhere!important;}
+.expert-person-choice .assistant-note-input:not(.hidden),
+.assistant-choice .assistant-note-input:not(.hidden){flex:0 1 115px!important;width:115px!important;max-width:40%!important;min-width:54px!important;margin:0!important;}
+.expert-person-choice .assistant-note-add,
+.assistant-choice .assistant-note-add{margin-left:auto!important;flex:0 0 18px!important;}
+/* Kaydedilmiş not, düzenleme açılınca gizlensin; yoksa metin ve kutu çift görünür. */
+.assistant-note-text.hidden{display:none!important;}
+@media print{
+  .expert-person-choice,.assistant-choice{gap:2px!important;}
+  .expert-person-choice select,.assistant-choice select{flex:0 1 auto!important;max-width:100%!important;}
+  .expert-person-choice .assistant-note-add,.assistant-choice .assistant-note-add,.assistant-note-input{display:none!important;}
+}
+
+
+/* Staff selection is plain text at rest; show a subtle box only while focused. */
+.person-note-stack{display:flex;flex-direction:column;align-items:stretch;gap:2px;min-width:0;width:100%;}
+.person-select-line{display:flex;align-items:center;gap:4px;min-width:0;width:100%;}
+.person-select-line select{flex:1 1 auto!important;width:100%!important;min-width:0!important;max-width:none!important;border:1px solid transparent!important;border-radius:4px!important;background:transparent!important;box-shadow:none!important;padding:4px 22px 4px 6px!important;min-height:27px!important;}
+.person-select-line select:hover{background:#fafbfd!important;}
+.person-select-line select:focus{border-color:#9eb8d8!important;background:#edf4ff!important;outline:1px solid #c7dbf2!important;box-shadow:0 0 0 2px #e8f1fc!important;}
+.person-select-line .assistant-note-add{flex:0 0 20px!important;margin-left:0!important;width:20px!important;height:20px!important;}
+.assistant-note-text{display:block!important;margin:1px 0 0 6px!important;font-size:10px!important;line-height:1.25!important;color:#52616f!important;white-space:normal!important;overflow-wrap:anywhere!important;}
+.assistant-note-input:not(.hidden){display:block!important;width:100%!important;max-width:none!important;min-width:0!important;flex:1 1 auto!important;padding:5px 7px!important;border:1px solid #9eb8d8!important;border-radius:5px!important;background:#fff!important;box-shadow:none!important;outline:none!important;}
+.assistant-note-input:not(.hidden):focus{background:#edf4ff!important;outline:2px solid #d7e7fa!important;}
+@media print{
+ .person-select-line select{border:0!important;border-radius:0!important;background:transparent!important;padding:0!important;min-height:0!important;appearance:none!important;-webkit-appearance:none!important;}
+ .person-select-line .assistant-note-add,.assistant-note-input{display:none!important;}
+ .assistant-note-text{display:block!important;margin:1px 0 0 0!important;padding:0!important;border:0!important;background:transparent!important;border-radius:0!important;color:#202020!important;font-size:7px!important;line-height:1.15!important;}
+}
+
+/* Compact note editing: horizontal input; delete affordance appears on hover. */
+.person-note-stack{display:block!important;min-width:0!important;width:100%!important;}
+.person-select-line{display:flex!important;align-items:center!important;gap:4px!important;}
+.assistant-note-display-line{display:inline-flex!important;align-items:center!important;gap:3px!important;max-width:100%!important;vertical-align:middle!important;margin:1px 0 0 6px!important;}
+.assistant-note-text{display:inline!important;margin:0!important;font-size:10px!important;line-height:1.2!important;color:#52616f!important;white-space:normal!important;overflow-wrap:anywhere!important;}
+.assistant-note-delete{display:inline-flex;align-items:center;justify-content:center;opacity:0;border:0;background:transparent;color:#a33;border-radius:3px;width:15px;height:15px;padding:0;font-size:14px;line-height:14px;cursor:pointer;}
+.assistant-note-display-line:hover .assistant-note-delete,.assistant-note-delete:focus-visible{opacity:1;}
+.assistant-note-input:not(.hidden){display:inline-block!important;vertical-align:middle!important;width:190px!important;max-width:60%!important;min-width:100px!important;height:24px!important;min-height:24px!important;flex:none!important;box-sizing:border-box!important;padding:3px 6px!important;border:1px solid #9eb8d8!important;border-radius:4px!important;background:#fff!important;box-shadow:none!important;outline:none!important;font-size:10px!important;resize:none!important;}
+.assistant-note-input:not(.hidden):focus{background:#edf4ff!important;outline:2px solid #d7e7fa!important;}
+@media print{.assistant-note-delete{display:none!important}.assistant-note-display-line{display:inline!important;margin:0!important}.assistant-note-text{display:inline!important;font-size:7px!important;color:#202020!important}.assistant-note-input,.assistant-note-add{display:none!important}}
+
+/* Print: never show focused form controls as blue boxes. */
+@media print {
+  .bottom-notes select,
+  .bottom-notes input,
+  .bottom-notes textarea,
+  .bottom-notes select:focus,
+  .bottom-notes input:focus,
+  .bottom-notes textarea:focus,
+  .bottom-notes .note-value-wrap,
+  .bottom-notes .note-value-wrap:focus-within {
+    border: 0 !important;
+    outline: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    -webkit-appearance: none !important;
+    appearance: none !important;
+  }
+  .bottom-notes select { padding-left: 2px !important; padding-right: 0 !important; }
+}
+</style>
+
+<style>
+/* Nöbet ertesici etiketi ekranda gizli, yalnızca yazdırma çıktısında görünür. */
+.staff-summary-status.print-only-duty{display:none!important}
+@media print{
+  .staff-summary-prefix{display:inline-flex!important;order:2!important;flex:0 0 auto!important;min-height:0!important;width:auto!important;gap:3px!important}
+  .staff-summary-name{order:1!important}
+  .staff-summary-status.print-only-duty{display:none!important}
+}
+</style>
+
+<style>
+/* Günlük notlar: istenen iki sütun sırası ve daha kompakt yükseklik. */
+.bottom-notes.top-notes{margin:6px 0 7px!important;padding:4px 7px!important;gap:12px!important;align-items:start!important}
+.bottom-notes.top-notes .notes-col{gap:0!important;row-gap:0!important;align-content:start!important}
+.bottom-notes.top-notes .note-field{grid-template-columns:132px minmax(0,1fr)!important;gap:4px!important;min-height:18px!important;height:auto!important;padding:0!important;margin:0!important;align-items:center!important}
+.bottom-notes.top-notes .note-field label{font-size:10px!important;line-height:1.1!important;margin:0!important;padding:0!important}
+.bottom-notes.top-notes .note-field input,
+.bottom-notes.top-notes .note-field select,
+.bottom-notes.top-notes .note-field textarea{font-size:10px!important;line-height:1.15!important;padding:1px 2px!important;min-height:17px!important;height:auto!important;margin:0!important}
+.bottom-notes.top-notes .note-field .multi-picker-trigger{min-height:17px!important;height:auto!important;padding:1px 2px!important;font-size:10px!important;line-height:1.15!important}
+.bottom-notes.top-notes .note-field textarea{min-height:17px!important;resize:vertical!important}
+.bottom-notes.top-notes .notes-global-head{min-height:0!important;margin:0 0 2px!important}
+.bottom-notes.top-notes .notes-global-clear{padding:2px 7px!important;font-size:9px!important}
+@media(max-width:760px){.bottom-notes.top-notes{grid-template-columns:1fr!important;gap:5px!important}.bottom-notes.top-notes .note-field{grid-template-columns:132px minmax(0,1fr)!important}}
+@media print{.bottom-notes.top-notes{margin:3px 0!important;padding:2px 3px!important;gap:7px!important}.bottom-notes.top-notes .note-field{grid-template-columns:88px minmax(0,1fr)!important;min-height:14px!important}.bottom-notes.top-notes .note-field label,.bottom-notes.top-notes .note-field input,.bottom-notes.top-notes .note-field select,.bottom-notes.top-notes .note-field textarea,.bottom-notes.top-notes .note-field .multi-picker-trigger{font-size:7px!important;min-height:12px!important;line-height:1.1!important;padding:0 1px!important}}
+</style>
+
+
+<style>
+/* Yazdırma düzeltmeleri: Gün içi program başlığı yatay; Nöbet ertesici etiketi kutusuz. */
+@media print {
+  .section-head {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+  .section-head > .section-label {
+    display: block !important;
+    flex: 0 0 auto !important;
+    width: auto !important;
+    max-width: none !important;
+    white-space: nowrap !important;
+    writing-mode: horizontal-tb !important;
+    text-orientation: mixed !important;
+    transform: none !important;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+    font-size: 8px !important;
+    letter-spacing: .25px !important;
+    line-height: 1.15 !important;
+  }
+  .staff-summary-status.print-only-duty { display: none !important; }
+}
+</style>
+
+
+<style id="hide-duty-label-on-print">
+.staff-summary-status.print-only-duty { display: none !important; }
+@media print { .staff-summary-status.print-only-duty { display: none !important; visibility: hidden !important; } }
+</style>
+
+
+<style id="print-bottom-notes-label-value-inline">
+/* Yazdırmada değer, kendi etiketinin hemen yanında yer alsın; geniş boşlukla karşıya itilmesin. */
+@media print {
+  .bottom-notes.top-notes {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    column-gap: 12px !important;
+    row-gap: 2px !important;
+    align-items: start !important;
+    width: 100% !important;
+  }
+  .bottom-notes.top-notes > .notes-col {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+    min-width: 0 !important;
+    align-items: stretch !important;
+  }
+  .bottom-notes.top-notes .note-field {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: baseline !important;
+    justify-content: flex-start !important;
+    gap: 6px !important;
+    width: auto !important;
+    min-width: 0 !important;
+    min-height: 15px !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+  .bottom-notes.top-notes .note-field > label {
+    flex: 0 0 auto !important;
+    width: auto !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    text-align: left !important;
+    white-space: nowrap !important;
+  }
+  .bottom-notes.top-notes .note-field > select,
+  .bottom-notes.top-notes .note-field > textarea,
+  .bottom-notes.top-notes .note-field > input,
+  .bottom-notes.top-notes .note-field > .note-value-wrap,
+  .bottom-notes.top-notes .note-field > .multi-picker {
+    flex: 0 1 auto !important;
+    width: auto !important;
+    max-width: calc(100% - 8px) !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    justify-self: auto !important;
+    text-align: left !important;
+  }
+  .bottom-notes.top-notes .note-field > .note-value-wrap { display: inline-flex !important; }
+  .bottom-notes.top-notes .note-field .multi-picker-trigger {
+    display: inline-flex !important;
+    width: auto !important;
+    max-width: none !important;
+    min-width: 0 !important;
+    padding-left: 0 !important;
+    text-align: left !important;
+  }
+}
+</style>
+
+
+<style id="plain-program-text-style">
+/* Gün içi program kayıtları: renkli kart/kutu yerine sade metin. */
+.schedule .event,
+.schedule .event:nth-child(2) {
+  background: transparent !important;
+  background-color: transparent !important;
+  border: 0 !important;
+  border-left: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  min-height: 0 !important;
+  margin: 1px 0 2px !important;
+  padding: 0 18px 0 0 !important;
+  line-height: 1.25 !important;
+  color: #202020 !important;
+}
+.schedule .event-name {
+  display: inline !important;
+  background: transparent !important;
+  color: #202020 !important;
+  font-weight: 400 !important;
+  font-size: inherit !important;
+  white-space: pre-wrap !important;
+  overflow-wrap: anywhere !important;
+}
+@media print {
+  .schedule .event,
+  .schedule .event:nth-child(2) {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 0 1px !important;
+    min-height: 0 !important;
+    color: #000 !important;
+  }
+  .schedule .event-name { color: #000 !important; font-weight: 400 !important; }
+}
+</style>
+
+<style id="multi-room-selection-style">
+.room-note-picker{width:100%;min-width:0}
+.room-note-picker .multi-picker-trigger{min-height:23px;padding:3px 2px;border:0;background:transparent;border-radius:4px;font-size:10.5px}
+.room-note-picker .multi-picker-trigger[aria-expanded="true"]{background:#eaf2ff!important;border:1px solid #9bb9e4!important;padding:2px 3px;box-shadow:0 0 0 1px #d5e4fa}
+.room-note-picker .multi-picker-menu{min-width:150px;width:max-content;max-width:min(240px,85vw);max-height:240px;overflow:auto}
+@media print{
+  .room-note-picker .multi-picker-trigger{display:inline-flex!important;width:auto!important;max-width:100%!important;min-height:0!important;border:0!important;background:transparent!important;padding:0!important;border-radius:0!important;color:#111!important;font-size:7px!important;box-shadow:none!important}
+  .room-note-picker .multi-picker-trigger:not(.has-selection){display:none!important}
+  .room-note-picker .multi-picker-badge{display:none!important}
+  .room-note-picker .multi-picker-menu{display:none!important}
+}
+</style>
+
+
+<style>
+/* Başlıklar ve Hekim satırındaki seçilen/yazılan hekimler aynı yazı boyutunda olsun. */
+.section-head .section-label{font-size:11px!important}
+.schedule thead th{font-size:11px!important}
+.schedule .doctor-row td,
+.schedule .doctor-row .doctor-row-label,
+.schedule .doctor-row .multi-picker-trigger,
+.schedule .doctor-row .multi-picker-badge{font-size:11px!important}
+@media print{
+  .section-head .section-label{font-size:8px!important}
+  .schedule thead th{font-size:8px!important}
+  .schedule .doctor-row td,
+  .schedule .doctor-row .doctor-row-label,
+  .schedule .doctor-row .multi-picker-trigger,
+  .schedule .doctor-row .multi-picker-badge{font-size:8px!important}
+}
+</style>
+<style id="lesson-print-copy-style">
+.lesson-print-copy{display:none}
+@media print {
+  .lessons-note-field{display:grid!important}
+  .bottom-notes.top-notes .lessons-note-field{display:grid!important}
+  .note-field textarea[data-note="lessons"]{display:none!important}
+  .lesson-print-copy{display:block!important;grid-column:2;align-self:start;min-width:0;min-height:13px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:7px;line-height:1.15;color:#202020;padding:1px}
+  .date-picker-display{font-size:9px!important;max-width:92px;min-width:0;padding:1px 2px;border:0!important;background:transparent!important;box-shadow:none!important}
+  .date-picker-caret,#calendarPopup{display:none!important}
+}
+</style>
+<style id="monday-first-calendar-style">
+.date-picker-wrap{position:relative;display:inline-flex;min-width:0}
+.date-picker-display{display:flex;align-items:center;justify-content:space-between;gap:8px;min-width:118px;max-width:132px;border:0;border-bottom:1px solid #777;background:transparent;padding:3px 2px;color:#222;font:700 12px/1.4 Arial,Helvetica,sans-serif;text-align:left;white-space:nowrap}
+.date-picker-display:focus-visible{outline:2px solid #234b78;outline-offset:3px;border-radius:2px}
+.date-picker-caret{font-size:10px;color:#555}
+.calendar-popup{position:absolute;top:calc(100% + 7px);right:0;z-index:10000;width:266px;padding:10px;background:#fffefa;color:#202020;border:1px solid #c9c9c4;border-radius:8px;box-shadow:0 6px 22px #0002}
+.calendar-popup[hidden]{display:none!important}
+.calendar-header{display:grid;grid-template-columns:30px minmax(0,1fr) 30px;align-items:center;gap:5px;margin-bottom:8px}
+.calendar-header strong{text-align:center;font-size:13px;text-transform:capitalize}
+.calendar-header button,.calendar-footer button{border:1px solid #d8d8d2;border-radius:5px;background:#fff;padding:4px 6px;color:#202020;font:inherit}
+.calendar-header button{font-size:20px;line-height:20px;height:29px}
+.calendar-weekdays,.calendar-days{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:3px;text-align:center}
+.calendar-weekdays{margin-bottom:4px;color:#555;font-size:10px;font-weight:700}
+.calendar-weekdays span{padding:4px 0}
+.calendar-day-empty{height:29px}
+.calendar-day{height:29px;border:1px solid transparent;border-radius:5px;background:transparent;color:#202020;font:inherit;font-size:11px;padding:0}
+.calendar-day:hover{background:#eaf0f7;border-color:#c4d1e0}
+.calendar-day.today{border-color:#234b78;font-weight:800}
+.calendar-day.selected{background:#234b78;color:#fff;border-color:#234b78}
+.calendar-footer{display:flex;justify-content:space-between;gap:8px;margin-top:9px;padding-top:8px;border-top:1px solid #e2e0da}
+.calendar-footer button{font-size:10px;font-weight:700;padding:5px 9px}
+@media print{.calendar-popup{display:none!important}.date-picker-display{cursor:default;min-width:0}}
+</style>
+
+<style id="clinic-note-final-layout-fix">
+/* Final override: clinic note actions are screen-only, saved note text is printed under its clinic selection. */
+@media print {
+  .bottom-notes.top-notes .clinic-note-action-line,
+  .bottom-notes.top-notes .clinic-note-input,
+  .bottom-notes.top-notes .clinic-note-display-line .assistant-note-delete { display: none !important; }
+  .bottom-notes.top-notes .clinic-note-display-line { display: inline-flex !important; margin: 0 0 0 2px !important; }
+  .bottom-notes.top-notes .clinic-note-display-line.hidden { display: none !important; }
+  .bottom-notes.top-notes .clinic-note-display-line .assistant-note-text { display: inline !important; color: #202020 !important; font-size: 7px !important; line-height: 1.1 !important; white-space: pre-wrap !important; overflow-wrap: anywhere !important; }
+}
+</style>
+
+<style id="doctor-row-upward-menu-fix">
+/* Yalnızca Gün İçi Programın en altındaki Hekim satırının seçenekleri yukarı açılsın. */
+.schedule .doctor-row .multi-picker-menu { top: auto !important; bottom: calc(100% + 3px) !important; }
+</style>
+<style id="staff-list-names-black">
+/* Personel envanterindeki isimler tikli olsa da siyah kalsin. */
+.staff-summary-name,
+.staff-summary-person.is-used .staff-summary-name { color: #000 !important; }
+</style>
+<style id="print-black-only-final">
+/* Yazdirma cikti renklerini siyah-beyaz yap; ekran gorunumune dokunma. */
+@media print {
+  html, body, body * {
+    color: #000 !important;
+    border-color: #000 !important;
+    outline-color: #000 !important;
+    caret-color: #000 !important;
+    text-shadow: none !important;
+    box-shadow: none !important;
+  }
+  body *, body *::before, body *::after {
+    background-color: #fff !important;
+    background-image: none !important;
+  }
+  svg, svg * {
+    color: #000 !important;
+    fill: #000 !important;
+    stroke: #000 !important;
+  }
+}
+</style>
+<style id="print-notes-font-readable">
+/* Alt notlar yazdırma çıktısında biraz daha okunaklı olsun; diğer alanlara dokunma. */
+@media print {
+  .bottom-notes.top-notes .note-field label,
+  .bottom-notes.top-notes .note-field input,
+  .bottom-notes.top-notes .note-field select,
+  .bottom-notes.top-notes .note-field textarea,
+  .bottom-notes.top-notes .note-field .multi-picker-trigger {
+    font-size: 8px !important;
+    line-height: 1.15 !important;
+  }
+}
+</style>
+
+<style id="print-font-size-final-adjustment">
+@media print {
+  /* Üstteki nöbet/izin/poliklinik/not alanı: daha rahat okunması için 10 px. */
+  .bottom-notes.top-notes .note-field label,
+  .bottom-notes.top-notes .note-field input,
+  .bottom-notes.top-notes .note-field select,
+  .bottom-notes.top-notes .note-field textarea,
+  .bottom-notes.top-notes .note-field .multi-picker,
+  .bottom-notes.top-notes .note-field .multi-picker-trigger,
+  .bottom-notes.top-notes .note-field .multi-picker-label,
+  .bottom-notes.top-notes .note-field .multi-picker-badge,
+  .bottom-notes.top-notes .note-field .assistant-note-text,
+  .bottom-notes.top-notes .note-field .assistant-note-display-line,
+  .bottom-notes.top-notes .note-field .clinic-note-display-line,
+  .bottom-notes.top-notes .note-field .lesson-print-copy,
+  .lesson-print-copy {
+    font-size: 10px !important;
+    line-height: 1.15 !important;
+    color: #000 !important;
+  }
+  .bottom-notes.top-notes .note-field { min-height: 18px !important; }
+  /* Gün içi programın en altındaki Hekim satırında yer alan tüm seçili hekim isimleri 11 px olsun. */
+  .schedule .doctor-row .multi-picker-trigger,
+  .schedule .doctor-row .multi-picker-label,
+  .schedule .doctor-row .multi-picker-badge {
+    font-size: 11px !important;
+    line-height: 1.15 !important;
+    color: #000 !important;
+  }
+}
+</style>
+
+<style id="print-final-black-and-doctor-font-match">
+/* Yalnızca yazdırma çıktısı: en alttaki Hekim isimleri 11 px olsun; tüm bölümler siyah basılsın. */
+@media print {
+  .schedule .doctor-row,
+  .schedule .doctor-row * {
+    color: #000 !important;
+    -webkit-text-fill-color: #000 !important;
+    font-size: 11px !important;
+    line-height: 1.15 !important;
+    text-shadow: none !important;
+  }
+  .roster,
+  .roster *,
+  .room-select-wrap,
+  .room-select-wrap *,
+  .room-group-label,
+  .room-picker-trigger,
+  .staff-overview-grid,
+  .staff-overview-grid *,
+  .bottom-notes.top-notes,
+  .bottom-notes.top-notes * {
+    color: #000 !important;
+    -webkit-text-fill-color: #000 !important;
+    text-shadow: none !important;
+  }
+  .roster th, .roster td, .schedule th, .schedule td,
+  .staff-overview-column, .bottom-notes.top-notes .note-field {
+    border-color: #000 !important;
+  }
+}
+</style>
+
+
+<style id="print-room-column-11px">
+/* Yazdirma ciktisinda ODA basligi ve secili tum oda numaralari 11 px olsun. */
+@media print {
+  .roster th:first-child,
+  .roster td:first-child,
+  .roster th:first-child *,
+  .roster td:first-child *,
+  .roster td:first-child .room-picker-trigger,
+  .roster td:first-child .room-picker-value,
+  .roster td:first-child .room-group-label {
+    font-size: 11px !important;
+    line-height: 1.15 !important;
+    color: #000 !important;
+    -webkit-text-fill-color: #000 !important;
+  }
+}
+</style>
+<style id="print-room-values-14px">
+/* Yazdirma ciktisinda sadece secilen oda numaralarini 14 px yap. */
+@media print {
+  .roster td:first-child .room-picker-value {
+    font-size: 14px !important;
+    line-height: 1.15 !important;
+  }
+}
+</style>
+
+<style id="print-upper-section-11px-final">
+/* Yalnızca yazdırma: üstteki nöbet/izin ve poliklinik/nakil/ders alanlarını 11 px yap. */
+@media print {
+  .bottom-notes.top-notes .note-field,
+  .bottom-notes.top-notes .note-field *,
+  .bottom-notes.top-notes .lesson-print-copy,
+  .lesson-print-copy {
+    font-size: 11px !important;
+    line-height: 1.15 !important;
+  }
+  /* Oda seçiminin yazılı rakamları 14 px kalsın; ODA başlığı ve diğer sütunlara dokunma. */
+  .roster td:first-child .room-picker-value {
+    font-size: 14px !important;
+    line-height: 1.15 !important;
+  }
+}
+</style>
+<style id="lessons-autogrow-no-resize-handle-style">
+/* Ders alanında yerel yeniden boyutlandırma işaretini gizle; Ctrl+Enter ile otomatik büyüme mevcut JS tarafından yönetilir. */
+.bottom-notes.top-notes .lessons-note-field { align-items: start !important; }
+.bottom-notes.top-notes .lessons-note-field textarea[data-note="lessons"] {
+  resize: none !important;
+  overflow: hidden !important;
+  display: block !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+</style>
+
+<style id="lessons-multiline-visibility-fix">
+/* Ders metni tam genişlikte yer alsın ve Ctrl+Enter ile eklenen her satır görünür kalsın. */
+.bottom-notes.top-notes .lessons-note-field {
+  display: grid !important;
+  grid-template-columns: 132px minmax(0, 1fr) !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  align-items: start !important;
+  justify-self: stretch !important;
+}
+.bottom-notes.top-notes .lessons-note-field > label {
+  grid-column: 1 !important;
+  grid-row: 1 !important;
+  align-self: start !important;
+}
+.bottom-notes.top-notes .lessons-note-field > textarea[data-note="lessons"] {
+  grid-column: 2 !important;
+  grid-row: 1 !important;
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  justify-self: stretch !important;
+  align-self: start !important;
+  box-sizing: border-box !important;
+  min-height: 24px !important;
+  line-height: 1.35 !important;
+  white-space: pre-wrap !important;
+  overflow-wrap: anywhere !important;
+  overflow: hidden !important;
+  resize: none !important;
+}
+@media print {
+  .bottom-notes.top-notes .lessons-note-field {
+    display: grid !important;
+    grid-template-columns: 88px minmax(0, 1fr) !important;
+    width: 100% !important;
+  }
+  .bottom-notes.top-notes .lessons-note-field .lesson-print-copy {
+    grid-column: 2 !important;
+    white-space: pre-wrap !important;
+    overflow-wrap: anywhere !important;
+    min-width: 0 !important;
+    height: auto !important;
+  }
+}
+</style>
+
+<style id="lessons-print-no-duplicate-fix">
+/* Yazdırırken metin yalnızca print-copy üzerinden gösterilsin; textarea görünmesin. */
+@media print {
+  .bottom-notes.top-notes .lessons-note-field > textarea[data-note="lessons"] {
+    display: none !important;
+  }
+  .bottom-notes.top-notes .lessons-note-field > .lesson-print-copy {
+    display: block !important;
+  }
+}
+</style>
+<style id="schedule-print-font-size-increase-only">
+/* Yalnızca yazdırma çıktısındaki Gün İçi Program yazı boyutlarını artır. */
+@media print {
+  .schedule { font-size: 9.5px !important; }
+  .schedule thead th { font-size: 10px !important; }
+  .schedule tbody td { font-size: 9.5px !important; }
+  .schedule tbody td:first-child { font-size: 10px !important; }
+  .schedule .event-name { font-size: 9px !important; }
+  .schedule .event-meta { font-size: 8px !important; }
+  .schedule .doctor-row,
+  .schedule .doctor-row td,
+  .schedule .doctor-row td * { font-size: 12px !important; }
+}
+</style>
+
+<style id="schedule-centered-opu-quick-add">
+/* Gün içi program metinlerini hücrede ortala; OPU hücresinde önizleme/ekleme düğmesi. */
+.schedule tbody#scheduleBody td.drop-target { text-align: center !important; vertical-align: middle !important; }
+.schedule tbody#scheduleBody .event,
+.schedule tbody#scheduleBody .event-name { text-align: center !important; }
+.schedule tbody#scheduleBody .schedule-inline-editor { text-align: center !important; }
+.schedule .add-cell.quick-add-opu { font-size: 12px; font-weight: 700; white-space: nowrap; }
+.schedule td.drop-target:hover .add-cell.quick-add-opu { opacity: 1; }
+@media (hover: none) { .schedule .add-cell.quick-add-opu { opacity: 1; } }
+</style>
+
+<style id="photo-export-layout">
+body.photo-export-mode{background:#fff!important;width:794px!important;min-width:794px!important}
+body.photo-export-mode .app{width:794px!important;max-width:794px!important;margin:0!important;padding:0!important}
+body.photo-export-mode .sheet{box-sizing:border-box!important;background:#fff!important;border:0!important;box-shadow:none!important;width:794px!important;min-height:1123px!important;padding:24px!important;margin:0!important;color:#000!important}
+body.photo-export-mode .toolbar,body.photo-export-mode .hint-strip,body.photo-export-mode .screen-only{visibility:hidden!important}
+body.photo-export-mode .print-footer{display:none!important}
+body.photo-export-mode .micro-title{display:none!important}
+/* Fotoğraf çıktısında A BLOK başlığını sayfanın tam ortasında, tarihi en sağda tut. */
+body.photo-export-mode .sheet-head-top{display:grid!important;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr)!important;align-items:center!important;position:relative!important}
+body.photo-export-mode .sheet-title{grid-column:2!important;grid-row:1!important;justify-self:center!important;text-align:center!important;width:max-content!important}
+body.photo-export-mode .date-box{grid-column:3!important;grid-row:1!important;justify-self:end!important;margin-left:auto!important}
+/* Fotoğraf çıktısında tik simgelerini ve rotasyon bölümünü kaldır; seçili kutu metinlerini koru. */
+body.photo-export-mode .staff-summary-tick,
+body.photo-export-mode .staff-summary-prefix,
+body.photo-export-mode .staff-summary-rotation,
+body.photo-export-mode .rotation-panel,
+body.photo-export-mode .rotation-placeholder { display:none!important; }
+body.photo-export-mode .room-check input,
+body.photo-export-mode input[type="checkbox"],
+body.photo-export-mode input[type="radio"] { display:none!important; }
+body.photo-export-mode .room-check { gap:0!important; }
+body.photo-export-mode .multi-picker-menu,
+body.photo-export-mode .room-picker-menu { display:none!important; }
+body.photo-export-mode .sheet-title{font-size:12px!important}
+body.photo-export-mode .section-label,body.photo-export-mode .section-head .section-label{font-size:10px!important}
+body.photo-export-mode .staff-summary-person,body.photo-export-mode .staff-summary-name{font-size:10px!important}
+body.photo-export-mode .roster th,body.photo-export-mode .roster td{font-size:10px!important}
+body.photo-export-mode .schedule thead th,body.photo-export-mode .schedule tbody td,body.photo-export-mode .event-name{font-size:10px!important}
+body.photo-export-mode input,body.photo-export-mode select,body.photo-export-mode textarea,body.photo-export-mode .multi-picker-trigger{color:#000!important;-webkit-text-fill-color:#000!important}
+</style>
+
+<style id="used-personnel-only-in-output">
+/* Çıktı öncesinde yeniden hesaplanan kullanıma göre yalnızca kullanılan isimleri göster. */
+@media print {
+  .staff-overview-grid .staff-summary-person[data-output-used="false"] { display:none!important; }
+  .staff-overview-grid .staff-summary-person:not([data-output-used="true"]) { display:none!important; }
+  body.hide-staff-list-on-output .staff-overview-grid { display:none!important; }
+}
+body.photo-export-mode .staff-overview-grid .staff-summary-person[data-output-used="false"],
+body.photo-export-mode .staff-overview-grid .staff-summary-person:not([data-output-used="true"]) { display:none!important; }
+body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:none!important; }
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="toolbar screen-only">
+    <div class="toolbar-title"><div class="mark">+</div><div><h1>Ameliyathane Günlük Çalışma Listesi</h1></div></div>
+    <div class="toolbar-actions">
+      <button class="btn btn-primary" id="installAppBtn" type="button" hidden>Uygulamayı Yükle</button>
+      <button class="btn" id="manageStaffBtn">Personel listesi</button>
+      <button class="btn" id="printBtn">Yazdır / PDF</button>
+      <button class="btn" id="togglePrintStaffBtn" type="button" aria-pressed="true" title="Yazdırma ve fotoğraf çıktısındaki personel listesini göster/gizle">Personel Listesi: Yazdırmada Göster</button>
+      <button class="btn btn-primary" id="photoExportBtn" type="button">Fotoğraf İndir</button>
+      <button class="btn" id="jsonExportBtn" type="button">JSON Aktar</button>
+      <button class="btn" id="jsonImportBtn" type="button">JSON Yükle</button>
+      <input id="jsonImportFile" type="file" accept=".json,application/json" hidden>
+      <button class="btn btn-danger" id="clearEverythingBtn" type="button" title="Yalnızca seçili tarihin tüm verilerini temizle; diğer tarihler ve personel envanteri korunur">Bugünü Temizle</button>
+      <button class="btn" id="fullResetBtn" type="button" style="background:#c62828!important;border-color:#c62828!important;color:#fff!important" title="Personel listesi korunarak tüm planlama verilerini ve geçmişi temizle">RESET</button>
+    </div>
+  </header>
+
+  <main class="sheet" id="sheet">
+    <section class="sheet-head">
+      <div class="sheet-head-top">
+        <div class="micro-title">GÜNLÜK AMELİYATHANE PLANLAMASI</div>
+        <div class="sheet-title" id="sheetTitle">A BLOK</div>
+        <div class="date-box"><label for="datePickerButton">Tarih</label><input id="planDate" type="date" value="2026-10-22" aria-label="Seçili çizelge tarihi" hidden><div class="date-picker-wrap"><button type="button" id="datePickerButton" class="date-picker-display" aria-haspopup="dialog" aria-expanded="false" aria-label="Tarih seç"><span id="datePickerDisplay">24.10.2026</span><span class="date-picker-caret" aria-hidden="true">▾</span></button><div id="calendarPopup" class="calendar-popup" role="dialog" aria-label="Tarih seçimi" hidden><div class="calendar-header"><button type="button" id="calendarPrevMonth" aria-label="Önceki ay">‹</button><strong id="calendarMonthLabel"></strong><button type="button" id="calendarNextMonth" aria-label="Sonraki ay">›</button></div><div class="calendar-weekdays" aria-hidden="true"><span>Pzt</span><span>Sal</span><span>Çar</span><span>Per</span><span>Cum</span><span>Cmt</span><span>Paz</span></div><div id="calendarDays" class="calendar-days"></div><div class="calendar-footer"><button type="button" id="calendarTodayBtn">Bugün</button><button type="button" id="calendarCloseBtn">Kapat</button></div></div></div><span id="weekdayName" class="weekday-name" aria-live="polite"></span></div>
+      </div>
+      <div class="staff-overview-grid">        <div class="staff-overview-column"><span class="meta-label">Uzman Hekim</span><div class="staff-summary" id="expertSummary" aria-label="Uzman hekim listesi"></div></div>
+        <div class="staff-overview-column"><div class="staff-overview-head"><span class="meta-label">Asistan Hekim</span></div><div class="staff-summary" id="assistantSummary" aria-label="Asistan hekim listesi"></div></div>
+      </div>
+    </section>
+
+
+    <section class="bottom-notes top-notes">
+      <div class="notes-global-head screen-only"><button type="button" class="notes-global-clear" id="clearAllNotesBtn">Temizle</button></div>
+      <div class="notes-col">
+        <div class="note-field"><label>Nöbet ertesi uzman</label><div class="multi-picker" data-multi-picker="nextExpert" data-role-filter="Uzman hekim" aria-label="Nöbet ertesi uzman hekimler"></div></div>
+        <div class="note-field"><label>Nöbet ertesi asistan</label><div class="multi-picker" data-multi-picker="nextAssistant" data-role-filter="Asistan" aria-label="Nöbet ertesi asistan hekimler"></div></div>
+        <div class="note-field"><label>İzinli uzman hekim</label><div class="multi-picker" data-multi-picker="leaveExpert" data-role-filter="Uzman hekim" aria-label="İzinli uzman hekimler"></div></div>
+        <div class="note-field"><label>İzinli asistan hekim</label><div class="multi-picker" data-multi-picker="leaveAssistant" data-role-filter="Asistan" aria-label="İzinli asistan hekimler"></div></div>
+        <div class="note-field lessons-note-field"><label for="noteLessons">Ders</label><textarea id="noteLessons" data-note="lessons" rows="1" aria-label="Ders"></textarea></div>
+      </div>
+      <div class="notes-col">
+        <div class="note-field clinic-note-field"><label for="noteClinicA">Poliklinik A Blok</label><div class="clinic-note-stack"><div class="person-select-line clinic-select-line"><select id="noteClinicA" data-note="clinicA" data-role-note="clinicA"></select><button type="button" class="assistant-note-add screen-only" data-clinic-note-toggle="clinicANote" title="Poliklinik A notu ekle" aria-label="Poliklinik A notu ekle">+</button></div><span class="assistant-note-display-line clinic-note-display-line hidden" data-clinic-note-display="clinicANote"><span class="assistant-note-text" data-clinic-note-text="clinicANote"></span><button type="button" class="assistant-note-delete screen-only" data-clinic-note-delete="clinicANote" aria-label="Poliklinik A notunu sil" title="Notu sil">×</button></span><input class="assistant-note-input screen-only hidden clinic-note-input" data-note="clinicANote" data-clinic-note-input="clinicANote" value="" placeholder="Not yazın" aria-label="Poliklinik A notu"></div></div>
+        <div class="note-field clinic-note-field"><label for="noteClinicC">Poliklinik C Blok</label><div class="clinic-note-stack"><div class="person-select-line clinic-select-line"><select id="noteClinicC" data-note="clinicC" data-role-note="clinicC"></select><button type="button" class="assistant-note-add screen-only" data-clinic-note-toggle="clinicCNote" title="Poliklinik C notu ekle" aria-label="Poliklinik C notu ekle">+</button></div><span class="assistant-note-display-line clinic-note-display-line hidden" data-clinic-note-display="clinicCNote"><span class="assistant-note-text" data-clinic-note-text="clinicCNote"></span><button type="button" class="assistant-note-delete screen-only" data-clinic-note-delete="clinicCNote" aria-label="Poliklinik C notunu sil" title="Notu sil">×</button></span><input class="assistant-note-input screen-only hidden clinic-note-input" data-note="clinicCNote" data-clinic-note-input="clinicCNote" value="" placeholder="Not yazın" aria-label="Poliklinik C notu"></div></div>
+        <div class="note-field"><label>Nakil</label><div class="multi-picker room-note-picker" data-transfer-picker="transfer" aria-label="Nakil uzman hekimleri"></div></div>
+        <div class="note-field"><label>MR</label><div class="multi-picker" data-multi-picker="mr" data-role-filter="all" aria-label="MR görevlileri"></div></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head"><div class="section-label">ODA / UZMAN HEKİM / ASİSTAN HEKİM DAĞILIMI</div><button class="btn screen-only" id="addRosterRow">+ Satır ekle</button></div>
+      <div class="roster-wrap"><table class="roster"><thead><tr><th>ODA</th><th>UZMAN HEKİM</th><th><div class="roster-assistant-head"><span>ASİSTAN HEKİM</span><button type="button" class="clear-section-btn screen-only" id="clearAssistantsBtn">Temizle</button></div></th><th class="row-tools screen-only"></th></tr></thead><tbody id="rosterBody"></tbody></table></div>
+    </section>
+
+    <section>
+      <div class="section-head"><div class="section-label">GÜN İÇİ PROGRAM</div><div class="toolbar-actions"><button type="button" class="btn btn-primary screen-only" id="pasteScheduleBtn">Programı Yapıştır</button><button type="button" class="btn screen-only" id="clearScheduleBtn">Temizle</button></div></div><input id="eventSearch" type="hidden" value=""><input id="blockSelect" type="hidden" value="A Blok">
+      <div class="schedule-wrap"><table class="schedule"><thead><tr><th>Saat</th><th>OPU</th><th>DOĞUMHANE</th><th>MR</th></tr></thead><tbody id="scheduleBody"></tbody><tbody><tr class="doctor-row"><td><div class="doctor-row-label"><span>Hekim</span><button type="button" class="clear-doctors-btn screen-only" id="clearDoctorsBtn">Temizle</button></div></td><td><div class="multi-picker" data-multi-picker="doctorSlots" data-index="0" data-role-filter="all"></div></td><td><div class="multi-picker" data-multi-picker="doctorSlots" data-index="1" data-role-filter="all"></div></td><td><div class="multi-picker" data-multi-picker="doctorSlots" data-index="2" data-role-filter="all"></div></td></tr></tbody></table></div>
+    </section>
+
+
+    <div class="print-footer"><span id="saveStatus" class="save-state">Değişiklikler bu tarayıcıda saklanır.</span><span>Ameliyathane çizelgesi · <span id="footerDate">22.10.2026</span></span></div>
+  </main>
+</div>
+
+<div class="modal-backdrop" id="modalBackdrop" aria-hidden="true"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-head"><h2 id="modalTitle">Yeni kayıt</h2><button class="close" id="closeModal" aria-label="Kapat">×</button></div><form id="modalForm"><div class="modal-body" id="modalBody"></div><div class="modal-actions"><button type="button" class="btn" id="cancelModal">Vazgeç</button><div class="modal-actions-right"><button type="button" class="btn btn-danger hidden" id="deleteModal">Kaydı sil</button><button type="submit" class="btn btn-primary">Kaydet</button></div></div></form></section></div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+(function(){
+  'use strict';
+  const SERVICES=['OPU','DOĞUMHANE','MR'];
+  const BASE_ROOMS=['1','2','3','4','5','6','7','13-1','13-2'];
+  const EXPERT_ROLES=['Uzman hekim','Poliklinikçi uzman hekim'];
+  const isExpertRole=role=>EXPERT_ROLES.includes(role);
+  // A Blok için dört oda grubu; her satırın menüsünden odalar tek tek seçilebilir.
+  const ROOM_GROUPS=[
+    {label:'1,2,3',rooms:['1','2','3'],defaultRoom:'1,2,3'},
+    {label:'4,5',rooms:['4','5'],defaultRoom:'4,5'},
+    {label:'6,7',rooms:['6','7'],defaultRoom:'6,7'},
+    {label:'13-1,13-2',rooms:['13-1','13-2'],defaultRoom:'13-1,13-2'}
+  ];
+  const DEFAULT_STAFF=[
+    {id:'ab-expert-1',name:'Pelin Karaaslan',role:'Uzman hekim',rotation:''},
+    {id:'ab-expert-2',name:'Burak Ömür',role:'Uzman hekim',rotation:''},
+    {id:'ab-expert-3',name:'Ayşe İnce',role:'Uzman hekim',rotation:''},
+    {id:'ab-expert-4',name:'Merve Bıdak',role:'Uzman hekim',rotation:''},
+    {id:'ab-expert-5',name:'Koray Tan',role:'Uzman hekim',rotation:''},
+    {id:'ab-expert-6',name:'Cem Kaya',role:'Uzman hekim',rotation:''},
+    {id:'ab-expert-7',name:'Yaşar Gül',role:'Uzman hekim',rotation:''},
+    {id:'ab-expert-8',name:'Pınar Uçar Şeber',role:'Uzman hekim',rotation:''},
+    {id:'ab-expert-9',name:'Fatih Özel',role:'Uzman hekim',rotation:''},
+    {id:'ab-expert-10',name:'Hande Güngör Danışan',role:'Uzman hekim',rotation:''},
+    {id:'ab-assistant-1',name:'Ökkeş Başak',role:'Asistan',rotation:''},
+    {id:'ab-assistant-2',name:'Hilal Koruk',role:'Asistan',rotation:''},
+    {id:'ab-assistant-3',name:'İhsan Yüksel',role:'Asistan',rotation:''},
+    {id:'ab-assistant-4',name:'Mehmet Şenyıl',role:'Asistan',rotation:''},
+    {id:'ab-assistant-5',name:'Büşra Öner Akbalık',role:'Asistan',rotation:''},
+    {id:'ab-assistant-6',name:'İpek Keser',role:'Asistan',rotation:''},
+    {id:'ab-assistant-7',name:'Ayşe Çiçek',role:'Asistan',rotation:''},
+    {id:'ab-assistant-8',name:'Anıl Biçer',role:'Asistan',rotation:''},
+    {id:'ab-assistant-9',name:'Elif Küçükcingöz',role:'Asistan',rotation:''},
+    {id:'ab-assistant-10',name:'Çiçek Pınar Akgül',role:'Asistan',rotation:''},
+    {id:'ab-assistant-11',name:'Cemre Var',role:'Asistan',rotation:''},
+    {id:'ab-assistant-12',name:'Gökhan Karataş',role:'Asistan',rotation:''},
+    {id:'ab-assistant-13',name:'İbrahim Halil İpek',role:'Asistan',rotation:''},
+    {id:'ab-assistant-14',name:'Damla Alkhalidi',role:'Asistan',rotation:''},
+    {id:'ab-assistant-15',name:'Merve Yıldırım',role:'Asistan',rotation:''},
+    {id:'ab-assistant-16',name:'Burakcan Karaman',role:'Asistan',rotation:''},
+    {id:'ab-assistant-17',name:'Çağla Can',role:'Asistan',rotation:''}
+  ];
+  const TIMES=[];for(let h=8;h<=16;h++){TIMES.push(String(h).padStart(2,'0')+':00');if(h<16||h===16)TIMES.push(String(h).padStart(2,'0')+':30')}TIMES.push('17:00');
+  const seed={rooms:ROOM_GROUPS.map((g,i)=>({id:'r'+(i+1),name:g.rooms.join(','),groupLabel:g.label,expert:'',expert2:'',assistant:'',rotation:''})),staff:clone(DEFAULT_STAFF),assistantRotations:[],events:[],dailyNotes:{},dailyRooms:{},dailyStaff:{},settings:{expertLine:'',assistantLine:'',extraRooms:[],roomGroupsVersion:19,staffOrderVersion:2}};
+  const $=id=>document.getElementById(id);
+  const today=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+  function makeId(prefix){return prefix+'_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,7)}
+  function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+  function normalizedRoom(n){return String(n||'').replace(/^oda\s*/i,'').replace(/[–—]/g,'-').replace(/\s*[, -]\s*/g,(m)=>m.includes('-')?'-':',').trim()}
+  function clone(v){return JSON.parse(JSON.stringify(v))}
+  function roomUnits(value){
+    const normalized=normalizedRoom(value);
+    if(BASE_ROOMS.includes(normalized))return [normalized];
+    if(normalized==='1-2-3-4-5-6-7')return ['1','2','3','4','5','6','7'];
+    return normalized.split(',').map(v=>v.trim()).filter(v=>BASE_ROOMS.includes(v));
+  }
+  function roomsOverlap(a,b){const aa=roomUnits(a),bb=new Set(roomUnits(b));return aa.some(n=>bb.has(n))}
+  function migrateRoomRowsToGroups(rows){
+    const list=(rows||[]).map(r=>({...r,name:normalizedRoom(r.name)}));
+    const legacyGroupedRow=list.find(r=>r.groupLabel==='1-2-3-4-5-6-7'||r.name==='1-2-3-4-5-6-7');
+    const hasValue=(r,key)=>String(r?.[key]||'').trim()!=='';
+    const mapped=ROOM_GROUPS.map((group,index)=>{
+      let candidates=list.filter(r=>{
+        if(r.groupLabel==='Ek satır')return false;
+        if(r===legacyGroupedRow&&index>0)return false;
+        if(r.groupLabel===group.label)return true;
+        if(group.rooms.some(unit=>r.groupLabel===unit))return true;
+        return group.rooms.some(unit=>roomUnits(r.name).includes(unit));
+      });
+      candidates.sort((a,b)=>{
+        const priority=r=>{
+          if(r.groupLabel===group.label)return -1;
+          const idx=group.rooms.findIndex(unit=>r.groupLabel===unit||roomUnits(r.name).includes(unit));
+          return idx<0?99:idx;
+        };
+        return priority(a)-priority(b);
+      });
+      const keys=['expert','expert2','expertNote','expert2Note','assistant','assistantNote','rotation','area'];
+      const withAnyAssignment=candidates.find(r=>keys.some(key=>hasValue(r,key)));
+      const chosen=withAnyAssignment||candidates[0];
+      const firstValue=key=>candidates.map(r=>r[key]).find(value=>String(value||'').trim()!=='')||'';
+      return {
+        ...(chosen||{}),
+        id:chosen?.id||'r'+(index+1),
+        name:group.rooms.join(','),
+        groupLabel:group.label,
+        expert:firstValue('expert'),
+        expert2:firstValue('expert2'),
+        expertNote:firstValue('expertNote'),
+        expert2Note:firstValue('expert2Note'),
+        assistant:firstValue('assistant'),
+        assistantNote:firstValue('assistantNote'),
+        rotation:firstValue('rotation'),
+        area:firstValue('area')
+      };
+    });
+    // Yalnızca kullanıcı tarafından özellikle eklenmiş satırları koru; eski 9 sabit oda satırı ek satıra dönüşmesin.
+    const extras=list.filter(r=>r.groupLabel==='Ek satır'&&(r.expert||r.expert2||r.assistant||r.expertNote||r.expert2Note||r.assistantNote));
+    return mapped.concat(extras.map((r,i)=>({...r,id:r.id||makeId('r'),groupLabel:'Ek satır'})));
+  }
+  function migrateOldStaff(staff){
+    // Eski isimleri yerinde düzelt; personel envanterini asla varsayılan listeyle değiştirme.
+    const renames={'B. Çiftçi':'Bahadır Çiftçi','T. U. Yanaral':'Tümay Uludağ Yanaral','E. Tercan':'Elvan Tercan','Y. Yıldız':'Yahya Yıldız','Cemre':'Cemre Var','Ayşe (joker)':'Ayşe Çiçek'};
+    const seen=new Set();
+    return (staff||[]).map(p=>({...p,name:renames[p.name]||p.name})).filter(p=>{const key=String(p.name||'').trim().toLocaleLowerCase('tr-TR');if(!key||seen.has(key))return false;seen.add(key);return true;});
+  }
+  const STAFF_ORDER_NAMES=['Pelin Karaaslan','Burak Ömür','Ayşe İnce','Merve Bıdak','Ökkeş Başak','Hilal Koruk','İhsan Yüksel'];
+  function orderStaffOnce(staff){
+    const rank=new Map(STAFF_ORDER_NAMES.map((name,i)=>[name.toLocaleLowerCase('tr-TR'),i]));
+    return [...staff].sort((a,b)=>{
+      const ak=String(a.name||'').toLocaleLowerCase('tr-TR'),bk=String(b.name||'').toLocaleLowerCase('tr-TR');
+      const ar=rank.has(ak)?rank.get(ak):999,br=rank.has(bk)?rank.get(bk):999;
+      if(ar!==br)return ar-br;
+      if(ar===999){const group=p=>isExpertRole(p.role)?0:p.role==='Asistan'?1:2;return group(a)-group(b)}
+      return 0;
+    });
+  }
+  function migrateStaffReferences(parsed){
+    const renames={'B. Çiftçi':'Bahadır Çiftçi','T. U. Yanaral':'Tümay Uludağ Yanaral','E. Tercan':'Elvan Tercan','Y. Yıldız':'Yahya Yıldız','Cemre':'Cemre Var','Ayşe (joker)':'Ayşe Çiçek'};
+    const allowed=new Set(parsed.staff.map(p=>p.name));
+    const mapName=n=>renames[n]||n;
+    // Keep assigned names even when they are no longer present in the current personnel inventory.
+    parsed.rooms.forEach(r=>{r.expert=mapName(r.expert);r.expert2=mapName(r.expert2);r.assistant=mapName(r.assistant)});
+    parsed.assistantRotations=(parsed.assistantRotations||[]).map(r=>({...r,assistant:mapName(r.assistant)})).filter(r=>allowed.has(r.assistant));
+    parsed.events.forEach(e=>{if(e.expert)e.expert=mapName(e.expert);if(e.assistant)e.assistant=mapName(e.assistant)});
+    Object.values(parsed.dailyNotes||{}).forEach(n=>Object.keys(n).forEach(k=>{if(typeof n[k]==='string')n[k]=mapName(n[k]);else if(Array.isArray(n[k]))n[k]=n[k].map(mapName)}));
+  }
+  function loadData(){
+    let parsed=null;
+    try{const raw=localStorage.getItem('ameliyathanePlanlamaABlokV1');if(raw)parsed=JSON.parse(raw)}catch(e){}
+    if(parsed&&Array.isArray(parsed.rooms)&&Array.isArray(parsed.staff)&&Array.isArray(parsed.events)){
+      parsed.dailyNotes=parsed.dailyNotes||{};parsed.dailyRooms=(parsed.dailyRooms&&typeof parsed.dailyRooms==='object'&&!Array.isArray(parsed.dailyRooms))?parsed.dailyRooms:{};parsed.dailyStaff=(parsed.dailyStaff&&typeof parsed.dailyStaff==='object'&&!Array.isArray(parsed.dailyStaff))?parsed.dailyStaff:{};parsed.settings=parsed.settings||{};
+      parsed.settings.extraRooms=Array.isArray(parsed.settings.extraRooms)?parsed.settings.extraRooms:[];
+      parsed.rooms=parsed.rooms.map((r,i)=>({id:r.id||makeId('r'),name:normalizedRoom(r.name),groupLabel:r.groupLabel||'',expert:r.expert||'',expert2:r.expert2||'',expertNote:r.expertNote||'',expert2Note:r.expert2Note||'',assistant:r.assistant||'',rotation:r.rotation||'',area:r.area||'',assistantNote:r.assistantNote||''}));
+      // One-time migration: the 19th room starts with a single expert field. A second expert is added only when the user presses +.
+      if(!parsed.settings.expert2PlusOptInV1){parsed.rooms.forEach(r=>{r.expert2='';r.expert2Note=''});parsed.settings.expert2PlusOptInV1=true;}
+      if(parsed.settings.roomGroupsVersion!==19){
+        parsed.rooms=migrateRoomRowsToGroups(parsed.rooms);
+        Object.keys(parsed.dailyRooms).forEach(key=>{if(Array.isArray(parsed.dailyRooms[key]))parsed.dailyRooms[key]=migrateRoomRowsToGroups(parsed.dailyRooms[key]);});
+        parsed.settings.roomGroupsVersion=19;
+      }else {parsed.rooms=parsed.rooms.map((r,i)=>({...r,groupLabel:r.groupLabel||ROOM_GROUPS[i]?.label||'Ek satır'}));}
+      const legacyRotations=Array.isArray(parsed.assistantRotations)?parsed.assistantRotations:[];
+      parsed.staff=migrateOldStaff(parsed.staff).map(p=>{const role=['Uzman hekim','Asistan','Poliklinikçi uzman hekim'].includes(p.role)?p.role:'Asistan';const legacy=(legacyRotations.find(r=>r.assistant===p.name)||{}).rotation||'';const rawCandidate=p.rotation||legacy;const candidate=['Göğüs Cerrahisi','Göğüs Cer.'].includes(String(rawCandidate||'').trim())?'':(rawCandidate==='Girişimsel - Anjiyo-MR'?'Girişimsel-Anjiyo-MR':rawCandidate);return {...p,role,rotation:String(candidate||'')}});
+      if(parsed.settings.staffOrderVersion!==2){
+        // One-time inventory migration: add Gökhan Karataş if missing, apply the requested default order, then never force this order again.
+        if(!parsed.staff.some(p=>String(p.name||'').trim().toLocaleLowerCase('tr-TR')==='gökhan karataş')){
+          parsed.staff.push({id:makeId('s'),name:'Gökhan Karataş',role:'Asistan',rotation:''});
+        }
+        parsed.staff=orderStaffOnce(parsed.staff);
+        parsed.settings.staffOrderVersion=2;
+      }
+      parsed.assistantRotations=[];
+      parsed.settings.extraRooms=[];
+      migrateStaffReferences(parsed);
+      parsed.events=parsed.events.map(e=>({...e,room:normalizedRoom(e.room),service:SERVICES.includes(e.service)?e.service:(e.service==='Aritmi / Ablasyon'?'Aritmi - Ablasyon':e.service)}));
+      if(parsed.settings.expertLine===undefined)parsed.settings.expertLine='';if(parsed.settings.assistantLine===undefined)parsed.settings.assistantLine='';
+      return parsed;
+    }
+    // No saved prototype data: use individual room choices and the current staff list.
+    return clone(seed);
+  }
+  let data=loadData(),editingEvent=null,toastTimer=null;
+  // One-time A Blok roster update: the active inventory gets the requested people; prior-date snapshots remain intact.
+  (function applyABlockRosterUpdate(){
+    data.settings=data.settings||{};
+    if(Number(data.settings.aBlockRosterNamesVersion||0)>=3)return;
+    // Correct the previously used spelling without losing any existing assignments.
+    const aliasNames={'Elif Koçakcingöz':'Elif Küçükcingöz'};
+    const remapAliases=value=>{
+      if(typeof value==='string'){
+        for(const [oldName,newName] of Object.entries(aliasNames))value=value.split(oldName).join(newName);
+        return value;
+      }
+      if(Array.isArray(value)){for(let i=0;i<value.length;i++)value[i]=remapAliases(value[i]);return value;}
+      if(value&&typeof value==='object')Object.keys(value).forEach(key=>{value[key]=remapAliases(value[key])});
+      return value;
+    };
+    remapAliases(data);
+    const oldStaffByName=new Map((data.staff||[]).map(p=>[String(p.name||'').trim().toLocaleLowerCase('tr-TR'),p]));
+    const newRoster=clone(DEFAULT_STAFF).map(p=>{
+      const old=oldStaffByName.get(p.name.toLocaleLowerCase('tr-TR'));
+      return {...p,id:old?.id||p.id,rotation:old?.rotation||p.rotation||''};
+    });
+    const expertNames=new Set(newRoster.filter(p=>isExpertRole(p.role)).map(p=>p.name));
+    const assistantNames=new Set(newRoster.filter(p=>p.role==='Asistan').map(p=>p.name));
+    const allNames=new Set(newRoster.map(p=>p.name));
+    const cleanRoomAssignments=rows=>{
+      if(!Array.isArray(rows))return;
+      rows.forEach(r=>{
+        if(!expertNames.has(r.expert))r.expert='';
+        if(!expertNames.has(r.expert2))r.expert2='';
+        if(!assistantNames.has(r.assistant))r.assistant='';
+      });
+    };
+    data.staff=newRoster;
+    const todayKey=`${today()}|A Blok`;
+    cleanRoomAssignments(data.rooms);
+    if(data.dailyRooms&&Array.isArray(data.dailyRooms[todayKey]))cleanRoomAssignments(data.dailyRooms[todayKey]);
+    data.dailyNotes=data.dailyNotes||{};
+    const notes=data.dailyNotes[todayKey];
+    if(notes&&typeof notes==='object'){
+      ['nextExpert','leaveExpert'].forEach(k=>{notes[k]=(Array.isArray(notes[k])?notes[k]:(notes[k]?[notes[k]]:[])).filter(n=>expertNames.has(n))});
+      ['nextAssistant','leaveAssistant'].forEach(k=>{notes[k]=(Array.isArray(notes[k])?notes[k]:(notes[k]?[notes[k]]:[])).filter(n=>assistantNames.has(n))});
+      ['clinicA','clinicC'].forEach(k=>{if(!assistantNames.has(notes[k]))notes[k]=''});
+      const mrValues=Array.isArray(notes.mr)?notes.mr:(notes.mr?[notes.mr]:[]);
+      notes.mr=mrValues.filter(n=>allNames.has(n));
+      const transferValues=Array.isArray(notes.transfer)?notes.transfer:(typeof notes.transfer==='string'?notes.transfer.split(',').map(v=>v.trim()).filter(Boolean):[]);
+      notes.transfer=transferValues.filter(n=>expertNames.has(n));
+      if(Array.isArray(notes.doctorSlots))notes.doctorSlots=notes.doctorSlots.map(slot=>(Array.isArray(slot)?slot:(typeof slot==='string'?slot.split(',').map(v=>v.trim()).filter(Boolean):[])).filter(n=>allNames.has(n)));
+    }
+    (data.events||[]).filter(e=>e.date===today()&&e.block==='A Blok').forEach(e=>{
+      if(e.expert&&!expertNames.has(e.expert))e.expert='';
+      if(e.assistant&&!assistantNames.has(e.assistant))e.assistant='';
+    });
+    data.dailyStaff=data.dailyStaff||{};
+    data.dailyStaff[todayKey]=clone(newRoster);
+    data.settings.aBlockRosterNamesVersion=3;
+  })();
+  // A Blok başlangıçta dört oda grubu gösterir; seçili odalar grup tanımından gelir.
+  if(!data.settings?.aBlockFourRowsInitialized){
+    while(data.rooms.length<ROOM_GROUPS.length){
+      const i=data.rooms.length,group=ROOM_GROUPS[i];
+      data.rooms.push({id:'r'+(i+1),name:group.rooms.join(','),groupLabel:group.label,expert:'',expert2:'',expertNote:'',expert2Note:'',assistant:'',assistantNote:'',rotation:'',area:''});
+    }
+    data.rooms=data.rooms.map((r,i)=>({...r,groupLabel:r.groupLabel||ROOM_GROUPS[i]?.label||'Ek satır'}));
+    if(data.settings){data.settings.roomGroupsVersion=19;data.settings.aBlockFourRowsInitialized=true;}
+  }
+  $('planDate').value=today();
+  function activeKey(){return ($('planDate').value||today())+'|'+$('blockSelect').value}
+  function ensureDailyRoomArchive(){if(!data.dailyRooms||typeof data.dailyRooms!=='object'||Array.isArray(data.dailyRooms))data.dailyRooms={};}
+  function normalizeRoomSnapshot(snapshot){
+    if(!Array.isArray(snapshot))return clone(data.rooms);
+    return snapshot.map((r,i)=>({...r,id:r.id||makeId('r'),name:normalizedRoom(r.name),groupLabel:r.groupLabel||ROOM_GROUPS[i]?.label||'Ek satır',expert:r.expert||'',expert2:r.expert2||'',expertNote:r.expertNote||'',expert2Note:r.expert2Note||'',assistant:r.assistant||'',rotation:r.rotation||'',area:r.area||'',assistantNote:r.assistantNote||''}));
+  }
+  function clearDailyRoomAssignments(rooms){
+    rooms.forEach(r=>{r.expert='';r.expert2='';r.expertNote='';r.expert2Note='';r.assistant='';r.assistantNote='';r.rotation='';r.area=''});
+    return rooms;
+  }
+  function ensureDailyStaffArchive(){if(!data.dailyStaff||typeof data.dailyStaff!=='object'||Array.isArray(data.dailyStaff))data.dailyStaff={};}
+  function historicalRoleForName(name,key){
+    const norm=String(name||'').trim().toLocaleLowerCase('tr-TR');
+    const live=(data.staff||[]).find(p=>String(p.name||'').trim().toLocaleLowerCase('tr-TR')===norm);
+    if(live)return live.role;
+    for(const snapshot of Object.values(data.dailyStaff||{})){
+      if(!Array.isArray(snapshot))continue;
+      const found=snapshot.find(p=>String(p.name||'').trim().toLocaleLowerCase('tr-TR')===norm);
+      if(found&&found.role)return found.role;
+    }
+    const [date,block]=String(key||'').split('|');
+    const note=(data.dailyNotes||{})[key]||(data.dailyNotes||{})[date]||{};
+    if(['leaveAssistant','nextAssistant'].some(k=>Array.isArray(note[k])?note[k].some(v=>String(v).trim().toLocaleLowerCase('tr-TR')===norm):String(note[k]||'').trim().toLocaleLowerCase('tr-TR')===norm))return 'Asistan';
+    if(['leaveExpert','nextExpert'].some(k=>Array.isArray(note[k])?note[k].some(v=>String(v).trim().toLocaleLowerCase('tr-TR')===norm):String(note[k]||'').trim().toLocaleLowerCase('tr-TR')===norm))return 'Uzman hekim';
+    const roomSnapshot=(data.dailyRooms||{})[key]||(key===(currentPlanKey||activeKey())?data.rooms:[]);
+    if(Array.isArray(roomSnapshot))for(const room of roomSnapshot){if(room.assistant===name)return 'Asistan';if(room.expert===name||room.expert2===name)return 'Uzman hekim';}
+    const event=(data.events||[]).find(e=>e.date===date&&e.block===block&&(e.expert===name||e.assistant===name));
+    if(event&&event.assistant===name)return 'Asistan';
+    if(event&&event.expert===name)return 'Uzman hekim';
+    if(note.clinicA===name)return 'Poliklinikçi uzman hekim';
+    return 'Uzman hekim';
+  }
+  function ensureDailyStaffForKey(key){
+    if(!key)return [];
+    ensureDailyStaffArchive();
+    if(!Array.isArray(data.dailyStaff[key]))data.dailyStaff[key]=clone(data.staff||[]);
+    const snapshot=data.dailyStaff[key];
+    const normName=name=>String(name||'').trim().toLocaleLowerCase('tr-TR');
+    const existing=new Set(snapshot.map(p=>normName(p.name)).filter(Boolean));
+    const add=(name,preferredRole='')=>{
+      name=String(name||'').trim();const norm=normName(name);if(!norm||existing.has(norm))return;
+      const known=(data.staff||[]).find(p=>normName(p.name)===norm);
+      let old=null;for(const list of Object.values(data.dailyStaff||{})){if(!Array.isArray(list))continue;old=list.find(p=>normName(p.name)===norm);if(old)break;}
+      snapshot.push({id:(known&&known.id)||(old&&old.id)||makeId('history'),name,role:(known&&known.role)||(old&&old.role)||preferredRole||historicalRoleForName(name,key)||'Uzman hekim',rotation:(known&&known.rotation)||(old&&old.rotation)||''});
+      existing.add(norm);
+    };
+    // Harvest names from this date's saved assignments so historical names remain selectable after roster edits.
+    const rooms=(data.dailyRooms||{})[key]||(key===(currentPlanKey||activeKey())?data.rooms:[]);
+    if(Array.isArray(rooms))rooms.forEach(r=>{add(r.expert,'Uzman hekim');add(r.expert2,'Uzman hekim');add(r.assistant,'Asistan')});
+    const [date,block]=String(key).split('|');
+    (data.events||[]).filter(e=>e.date===date&&e.block===block).forEach(e=>{add(e.expert,'Uzman hekim');add(e.assistant,'Asistan')});
+    const n=(data.dailyNotes||{})[key]||(data.dailyNotes||{})[date]||{};
+    ['leaveExpert','nextExpert'].forEach(k=>{const vals=Array.isArray(n[k])?n[k]:(n[k]?[n[k]]:[]);vals.forEach(v=>add(v,'Uzman hekim'))});
+    ['leaveAssistant','nextAssistant'].forEach(k=>{const vals=Array.isArray(n[k])?n[k]:(n[k]?[n[k]]:[]);vals.forEach(v=>add(v,'Asistan'))});
+    ['clinicA','clinicC'].forEach(k=>{if(n[k])add(n[k],k==='clinicA'?'Poliklinikçi uzman hekim':'Uzman hekim')});
+    (Array.isArray(n.mr)?n.mr:(n.mr?[n.mr]:[])).forEach(name=>add(name));
+    (Array.isArray(n.doctorSlots)?n.doctorSlots:[]).forEach(slot=>{(Array.isArray(slot)?slot:String(slot||'').split(',').map(v=>v.trim()).filter(Boolean)).forEach(v=>add(v))});
+    return snapshot;
+  }
+  function staffForPlan(key=currentPlanKey||activeKey()){
+    const archived=ensureDailyStaffForKey(key),result=archived.map(p=>({...p}));
+    const seen=new Set(result.map(p=>String(p.name||'').trim().toLocaleLowerCase('tr-TR')).filter(Boolean));
+    (data.staff||[]).forEach(p=>{const norm=String(p.name||'').trim().toLocaleLowerCase('tr-TR');if(norm&&!seen.has(norm)){result.push({...p});seen.add(norm)}});
+    return result;
+  }
+  function saveRoomPlanForKey(key){ensureDailyRoomArchive();if(key)data.dailyRooms[key]=clone(data.rooms);if(key)ensureDailyStaffForKey(key);}
+  function persistToStorage(){saveRoomPlanForKey(currentPlanKey||activeKey());localStorage.setItem('ameliyathanePlanlamaABlokV1',JSON.stringify(data));}
+  let currentPlanKey=activeKey();
+  ensureDailyRoomArchive();
+  if(Object.prototype.hasOwnProperty.call(data.dailyRooms,currentPlanKey)){
+    data.rooms=normalizeRoomSnapshot(data.dailyRooms[currentPlanKey]);
+  }else{
+    // Legacy migration: when no date archive exists yet, preserve the current plan as today's starting snapshot.
+    // Once date archives exist, a never-before-opened day starts with empty assignments, not the previous date's staff.
+    const hasPriorDateArchive=Object.keys(data.dailyRooms).length>0;
+    if(hasPriorDateArchive)data.rooms=clearDailyRoomAssignments(normalizeRoomSnapshot(data.rooms));
+    else data.rooms=normalizeRoomSnapshot(data.rooms);
+    data.dailyRooms[currentPlanKey]=clone(data.rooms);
+  }
+  // Migration for existing files: create date-specific personnel snapshots without altering old assignments.
+  (function initializeDailyStaffArchives(){
+    ensureDailyStaffArchive();
+    const keys=new Set([currentPlanKey,...Object.keys(data.dailyRooms||{}),...Object.keys(data.dailyNotes||{}),...(data.events||[]).map(e=>`${e.date}|${e.block}`)]);
+    keys.forEach(key=>ensureDailyStaffForKey(key));
+    try{localStorage.setItem('ameliyathanePlanlamaABlokV1',JSON.stringify(data))}catch(e){}
+  })();
+  function currentNotes(){if(!data.dailyNotes[activeKey()])data.dailyNotes[activeKey()]={};return data.dailyNotes[activeKey()]}
+  function saveData(message='Kaydedildi'){try{persistToStorage();$('saveStatus').textContent=message+' · '+new Date().toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});showToast(message)}catch(e){$('saveStatus').textContent='Bu tarayıcıda saklama kullanılamıyor.'}renderAll()}
+  function showToast(message){const el=$('toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),1800)}
+  function staffByRole(role){const people=staffForPlan();if(role==='Uzman hekim')return people.filter(s=>isExpertRole(s.role));if(role==='all')return people.filter(s=>isExpertRole(s.role)||s.role==='Asistan');return people.filter(s=>s.role===role)}
+  function staffOptions(role,selected,allowBlank=true){let items;if(role==='all')items=staffByRole('all');else if(role==='clinicA'||role==='clinicC')items=staffByRole('Asistan');else items=staffByRole(role);return (allowBlank?'<option value=""></option>':'')+items.map(p=>`<option value="${esc(p.name)}" ${p.name===selected?'selected':''}>${esc(p.name)}</option>`).join('')}
+  function personSelectWidth(name){const length=Array.from(String(name||'')).length;return length?Math.min(178,Math.max(78,Math.ceil(length*5.6+25))):68;}
+  function roomInventory(){return [...BASE_ROOMS]}
+  function roomOptions(selected='',rowId='',keepOpen=false){
+    const selectedRooms=roomUnits(selected);
+    return `<div class="room-select-wrap" data-room-picker="${esc(rowId)}"><button type="button" class="room-picker-trigger" data-room-picker-trigger="${esc(rowId)}" aria-haspopup="true" aria-expanded="${keepOpen?'true':'false'}"><span class="room-picker-value">${esc(selectedRooms.join(', '))}</span><span class="room-picker-arrow" aria-hidden="true">▾</span></button><div class="room-picker-menu ${keepOpen?'':'hidden'}" role="group" aria-label="Oda dağılımını seç">${BASE_ROOMS.map(n=>`<label class="room-check"><input type="checkbox" data-room-check="${esc(n)}" ${selectedRooms.includes(n)?'checked':''}><span>${esc(n)}</span></label>`).join('')}</div></div>`;
+  }
+  function dateLabel(v){if(!v)return '';const [y,m,d]=v.split('-');return `${d}.${m}.${y}`}
+  function weekdayLabel(v){if(!v)return '';const name=new Date(`${v}T12:00:00`).toLocaleDateString('tr-TR',{weekday:'long'});return name?name.charAt(0).toLocaleUpperCase('tr-TR')+name.slice(1):''}
+  function syncMetadata(){const selected=$('planDate').value||today();$('footerDate').textContent=dateLabel(selected);$('weekdayName').textContent=weekdayLabel(selected);$('sheetTitle').textContent=$('blockSelect').value.toLocaleUpperCase('tr-TR');if($('datePickerDisplay'))$('datePickerDisplay').textContent=dateLabel(selected)}
+  // Custom calendar: explicit Monday-first grid independent of the browser/OS locale.
+  function parseIsoDate(value){const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(value||'');return m?new Date(Number(m[1]),Number(m[2])-1,Number(m[3])):new Date()}
+  function isoDateValue(date){return date.getFullYear()+'-'+String(date.getMonth()+1).padStart(2,'0')+'-'+String(date.getDate()).padStart(2,'0')}
+  let calendarViewDate=parseIsoDate($('planDate').value||today());
+  function renderDatePickerCalendar(){
+    const year=calendarViewDate.getFullYear(),month=calendarViewDate.getMonth();
+    $('calendarMonthLabel').textContent=new Date(year,month,1).toLocaleDateString('tr-TR',{month:'long',year:'numeric'});
+    const first=new Date(year,month,1),daysInMonth=new Date(year,month+1,0).getDate(),offset=(first.getDay()+6)%7;
+    const selected=$('planDate').value||today(),todayValue=today();let html='';
+    for(let i=0;i<offset;i++)html+='<span class="calendar-day-empty" aria-hidden="true"></span>';
+    for(let day=1;day<=daysInMonth;day++){
+      const value=year+'-'+String(month+1).padStart(2,'0')+'-'+String(day).padStart(2,'0');
+      const cls='calendar-day'+(value===selected?' selected':'')+(value===todayValue?' today':'');
+      html+=`<button type="button" class="${cls}" data-calendar-date="${value}" aria-label="${day} ${new Date(year,month,day).toLocaleDateString('tr-TR',{month:'long'})} ${year}"${value===selected?' aria-pressed="true"':' aria-pressed="false"'}>${day}</button>`;
+    }
+    const remainder=(offset+daysInMonth)%7;if(remainder)for(let i=0;i<7-remainder;i++)html+='<span class="calendar-day-empty" aria-hidden="true"></span>';
+    $('calendarDays').innerHTML=html;
+  }
+  function openDatePicker(){calendarViewDate=parseIsoDate($('planDate').value||today());renderDatePickerCalendar();$('calendarPopup').hidden=false;$('datePickerButton').setAttribute('aria-expanded','true')}
+  function closeDatePicker(){if($('calendarPopup'))$('calendarPopup').hidden=true;if($('datePickerButton'))$('datePickerButton').setAttribute('aria-expanded','false')}
+  $('datePickerButton').addEventListener('click',()=>{if($('calendarPopup').hidden)openDatePicker();else closeDatePicker()});
+  $('calendarPrevMonth').addEventListener('click',()=>{calendarViewDate=new Date(calendarViewDate.getFullYear(),calendarViewDate.getMonth()-1,1);renderDatePickerCalendar()});
+  $('calendarNextMonth').addEventListener('click',()=>{calendarViewDate=new Date(calendarViewDate.getFullYear(),calendarViewDate.getMonth()+1,1);renderDatePickerCalendar()});
+  $('calendarDays').addEventListener('click',ev=>{const target=ev.target.closest('[data-calendar-date]');if(!target)return;const next=target.dataset.calendarDate,previous=$('planDate').value;closeDatePicker();$('planDate').value=next;if(next!==previous)$('planDate').dispatchEvent(new Event('change',{bubbles:true}));else syncMetadata()});
+  $('calendarTodayBtn').addEventListener('click',()=>{const next=today(),previous=$('planDate').value;closeDatePicker();$('planDate').value=next;if(next!==previous)$('planDate').dispatchEvent(new Event('change',{bubbles:true}));else syncMetadata()});
+  $('calendarCloseBtn').addEventListener('click',closeDatePicker);
+  document.addEventListener('click',ev=>{if(!ev.target.closest('.date-box'))closeDatePicker()});
+  document.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&!$('calendarPopup').hidden)closeDatePicker()});
+  function renderRoster(openRoomId=''){
+    const hasExtraRows=data.rooms.some(r=>r.groupLabel==='Ek satır');
+    document.querySelector('.roster').classList.toggle('has-extra-rows',hasExtraRows);
+    $('rosterBody').innerHTML=data.rooms.map(r=>{
+      const addedRow=r.groupLabel==='Ek satır';
+      const removeCell=addedRow?`<td class="row-tools screen-only"><button type="button" class="icon-btn" data-delete-room="${esc(r.id)}" title="Eklenen satırı sil" aria-label="Eklenen oda satırını sil">×</button></td>`:'<td class="row-tools screen-only"></td>';
+      const hasRoom19=roomUnits(r.name).includes('19');
+      const expertNote=String(r.expertNote||'');
+      const expert2Note=String(r.expert2Note||'');
+      const expertWidth=personSelectWidth(r.expert);
+      const expert1Markup=`<div class="person-note-stack"><div class="person-select-line"><select data-room-staff="expert" data-id="${esc(r.id)}" aria-label="Uzman hekim">${staffOptions('Uzman hekim',r.expert)}</select><button type="button" class="assistant-note-add screen-only" data-room-note-toggle="expertNote" data-id="${esc(r.id)}" title="Uzman hekim notu ekle" aria-label="Uzman hekim notu ekle">+</button></div>${expertNote?`<span class="assistant-note-display-line"><span class="assistant-note-text" data-note-display="expertNote">${esc(expertNote)}</span><button type="button" class="assistant-note-delete screen-only" data-delete-room-note="expertNote" data-id="${esc(r.id)}" aria-label="Uzman hekim notunu sil" title="Notu sil">×</button></span>`:''}<input class="assistant-note-input screen-only hidden" data-room-note="expertNote" data-id="${esc(r.id)}" value="${esc(expertNote)}" placeholder="Not yazın" aria-label="Uzman hekim notu"></div>`;
+      const assistantNote=String(r.assistantNote||'');
+      return `<tr data-room-row="${esc(r.id)}" class="${addedRow?'room-row-extra':''}"><td>${roomOptions(r.name,r.id,r.id===openRoomId)}</td><td><div class="staff-choice expert-choice">${expert1Markup}</div></td><td><div class="staff-choice assistant-choice"><div class="person-note-stack"><div class="person-select-line"><select data-room-staff="assistant" data-id="${esc(r.id)}" aria-label="Asistan hekim">${staffOptions('Asistan',r.assistant)}</select><button type="button" class="assistant-note-add screen-only" data-assistant-note-toggle="${esc(r.id)}" title="Asistan notu ekle" aria-label="Asistan notu ekle">+</button></div>${assistantNote?`<span class="assistant-note-display-line"><span class="assistant-note-text" data-note-display="assistantNote">${esc(assistantNote)}</span><button type="button" class="assistant-note-delete screen-only" data-delete-room-note="assistantNote" data-id="${esc(r.id)}" aria-label="Asistan hekim notunu sil" title="Notu sil">×</button></span>`:''}<input class="assistant-note-input screen-only hidden" data-assistant-note="${esc(r.id)}" value="${esc(assistantNote)}" placeholder="Not yazın" aria-label="Asistan notu"></div></div></td>${removeCell}</tr>`;
+    }).join('');
+  }
+  function namesFromLegacyLine(role,line){
+    const candidates=String(line||'').split(',').map(v=>v.trim()).filter(Boolean);
+    const out=[];
+    candidates.forEach(name=>{
+      let person=staffByRole(role).find(p=>p.name.toLocaleLowerCase('tr-TR')===name.toLocaleLowerCase('tr-TR'));
+      // Match the abbreviated surname line used in the original paper roster.
+      if(!person&&role==='Uzman hekim'&&/y\.?\s*o\.?\s*atalay/i.test(name))person=staffByRole(role).find(p=>/yunus oktay atalay/i.test(p.name));
+      if(person&&!out.includes(person.name))out.push(person.name);
+    });
+    return out;
+  }
+  function textContainsPerson(text,name){
+    if(!text||!name)return false;
+    const source=String(text),quoted=String(name).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+    try{return new RegExp('(^|[^\\p{L}\\p{N}])'+quoted+'(?=$|[^\\p{L}\\p{N}])','iu').test(source)}
+    catch(e){return source.toLocaleLowerCase('tr-TR').includes(String(name).toLocaleLowerCase('tr-TR'))}
+  }
+  function personUsageLocations(name,exclude={}){
+    const locations=[];
+    data.rooms.forEach(r=>{
+      ['expert','assistant'].forEach(key=>{
+        if(r[key]===name&&!(exclude.kind==='room'&&exclude.id===r.id&&exclude.key===key))
+          locations.push(`Oda ${r.name||'—'} · ${key==='expert'?'Uzman hekim':'Asistan hekim'}`);
+      });
+      if(r.expert2===name&&!(exclude.kind==='room'&&exclude.id===r.id&&exclude.key==='expert2'))locations.push(`Oda ${r.name||'—'} · İkinci uzman hekim`);
+    });
+    const n=currentNotes();
+    const doctorSlots=Array.isArray(n.doctorSlots)?n.doctorSlots:[];
+    doctorSlots.forEach((value,i)=>{
+      let names=Array.isArray(value)?value:(typeof value==='string'?value.split(',').map(x=>x.trim()).filter(Boolean):[]);
+      if(names.includes(name)&&!(exclude.kind==='picker'&&exclude.field==='doctorSlots'&&Number(exclude.index)===i))
+        locations.push(`Hekim satırı · ${SERVICES[i]||('Birim '+(i+1))}`);
+    });
+    ['leaveExpert','leaveAssistant','nextExpert','nextAssistant'].forEach(key=>{
+      if(noteHasPerson(n[key],name)&&!(exclude.kind==='note'&&exclude.key===key)){ 
+        const labels={leaveExpert:'İzinli uzman hekim',leaveAssistant:'İzinli asistan hekim',nextExpert:'Nöbet ertesi uzman',nextAssistant:'Nöbet ertesi asistan'};
+        locations.push(labels[key]);
+      }
+    });
+    [['clinicA','Poliklinik A Blok'],['clinicC','Poliklinik C Blok']].forEach(([key,label])=>{
+      if(textContainsPerson(n[key],name)&&!(exclude.kind==='note'&&exclude.key===key))locations.push(label);
+    });
+    if(noteHasPerson(n.mr,name)&&!(exclude.kind==='note'&&exclude.key==='mr')&&!(exclude.kind==='picker'&&exclude.field==='mr'))locations.push('MR');
+    const transfers=Array.isArray(n.transfer)?n.transfer:(typeof n.transfer==='string'?n.transfer.split(',').map(v=>v.trim()).filter(Boolean):[]);
+    if(transfers.includes(name)&&!(exclude.kind==='note'&&exclude.key==='transfer'))locations.push('Nakil');
+    const date=$('planDate').value||today(),block=$('blockSelect').value;
+    data.events.forEach(e=>{
+      if(e.date===date&&e.block===block&&textContainsPerson(e.name,name)&&!(exclude.kind==='event'&&exclude.id===e.id))
+        locations.push(`${e.time} · ${e.service}`);
+    });
+    return locations;
+  }
+  function duplicateWarning(name,locations){
+    if(locations&&locations.length) alert(`Daha önce yazıldığı yer: ${locations.join(', ')}`);
+  }
+  function isDuplicatePersonUse(name,exclude={}){
+    if(!name)return false;
+    const locations=personUsageLocations(name,exclude);
+    if(locations.length)duplicateWarning(name,locations);
+    return false;
+  }
+  function namesInText(text){return staffForPlan().filter(p=>isExpertRole(p.role)||p.role==='Asistan').filter(p=>textContainsPerson(text,p.name));}
+  function noteHasPerson(value,name){return Array.isArray(value)?value.includes(name):value===name}
+  // Print/photo output must reflect all personnel actually used in the active day's planning tables.
+  // Recheck structured data and the visible controls so the result cannot depend on a stale CSS class.
+  function isStaffUsedInPlan(name){
+    const wanted=String(name||'').trim().toLocaleLowerCase('tr-TR');
+    if(!wanted)return false;
+    const samePerson=value=>String(value??'').trim().toLocaleLowerCase('tr-TR')===wanted;
+    const contains=value=>typeof value==='string'&&textContainsPerson(value,name);
+    const scanValue=value=>Array.isArray(value)?value.some(scanValue):value&&typeof value==='object'?Object.values(value).some(scanValue):contains(value);
+    const key=activeKey();
+    const roomFields=['expert','expert2','assistant'];
+    const roomNoteFields=['expertNote','expert2Note','assistantNote'];
+    const roomSnapshots=[data.rooms,(data.dailyRooms||{})[key]].filter(Array.isArray);
+    for(const rows of roomSnapshots){
+      if(rows.some(row=>roomFields.some(field=>samePerson(row[field]))||roomNoteFields.some(field=>contains(row[field]))))return true;
+    }
+    const notes=currentNotes();
+    // Includes doctor-row multi-selects, MR, Nakil, poliklinikler, izin/nöbet ertesi and written notes.
+    if(scanValue(notes))return true;
+    const date=$('planDate').value||today(),block=$('blockSelect').value;
+    if((data.events||[]).some(event=>event.date===date&&event.block===block&&['name','room','expert','assistant','notes','service'].some(field=>contains(event[field]))))return true;
+    // DOM fallback catches a recently changed table control even if a browser has not yet refreshed its summary.
+    const controlSelectors='.roster [data-room-staff], .roster [data-room-note], .doctor-row .multi-picker-trigger, .bottom-notes [data-note], .event .event-name';
+    for(const el of document.querySelectorAll(controlSelectors)){
+      const value=('value' in el)?el.value:'';
+      if(contains(value)||contains(el.textContent||''))return true;
+    }
+    return false;
+  }
+  function refreshStaffSummaryForOutput(){
+    renderStaffSummary();
+    document.querySelectorAll('.staff-summary-person').forEach(person=>{
+      const name=person.querySelector('.staff-summary-name')?.textContent||'';
+      const used=isStaffUsedInPlan(name);
+      person.classList.toggle('is-used',used);
+      person.setAttribute('data-output-used',used?'true':'false');
+    });
+  }
+  function syncPrintStaffToggle(){
+    const button=$('togglePrintStaffBtn');if(!button)return;
+    data.settings=data.settings||{};
+    const shown=data.settings.showPersonnelRosterWhenPrinting!==false;
+    document.body.classList.toggle('hide-staff-list-on-output',!shown);
+    button.textContent=shown?'Personel Listesi: Yazdırmada Göster':'Personel Listesi: Yazdırmada Gizle';
+    button.setAttribute('aria-pressed',shown?'true':'false');
+  }
+  function renderStaffSummary(){
+    const definitions=[['Uzman hekim','expertSummary','experts'],['Asistan','assistantSummary','assistants']];
+    const notes=currentNotes();
+    const transferNames=new Set(selectedTransferNames());
+    definitions.forEach(([role,id,kind])=>{
+      const container=$(id),people=staffByRole(role);
+      container.classList.remove('experts','assistants');container.classList.add(kind);
+      container.innerHTML=people.length?people.map(p=>{
+        const used=isStaffUsedInPlan(p.name);
+        const labels=[];
+        if(noteHasPerson(notes.leaveExpert,p.name)||noteHasPerson(notes.leaveAssistant,p.name))labels.push('İzinli');
+        if(noteHasPerson(notes.nextExpert,p.name)||noteHasPerson(notes.nextAssistant,p.name))labels.push('Nöbet ertesi');
+        if(p.rotation==='Nöbet ertesici' && !labels.includes('Nöbet ertesici'))labels.push('Nöbet ertesici');
+        if(notes.clinicA===p.name)labels.push('Poliklinik A Blok');
+        if(notes.clinicC===p.name)labels.push('Poliklinik C Blok');
+        if(noteHasPerson(notes.mr,p.name))labels.push('MR');
+        if(transferNames.has(p.name))labels.push('Nakil');
+        const statusPrefix=labels.map(label=>`<span class="staff-summary-status ${label==='Nöbet ertesici'?'print-only-duty':''}">${esc(label)}</span>`).join('');
+        const usageTick=used?'<span class="staff-summary-tick" aria-label="Çizelgeye eklendi">✓</span>':'';
+        // Nöbet ertesici rotasyonundaki uzman da herhangi bir günlük alanda kullanılmışsa tik alır.
+        const prefix=(labels.length?statusPrefix:'')+((used&&p.rotation==='Nöbet ertesici')?usageTick:(!labels.length?usageTick:''));
+        const status=labels.join(' · ');
+        const rotation=`<span class="staff-summary-rotation">${esc(p.rotation||'')}</span>`;
+        return `<span class="staff-summary-person ${used?'is-used':''}" data-output-used="${used?'true':'false'}" title="${esc(status||(used?'Çizelgede kullanılıyor':'Henüz çizelgeye eklenmedi'))}"><span class="staff-summary-prefix">${prefix}</span><span class="staff-summary-name">${esc(p.name)}</span>${rotation}</span>`;
+      }).join(''):'<span class="attendance-empty">Personel listesinde hekim yok.</span>';
+    });
+  }
+  function eventMatches(e){const q=$('eventSearch').value.trim().toLocaleLowerCase('tr-TR');return !q||[e.name,e.service,e.room,e.expert,e.assistant,e.notes,e.time].join(' ').toLocaleLowerCase('tr-TR').includes(q)}
+  function emptyScheduleCellButton(service){
+    const isOpu=service==='OPU';
+    return `<button class="add-cell ${isOpu?'quick-add-opu':''}" type="button" ${isOpu?'data-quick-add="OPU"':''} aria-label="${isOpu?'OPU Ekle':'Bu hücreye metin yaz'}">${isOpu?'OPU Ekle':'＋'}</button>`;
+  }
+  function renderSchedule(){
+    const date=$('planDate').value||today(),block=$('blockSelect').value;let out='';
+    for(const time of TIMES){out+=`<tr><td>${time}</td>`;for(const service of SERVICES){const found=data.events.filter(e=>e.date===date&&e.block===block&&e.time===time&&e.service===service&&eventMatches(e));out+=`<td class="drop-target" data-time="${time}" data-service="${esc(service)}" title="${esc(time+' · '+service+' için tıklayıp yazın')}">`;if(found.length){out+=found.map(e=>`<div class="event" data-event-id="${esc(e.id)}" title="Metni düzenlemek için tıklayın"><span class="event-name">${esc(e.name).replace(/\n/g,'<br>')}</span><button type="button" class="event-delete screen-only" data-delete-event="${esc(e.id)}" aria-label="Program kaydını sil" title="Sil">×</button></div>`).join('')}else out+=emptyScheduleCellButton(service);out+='</td>'}out+='</tr>'}
+    $('scheduleBody').innerHTML=out;
+  }
+  function renderNotes(){
+    const n=currentNotes();
+    document.querySelectorAll('[data-note]').forEach(el=>{
+      let value=n[el.dataset.note]||'';
+      // Poliklinik A/C Blok alanlarında yalnızca Asistan Hekim listesindeki kişiler seçilebilir.
+      if(['clinicA','clinicC'].includes(el.dataset.note) && value && !staffByRole('Asistan').some(person=>person.name===value)){
+        n[el.dataset.note]='';
+        value='';
+      }
+      if(el.dataset.roleNote){el.innerHTML='<option value=""></option>'+staffOptions(el.dataset.roleNote,value).replace('<option value=""></option>','');}
+      el.value=value;
+      if(el.id==='noteLessons'){
+        el.style.height='auto';
+        el.style.height=Math.max(24,el.scrollHeight+2)+'px';
+      }
+    });
+    document.querySelectorAll('[data-clinic-note-input]').forEach(input=>{
+      const key=input.dataset.clinicNoteInput;
+      const value=n[key]||'';
+      const display=document.querySelector(`[data-clinic-note-display="${key}"]`);
+      const text=document.querySelector(`[data-clinic-note-text="${key}"]`);
+      const toggle=document.querySelector(`[data-clinic-note-toggle="${key}"]`);
+      const editing=document.activeElement===input;
+      if(text)text.textContent=value;
+      // Aynı uzman/asistan satırlarında olduğu gibi not düğmesi yalnızca + simgesidir.
+      // Not alanı, kullanıcı + düğmesine tıklayana kadar kapalı kalır.
+      if(toggle){toggle.classList.remove('hidden');toggle.textContent='+';toggle.title=value?'Poliklinik notunu düzenle':'Poliklinik notu ekle';}
+      // Input is shown only while editing; saved text is rendered below the selected person.
+      input.classList.toggle('hidden',!editing);
+      if(display)display.classList.toggle('hidden',!value||editing);
+    });
+    document.querySelectorAll('[data-transfer-picker]').forEach(picker=>renderTransferPicker(picker,false));
+  }
+  function assignedExpertNames(){
+    const names=[];
+    (data.staff||[]).filter(person=>isExpertRole(person.role)).forEach(person=>{
+      const clean=String(person.name||'').trim();
+      if(clean&&!names.includes(clean))names.push(clean);
+    });
+    return names;
+  }
+  function selectedTransferNames(){
+    const raw=currentNotes().transfer;
+    const values=Array.isArray(raw)?raw:(typeof raw==='string'?raw.split(',').map(v=>v.trim()).filter(Boolean):[]);
+    const assigned=new Set(assignedExpertNames());
+    return values.filter(name=>assigned.has(name));
+  }
+  function renderTransferPicker(picker,keepOpen=false){
+    const selected=selectedTransferNames(),available=assignedExpertNames();
+    const options=available.map(name=>{
+      const checked=selected.includes(name);
+      return `<button type="button" class="multi-option ${checked?'checked':''}" data-transfer-option="${esc(name)}"><span class="multi-check">${checked?'✓':''}</span><span>${esc(name)}</span></button>`;
+    }).join('');
+    const summary=selected.join(', ');
+    const hint=available.length?'Nakil görevi verilecek uzman hekimi seçin.':'Uzman hekim listesinde seçilebilir hekim yok.';
+    picker.innerHTML=`<button type="button" class="multi-picker-trigger ${selected.length?'has-selection':''}" data-transfer-trigger aria-haspopup="true" aria-expanded="${keepOpen?'true':'false'}"><span class="multi-picker-label">${esc(summary)}</span><span class="multi-picker-badge">${selected.length?`✓ ${selected.length}`:'＋'}</span></button><div class="multi-picker-menu ${keepOpen?'':'hidden'}"><div class="multi-picker-hint">${hint}</div>${options||'<div class="rotation-empty">Listelenecek uzman hekim yok.</div>'}</div>`;
+  }
+  function selectedFor(field,index,n=currentNotes()){
+    if(field==='doctorSlots'){
+      n.doctorSlots=n.doctorSlots||[];
+      let v=n.doctorSlots[Number(index)];
+      if(typeof v==='string')v=v.split(',').map(x=>x.trim()).filter(Boolean);
+      if(!Array.isArray(v))v=[];
+      n.doctorSlots[Number(index)]=v;
+      return v;
+    }
+    if(!Array.isArray(n[field]))n[field]=typeof n[field]==='string'&&n[field]?[n[field]]:[];
+    return n[field];
+  }
+  function selectableStaff(role){
+    return staffForPlan().filter(p=>(isExpertRole(p.role)||p.role==='Asistan')&&(role==='all'||(role==='Uzman hekim'?isExpertRole(p.role):p.role===role)));
+  }
+  function pickerMarkup(picker,keepOpen=false){
+    const field=picker.dataset.multiPicker,index=picker.dataset.index||'0',role=picker.dataset.roleFilter||'all';
+    const selected=selectedFor(field,index),people=selectableStaff(role);
+    const names=selected.filter(n=>people.some(p=>p.name===n));
+    const label=names.length?names.join(', '):'';
+    const hint=names.length?`${names.length} hekim seçildi`:'Birden fazla hekim seçebilirsiniz';
+    const groupHTML=(groupName,items)=>items.length?`<div class="multi-group-title">${groupName}</div>`+items.map(p=>{
+      const checked=selected.includes(p.name);
+      return `<button type="button" class="multi-option ${checked?'checked':''}" data-picker-option="${esc(p.name)}"><span class="multi-check">${checked?'✓':''}</span><span>${esc(p.name)}</span></button>`;
+    }).join(''):'';
+    const experts=people.filter(p=>isExpertRole(p.role)),assistants=people.filter(p=>p.role==='Asistan');
+    picker.innerHTML=`<button type="button" class="multi-picker-trigger ${names.length?'has-selection':''}" aria-haspopup="true" aria-expanded="${keepOpen?'true':'false'}"><span class="multi-picker-label">${esc(label)}</span><span class="multi-picker-badge">${names.length?`✓ ${names.length}`:'＋'}</span></button><div class="multi-picker-menu ${keepOpen?'':'hidden'}"><div class="multi-picker-hint">${hint}</div>${groupHTML('UZMAN HEKİMLER',experts)}${groupHTML('ASİSTAN HEKİMLER',assistants)}${people.length?'':'<div class="rotation-empty">Önce personel listesinden hekim ekleyin.</div>'}</div>`;
+  }
+  function renderMultiPickers(){document.querySelectorAll('[data-multi-picker]').forEach(p=>pickerMarkup(p,false))}
+  function persistWithoutRender(message){
+    try{persistToStorage();$('saveStatus').textContent=message+' · '+new Date().toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});}
+    catch(e){$('saveStatus').textContent='Bu tarayıcıda saklama kullanılamıyor.'}
+    showToast(message);
+  }
+  document.addEventListener('click',ev=>{
+    const clinicToggle=ev.target.closest('[data-clinic-note-toggle]');
+    if(clinicToggle){
+      const key=clinicToggle.dataset.clinicNoteToggle;
+      const input=document.querySelector(`[data-clinic-note-input="${key}"]`);
+      const display=document.querySelector(`[data-clinic-note-display="${key}"]`);
+      if(input){input.classList.remove('hidden');if(display)display.classList.add('hidden');input.focus();input.select();}
+      ev.preventDefault();ev.stopPropagation();return;
+    }
+    const clinicDelete=ev.target.closest('[data-clinic-note-delete]');
+    if(clinicDelete){
+      const key=clinicDelete.dataset.clinicNoteDelete;
+      currentNotes()[key]='';
+      saveData('Poliklinik notu silindi');
+      ev.preventDefault();ev.stopPropagation();return;
+    }
+    const transferTrigger=ev.target.closest('[data-transfer-trigger]');
+    if(transferTrigger){
+      const picker=transferTrigger.closest('[data-transfer-picker]');
+      const menu=picker?.querySelector('.multi-picker-menu');
+      if(!picker||!menu)return;
+      const opening=menu.classList.contains('hidden');
+      document.querySelectorAll('.multi-picker-menu').forEach(m=>m.classList.add('hidden'));
+      document.querySelectorAll('.multi-picker-trigger').forEach(b=>b.setAttribute('aria-expanded','false'));
+      if(opening){menu.classList.remove('hidden');transferTrigger.setAttribute('aria-expanded','true')}
+      ev.preventDefault();ev.stopPropagation();return;
+    }
+    const transferOption=ev.target.closest('[data-transfer-option]');
+    if(transferOption){
+      const picker=transferOption.closest('[data-transfer-picker]');
+      const name=transferOption.dataset.transferOption;
+      const selected=selectedTransferNames();
+      const next=selected.includes(name)?selected.filter(v=>v!==name):[...selected,name];
+      currentNotes().transfer=next;
+      renderTransferPicker(picker,true);
+      persistWithoutRender('Nakil uzman hekimi güncellendi');
+      renderStaffSummary();
+      ev.preventDefault();ev.stopPropagation();return;
+    }
+    const trigger=ev.target.closest('.multi-picker-trigger');
+    if(trigger){
+      const picker=trigger.closest('[data-multi-picker]'),menu=picker.querySelector('.multi-picker-menu'),opening=menu.classList.contains('hidden');
+      document.querySelectorAll('.multi-picker-menu').forEach(m=>m.classList.add('hidden'));
+      document.querySelectorAll('.multi-picker-trigger').forEach(b=>b.setAttribute('aria-expanded','false'));
+      if(opening){menu.classList.remove('hidden');trigger.setAttribute('aria-expanded','true')}
+      ev.stopPropagation();return;
+    }
+    const option=ev.target.closest('[data-picker-option]');
+    if(option){
+      const picker=option.closest('[data-multi-picker]'),field=picker.dataset.multiPicker,index=picker.dataset.index||'0',name=option.dataset.pickerOption;
+      const selected=selectedFor(field,index),at=selected.indexOf(name);
+      if(at>=0)selected.splice(at,1);else{
+        if(isDuplicatePersonUse(name,{kind:'picker',field,index})){ev.stopPropagation();return}
+        selected.push(name);
+      }
+      pickerMarkup(picker,true);persistWithoutRender('Hekim seçimi kaydedildi');renderStaffSummary();ev.stopPropagation();return;
+    }
+    if(!ev.target.closest('.multi-picker')){
+      document.querySelectorAll('.multi-picker-menu').forEach(m=>m.classList.add('hidden'));
+      document.querySelectorAll('.multi-picker-trigger').forEach(b=>b.setAttribute('aria-expanded','false'));
+    }
+  });
+  function renderAll(){syncMetadata();renderRoster();renderSchedule();renderNotes();renderMultiPickers();renderStaffSummary();syncPrintStaffToggle()}
+  function addRosterRow(){data.rooms.push({id:makeId('r'),name:'',groupLabel:'Ek satır',expert:'',assistant:'',rotation:''});saveData('Oda satırı eklendi')}
+  function openModal(title,body,editing=false){$('modalTitle').textContent=title;$('modalBody').innerHTML=body;$('modalBackdrop').classList.add('open');$('modalBackdrop').setAttribute('aria-hidden','false');$('deleteModal').classList.toggle('hidden',!editing);setTimeout(()=>{const input=$('modalBody').querySelector('input,select,textarea');if(input)input.focus()},20)}
+  function closeModal(){$('modalBackdrop').classList.remove('open');$('modalBackdrop').setAttribute('aria-hidden','true');$('modalForm').onsubmit=null;editingEvent=null}
+  function eventForm(existing=null,initial={}){
+    editingEvent=existing?existing.id:null;
+    const context=existing||{id:null,date:$('planDate').value||today(),block:$('blockSelect').value,time:initial.time||'08:00',service:initial.service||SERVICES[0],name:''};
+    openModal(existing?'Program metnini düzenle':'Programa metin ekle',`<div class="field"><label for="fName">Metin</label><textarea id="fName" required rows="3" placeholder="İşlem veya açıklamayı yazın">${esc(context.name||'')}</textarea></div>`,!!existing);
+    $('modalForm').onsubmit=function(ev){
+      ev.preventDefault();
+      const name=$('fName').value.trim();if(!name){$('fName').focus();return}
+      const obj={...(existing||{}),id:existing?existing.id:makeId('e'),date:context.date||$('planDate').value||today(),time:context.time||'08:00',block:context.block||$('blockSelect').value,service:context.service||SERVICES[0],name};
+      if(existing){const idx=data.events.findIndex(x=>x.id===existing.id);if(idx>=0)data.events[idx]=obj}else data.events.push(obj);
+      closeModal();saveData(existing?'Metin güncellendi':'Metin eklendi')
+    };
+    $('deleteModal').onclick=function(){if(!existing)return;if(confirm('Bu metin silinsin mi?')){data.events=data.events.filter(x=>x.id!==existing.id);closeModal();saveData('Metin silindi')}};
+  }
+  function staffManager(){
+    let html='<div class="notice">Rotasyon/görev bilgisi isteğe bağlıdır; elle yazılır. Personelleri sürükleme simgesinden sıralayabilirsin.</div><div class="manage-header"><span></span><span>PERSONEL</span><span>GÖREV</span><span>ROTASYON / AÇIKLAMA</span><span></span></div><div class="manage-list">';
+    html+=data.staff.map(p=>`<div class="manage-person" data-person-row="${esc(p.id)}"><button type="button" class="drag-handle" data-drag-handle="${esc(p.id)}" draggable="true" title="Sürükleyerek sırala" aria-label="${esc(p.name)} sıralama tutamacı">⠿</button><input data-person-name="${esc(p.id)}" value="${esc(p.name)}" aria-label="Personel adı"><select data-person-role="${esc(p.id)}"><option value="Uzman hekim" ${p.role==='Uzman hekim'?'selected':''}>Uzman hekim</option><option value="Asistan" ${p.role==='Asistan'?'selected':''}>Asistan hekim</option><option value="Poliklinikçi uzman hekim" ${p.role==='Poliklinikçi uzman hekim'?'selected':''}>Poliklinikçi uzman hekim</option></select><input data-person-rotation="${esc(p.id)}" value="${esc(p.rotation||'')}" aria-label="Rotasyon veya açıklama" placeholder="Elle yazın"><button type="button" class="btn btn-danger" data-remove-person="${esc(p.id)}">Sil</button></div>`).join('');
+    html+='</div><div class="person-modal-add"><input id="newPersonName" placeholder="Yeni personel adı"><select id="newPersonRole"><option value="Uzman hekim">Uzman hekim</option><option value="Asistan">Asistan hekim</option><option value="Poliklinikçi uzman hekim">Poliklinikçi uzman hekim</option></select><input id="newPersonRotation" placeholder="Rotasyon / açıklama (isteğe bağlı)"><button type="button" class="btn btn-primary" id="addPersonNow">Ekle</button></div>';
+    openModal('Personel listesi',html,false);
+    $('modalForm').onsubmit=function(e){e.preventDefault();closeModal()};
+    let draggedId='';
+    $('modalBody').ondragstart=function(ev){const handle=ev.target.closest('[data-drag-handle]');if(!handle){ev.preventDefault();return}draggedId=handle.dataset.dragHandle;const row=handle.closest('[data-person-row]');if(row)row.classList.add('dragging');if(ev.dataTransfer){ev.dataTransfer.effectAllowed='move';ev.dataTransfer.setData('text/plain',draggedId)}};
+    $('modalBody').ondragend=function(ev){const row=ev.target.closest('[data-person-row]');if(row)row.classList.remove('dragging');$('modalBody').querySelectorAll('.drag-over').forEach(x=>x.classList.remove('drag-over'));draggedId=''};
+    $('modalBody').ondragover=function(ev){const row=ev.target.closest('[data-person-row]');if(row&&draggedId&&row.dataset.personRow!==draggedId){ev.preventDefault();$('modalBody').querySelectorAll('.drag-over').forEach(x=>x.classList.remove('drag-over'));row.classList.add('drag-over');if(ev.dataTransfer)ev.dataTransfer.dropEffect='move'}};
+    $('modalBody').ondragleave=function(ev){const row=ev.target.closest('[data-person-row]');if(row&&!row.contains(ev.relatedTarget))row.classList.remove('drag-over')};
+    $('modalBody').ondrop=function(ev){const row=ev.target.closest('[data-person-row]');if(!row||!draggedId)return;ev.preventDefault();const from=data.staff.findIndex(x=>x.id===draggedId),to=data.staff.findIndex(x=>x.id===row.dataset.personRow);if(from<0||to<0||from===to)return;const [person]=data.staff.splice(from,1);data.staff.splice(from<to?to-1:to,0,person);openStaffManagerAfterSave('Personel sıralaması güncellendi')};
+    $('modalBody').onclick=function(ev){
+      const add=ev.target.closest('#addPersonNow');
+      if(add){const name=$('newPersonName').value.trim();if(!name)return;if(data.staff.some(p=>p.name.toLocaleLowerCase('tr-TR')===name.toLocaleLowerCase('tr-TR'))){showToast('Bu personel zaten listede');return}const role=$('newPersonRole').value;const selectedRotation=$('newPersonRotation').value.trim();data.staff.push({id:makeId('s'),name,role,rotation:selectedRotation});openStaffManagerAfterSave('Personel eklendi');return}
+      const del=ev.target.closest('[data-remove-person]');
+      if(del){const person=data.staff.find(x=>x.id===del.dataset.removePerson);const fromDate=$('planDate').value||today();if(person&&confirm(person.name+' personel envanterinden silinsin mi? Seçili gün ve sonraki günlerdeki planlardan da kaldırılacak; daha eski tarihlerin kayıtları korunacaktır.')){removePersonFromCurrentAndFuture(person.name,fromDate);data.staff=data.staff.filter(x=>x.id!==person.id);openStaffManagerAfterSave('Personel silindi; seçili gün ve sonrası temizlendi, geçmiş kayıtlar korundu')}}
+    };
+    $('modalBody').onchange=function(ev){
+      const rotation=ev.target.closest('[data-person-rotation]');if(rotation){const person=data.staff.find(x=>x.id===rotation.dataset.personRotation);if(person){person.rotation=rotation.value.trim();persistWithoutRender('Rotasyon/açıklama kaydedildi');renderStaffSummary()}return}
+      const newRotation=ev.target.closest('#newPersonRotation');if(newRotation)return;
+      const role=ev.target.closest('[data-person-role]');if(role){const person=data.staff.find(x=>x.id===role.dataset.personRole);if(person){person.role=role.value;saveData('Görev güncellendi; kayıtlı çizelgeler korundu');staffManager()}return}
+    };
+    function commitPersonName(input){
+      if(!input)return;
+      const person=data.staff.find(x=>x.id===input.dataset.personName);
+      if(!person)return;
+      const name=input.value.trim();
+      if(!name){input.value=person.name;showToast('Personel adı boş bırakılamaz');return;}
+      if(person.name===name)return;
+      const duplicate=data.staff.find(x=>x.id!==person.id&&x.name.trim().toLocaleLowerCase('tr-TR')===name.toLocaleLowerCase('tr-TR'));
+      if(duplicate){input.value=person.name;showToast('Bu isim personel listesinde zaten var');return;}
+      person.name=name;
+      // Keep names already recorded in daily room, event and notes archives unchanged.
+      saveData('Personel adı güncellendi; kayıtlı çizelgeler korundu');
+    }
+    // Kaydı hem Enter ile hem de alanı terk ettiğinde/change olayında tamamla.
+    $('modalBody').oninput=function(ev){const input=ev.target.closest('[data-person-rotation],#newPersonRotation');if(!input)return;if(input.id==='newPersonRotation')return;const person=data.staff.find(x=>x.id===input.dataset.personRotation);if(person){person.rotation=input.value;try{persistToStorage()}catch(e){}}};
+    $('modalBody').onfocusout=function(ev){commitPersonName(ev.target.closest('[data-person-name]'));const input=ev.target.closest('[data-person-rotation]');if(input){const person=data.staff.find(x=>x.id===input.dataset.personRotation);if(person){person.rotation=input.value.trim();saveData('Rotasyon/açıklama kaydedildi');staffManager()}}};
+    $('modalBody').onchange=function(ev){
+      const nameInput=ev.target.closest('[data-person-name]');
+      if(nameInput){commitPersonName(nameInput);return;}
+      const rotation=ev.target.closest('[data-person-rotation]');if(rotation){const person=data.staff.find(x=>x.id===rotation.dataset.personRotation);if(person){person.rotation=rotation.value.trim();persistWithoutRender('Rotasyon/açıklama kaydedildi');renderStaffSummary()}return}
+      const newRotation=ev.target.closest('#newPersonRotation');if(newRotation)return;
+      const role=ev.target.closest('[data-person-role]');if(role){const person=data.staff.find(x=>x.id===role.dataset.personRole);if(person){person.role=role.value;saveData('Görev güncellendi; kayıtlı çizelgeler korundu');staffManager()}return}
+    };
+    $('modalBody').onkeydown=function(ev){const input=ev.target.closest('[data-person-name]');if(input&&ev.key==='Enter'){ev.preventDefault();commitPersonName(input);input.blur();}};
+  }
+  function openStaffManagerAfterSave(message){try{persistToStorage()}catch(e){}renderAll();staffManager();showToast(message)}
+  function removeNamesFromText(text,names){
+    let result=String(text||'');
+    for(const name of [...names].sort((a,b)=>b.length-a.length)){
+      const escaped=name.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+      try{result=result.replace(new RegExp('(^|[^\\p{L}\\p{N}])'+escaped+'(?=$|[^\\p{L}\\p{N}])','giu'),'$1')}
+      catch(e){result=result.split(name).join('')}
+    }
+    return result.replace(/[ \t]{2,}/g,' ').replace(/\s+([,.;:])/g,'$1').replace(/([,;:]\s*){2,}/g,' ').replace(/^\s*[-,;:]+\s*|\s*[-,;:]+\s*$/g,'').trim();
+  }
+  function removePersonFromCurrentAndFuture(name,fromDate){
+    const norm=value=>String(value||'').trim().toLocaleLowerCase('tr-TR');
+    const same=(value)=>norm(value)===norm(name);
+    const onOrAfter=(key)=>{
+      const date=String(key||'').split('|')[0];
+      return /^\d{4}-\d{2}-\d{2}$/.test(date)&&date>=fromDate;
+    };
+    const cleanText=value=>typeof value==='string'&&textContainsPerson(value,name)?removeNamesFromText(value,[name]):value;
+    const cleanRooms=rooms=>{
+      if(!Array.isArray(rooms))return;
+      rooms.forEach(room=>{
+        ['expert','expert2','assistant'].forEach(field=>{if(same(room[field]))room[field]=''});
+        ['expertNote','expert2Note','assistantNote'].forEach(field=>{room[field]=cleanText(room[field]||'')});
+      });
+    };
+    // Active date and every archived date from the selected date onward are updated.
+    cleanRooms(data.rooms);
+    Object.entries(data.dailyRooms||{}).forEach(([key,rooms])=>{if(onOrAfter(key))cleanRooms(rooms)});
+
+    // Freeze the removed person's roster entry into older archived dates before removing them
+    // from the live inventory. Earlier versions displayed live inventory alongside snapshots,
+    // so a name could appear in a past roster without being persisted in that date's snapshot.
+    // Materialize it now so deleting it on a later date cannot erase the historical list.
+    const inventoryPerson=(data.staff||[]).find(person=>same(person.name));
+    if(inventoryPerson){
+      const archiveKeys=new Set([
+        ...Object.keys(data.dailyStaff||{}),
+        ...Object.keys(data.dailyRooms||{}),
+        ...Object.keys(data.dailyNotes||{}),
+        ...(data.events||[]).map(event=>`${event.date}|${event.block}`)
+      ]);
+      let priorArchivedPerson=null;
+      Object.entries(data.dailyStaff||{})
+        .filter(([key,people])=>Array.isArray(people)&&String(key).split('|')[0]<fromDate)
+        .sort((a,b)=>String(b[0]).split('|')[0].localeCompare(String(a[0]).split('|')[0]))
+        .some(([key,people])=>{priorArchivedPerson=people.find(person=>same(person.name))||null;return !!priorArchivedPerson;});
+      const historicalPerson={...(priorArchivedPerson||inventoryPerson)};
+      archiveKeys.forEach(key=>{
+        const archivedDate=String(key||'').split('|')[0];
+        if(!/^\d{4}-\d{2}-\d{2}$/.test(archivedDate)||archivedDate>=fromDate)return;
+        if(!Array.isArray(data.dailyStaff[key]))data.dailyStaff[key]=clone(data.staff||[]);
+        const people=data.dailyStaff[key];
+        if(!people.some(person=>same(person.name)))people.push({...historicalPerson,id:historicalPerson.id||makeId('history')});
+      });
+    }
+
+    // Remove the person from personnel snapshots only on/after the deletion date.
+    Object.entries(data.dailyStaff||{}).forEach(([key,people])=>{
+      if(onOrAfter(key)&&Array.isArray(people))data.dailyStaff[key]=people.filter(person=>!same(person.name));
+    });
+
+    // Clear assigned staff in date-specific notes while leaving all older dates untouched.
+    Object.entries(data.dailyNotes||{}).forEach(([key,notes])=>{
+      if(!onOrAfter(key)||!notes||typeof notes!=='object')return;
+      ['leaveExpert','nextExpert','leaveAssistant','nextAssistant'].forEach(field=>{
+        const value=notes[field];
+        if(Array.isArray(value))notes[field]=value.filter(person=>!same(person));
+        else if(same(value))notes[field]='';
+        else if(typeof value==='string')notes[field]=cleanText(value);
+      });
+      ['clinicA','clinicC','mr'].forEach(field=>{if(same(notes[field]))notes[field]=''});
+      if(Array.isArray(notes.doctorSlots)){
+        notes.doctorSlots=notes.doctorSlots.map(slot=>{
+          if(Array.isArray(slot))return slot.filter(person=>!same(person));
+          if(typeof slot==='string')return slot.split(',').map(v=>v.trim()).filter(v=>v&&!same(v)).join(', ');
+          return slot;
+        });
+      }
+      // If the name was also typed into a free-text note for a current/future day, remove that name only.
+      Object.keys(notes).forEach(field=>{
+        if(field==='doctorSlots'||['leaveExpert','nextExpert','leaveAssistant','nextAssistant','clinicA','clinicC','mr'].includes(field))return;
+        const value=notes[field];
+        if(typeof value==='string')notes[field]=cleanText(value);
+        else if(Array.isArray(value))notes[field]=value.filter(item=>!same(item)).map(item=>typeof item==='string'?cleanText(item):item);
+      });
+    });
+
+    // Remove future schedule-text mentions as well as any structured event assignment references.
+    data.events=(data.events||[]).filter(event=>{
+      if(String(event.date||'')<fromDate)return true;
+      ['expert','assistant'].forEach(field=>{if(same(event[field]))event[field]=''});
+      if(typeof event.name==='string'&&textContainsPerson(event.name,name)){
+        event.name=removeNamesFromText(event.name,[name]);
+        if(!String(event.name||'').trim())return false;
+      }
+      return true;
+    });
+  }
+  function parsePastedTable(text){
+    // TSV parser that preserves tabs/newlines inside quoted cells.
+    const rows=[];let row=[],cell='',quoted=false;
+    for(let i=0;i<text.length;i++){
+      const ch=text[i];
+      if(ch==='"'){
+        if(quoted&&text[i+1]==='"'){cell+='"';i++}else quoted=!quoted;
+      }else if(ch==='\t'&&!quoted){row.push(cell);cell=''}
+      else if((ch==='\n'||ch==='\r')&&!quoted){if(ch==='\r'&&text[i+1]==='\n')i++;row.push(cell);rows.push(row);row=[];cell=''}
+      else cell+=ch;
+    }
+    row.push(cell);if(row.some(v=>v!=='' )||rows.length===0)rows.push(row);
+    return rows.map(r=>r.map(v=>String(v).replace(/\u00a0/g,' ').trim()));
+  }
+  function normalizeScheduleTime(value){
+    const m=String(value||'').trim().match(/^(\d{1,2})\s*[:.]\s*(\d{2})$/);
+    if(!m)return '';
+    const t=String(Number(m[1])).padStart(2,'0')+':'+m[2];
+    return TIMES.includes(t)?t:'';
+  }
+  function openPasteSchedule(){
+    const body=`<div class="notice"><strong>Google Sheets'ten aktarım</strong><br>Google Sheets'te başlık satırıyla birlikte Saat, OPU, DOĞUMHANE ve MR sütunlarını kopyalayın. Saatler ve sütun sırası kontrol edilir. Aktarım, seçili tarih ve bloktaki mevcut gün içi programın yerine geçer; işlem öncesi onay istenir.</div><div class="field"><label for="schedulePasteArea">Kopyalanan tablo (Ctrl+V / ⌘V)</label><textarea id="schedulePasteArea" rows="12" placeholder="Saat\tOPU\tDOĞUMHANE\tMR" style="font-family:monospace;white-space:pre;min-height:220px"></textarea></div><div id="pasteScheduleStatus" class="notice">Beklenen sütun sayısı: 4 (Saat + 3 birim). Boş hücreler boş kalır.</div>`;
+    openModal('Gün içi programı yapıştır',body,false);
+    $('modalForm').onsubmit=function(ev){ev.preventDefault();applyPastedSchedule()};
+    $('deleteModal').classList.add('hidden');
+    $('cancelModal').textContent='Vazgeç';
+    const save=$('modalForm').querySelector('button[type="submit"]');if(save)save.textContent='Kontrol et ve aktar';
+  }
+  function applyPastedSchedule(){
+    const raw=$('schedulePasteArea')?.value||'';
+    if(!raw.trim()){showToast('Önce Google Sheets tablosunu yapıştırın');return}
+    const rows=parsePastedTable(raw).filter(r=>r.some(v=>v!==''));
+    if(!rows.length){showToast('Yapıştırılan tablo boş');return}
+    const expected=['saat','opu','doğumhane','mr'];
+    const first=rows[0].map(v=>v.toLocaleLowerCase('tr-TR').replace(/\s+/g,' ').trim());
+    const hasHeader=first[0]==='saat' || first[0]==='saatler';
+    if(hasHeader){
+      if(rows[0].length<4){showToast('Başlık satırında 4 sütun bulunmalı');return}
+      const normalized=first.slice(0,4);
+      if(normalized.some((v,i)=>v!==expected[i])){showToast('Sütun başlıkları veya sırası OPU, DOĞUMHANE, MR şablonuyla eşleşmiyor');return}
+      rows.shift();
+    }
+    const staged=[];const seen=new Set();let invalid=[];
+    rows.forEach((r,i)=>{
+      if(!r.some(v=>v!==''))return;
+      const time=normalizeScheduleTime(r[0]||'');
+      if(!time){invalid.push(`Satır ${i+1}: saat tanınmadı (${r[0]||'boş'})`);return}
+      if(seen.has(time)){invalid.push(`Saat tekrarı: ${time}`);return}
+      seen.add(time);
+      if(r.length>4&&r.slice(4).some(v=>v!=='')){invalid.push(`${time}: beklenenden fazla sütun var`);return}
+      for(let c=1;c<4;c++){
+        const value=r[c]||'';
+        if(value)staged.push({id:makeId('e'),date:$('planDate').value||today(),block:$('blockSelect').value,time,service:SERVICES[c-1],name:value});
+      }
+    });
+    if(invalid.length){const status=$('pasteScheduleStatus');if(status)status.textContent='Aktarım durduruldu: '+invalid.slice(0,5).join(' · ')+(invalid.length>5?' …':'');showToast('Tablo doğrulamasında hata var; aktarım yapılmadı');return}
+    if(!seen.size){showToast('Geçerli saat satırı bulunamadı');return}
+    const missing=TIMES.filter(t=>!seen.has(t));
+    if(missing.length){if(!confirm(`Tabloda ${missing.length} saat eksik: ${missing.join(', ')}. Eksik saatler boş bırakılarak devam edilsin mi?`))return}
+    const date=$('planDate').value||today(),block=$('blockSelect').value;
+    const existing=data.events.filter(e=>e.date===date&&e.block===block);
+    if(!confirm(`${date} tarihli ${block} gün içi programı, yapıştırılan tabloyla değiştirilecek.\n\nYeni aktarılacak kayıt sayısı: ${staged.length}\nMevcut kayıt sayısı: ${existing.length}\n\nDevam edilsin mi?`))return;
+    data.events=data.events.filter(e=>!(e.date===date&&e.block===block));
+    data.events.push(...staged);
+    closeModal();saveData(`Program aktarıldı: ${seen.size} saat kontrol edildi, ${staged.length} kayıt eklendi`);
+  }
+  function clearAssistantAssignments(){
+    const assigned=data.rooms.some(r=>r.assistant);
+    if(!assigned){showToast('Oda dağılımında temizlenecek asistan ataması yok');return}
+    if(!confirm('Oda dağılımı tablosundaki tüm asistan hekim atamaları temizlensin mi? Personel listesi korunur.'))return;
+    data.rooms.forEach(r=>{r.assistant=''});
+    saveData('Oda dağılımındaki asistan atamaları temizlendi');
+  }
+  function clearDoctorRow(){
+    if(!confirm('Gün içi programın Hekim satırındaki tüm seçimler temizlensin mi?'))return;
+    currentNotes().doctorSlots=Array.from({length:SERVICES.length},()=>[]);
+    saveData('Hekim seçimleri temizlendi');
+  }
+  function clearDailySchedule(){
+    const date=$('planDate').value||today();
+    const block=$('blockSelect').value||'C Blok';
+    if(!confirm('Bu tarihin gün içi programındaki tüm işlem metinleri ve Hekim satırı seçimleri temizlensin mi?'))return;
+    data.events=data.events.filter(e=>!(e.date===date&&e.block===block));
+    currentNotes().doctorSlots=Array.from({length:SERVICES.length},()=>[]);
+    saveData('Gün içi program temizlendi');
+  }
+  function renderScheduleCell(cell){
+    const date=$('planDate').value||today(),block=$('blockSelect').value,time=cell.dataset.time,service=cell.dataset.service;
+    const found=data.events.filter(e=>e.date===date&&e.block===block&&e.time===time&&e.service===service&&eventMatches(e));
+    if(found.length)cell.innerHTML=found.map(e=>`<div class="event" data-event-id="${esc(e.id)}" title="Metni düzenlemek için tıklayın"><span class="event-name">${esc(e.name).replace(/\n/g,'<br>')}</span><button type="button" class="event-delete screen-only" data-delete-event="${esc(e.id)}" aria-label="Program kaydını sil" title="Sil">×</button></div>`).join('');
+    else cell.innerHTML=emptyScheduleCellButton(service);
+  }
+  // Edit text directly in its schedule cell; Enter saves, Shift+Enter adds a line.
+  function startInlineEditor(cell, existing=null, initialText=''){
+    if(!cell||cell.querySelector('.schedule-inline-editor'))return;
+    const initial=existing?existing.name:initialText;
+    cell.innerHTML='<textarea class="schedule-inline-editor" rows="1" aria-label="Program metni" placeholder=""></textarea>';
+    const editor=cell.querySelector('.schedule-inline-editor');editor.value=initial;let finished=false;
+    const finish=(cancel=false,fullRefresh=true)=>{
+      if(finished)return;finished=true;
+      if(cancel){if(fullRefresh)renderSchedule();else renderScheduleCell(cell);return}
+      const value=editor.value.trim();let message='';
+      if(value){
+        const duplicate=namesInText(value).find(p=>personUsageLocations(p.name,{kind:'event',id:existing?existing.id:''}).length>0);
+        if(duplicate){duplicateWarning(duplicate.name,personUsageLocations(duplicate.name,{kind:'event',id:existing?existing.id:''}))}
+      }
+      if(existing){
+        const idx=data.events.findIndex(e=>e.id===existing.id);
+        if(!value){if(idx>=0)data.events.splice(idx,1);message='Program metni silindi'}
+        else{if(idx>=0)data.events[idx]={...data.events[idx],name:value};message='Program metni güncellendi'}
+      }else{
+        if(!value){if(fullRefresh)renderSchedule();else renderScheduleCell(cell);return}
+        data.events.push({id:makeId('e'),date:$('planDate').value||today(),block:$('blockSelect').value,time:cell.dataset.time,service:cell.dataset.service,name:value});message='Program metni kaydedildi';
+      }
+      if(fullRefresh)saveData(message);else{persistWithoutRender(message);renderScheduleCell(cell);renderStaffSummary()}
+    };
+    editor.addEventListener('input',()=>{editor.style.height='auto';editor.style.height=Math.max(26,editor.scrollHeight)+'px'});
+    editor.addEventListener('keydown',ev=>{if(ev.key==='Enter'&&ev.ctrlKey){ev.preventDefault();const start=editor.selectionStart,end=editor.selectionEnd;editor.setRangeText('\n',start,end,'end');editor.style.height='auto';editor.style.height=Math.max(26,editor.scrollHeight)+'px';return}if(ev.key==='Enter'){ev.preventDefault();finish(false,true)}else if(ev.key==='Escape'){ev.preventDefault();finish(true,true)}});
+    editor.addEventListener('blur',()=>finish(false,false));
+    editor.focus();if(!existing&&initialText)editor.setSelectionRange(0,editor.value.length);else editor.setSelectionRange(editor.value.length,editor.value.length);
+  }
+  $('scheduleBody').addEventListener('click',ev=>{
+    const deleteButton=ev.target.closest('[data-delete-event]');
+    if(deleteButton){ev.preventDefault();ev.stopPropagation();const id=deleteButton.dataset.deleteEvent;data.events=data.events.filter(e=>e.id!==id);saveData('Program kaydı silindi');return}
+    const cell=ev.target.closest('td[data-time]');if(!cell)return;
+    const quickAdd=ev.target.closest('[data-quick-add]');    if(quickAdd){ev.preventDefault();ev.stopPropagation();startInlineEditor(cell,null,quickAdd.dataset.quickAdd);return}
+    const eventEl=ev.target.closest('[data-event-id]');
+    if(eventEl){const event=data.events.find(e=>e.id===eventEl.dataset.eventId);if(event)startInlineEditor(cell,event);return}
+    if(ev.target.closest('.add-cell')||ev.target===cell)startInlineEditor(cell,null);
+  });
+  // Room menu interaction and staff selection.
+  $('rosterBody').addEventListener('click',ev=>{
+    const deleteNote=ev.target.closest('[data-delete-room-note]');
+    if(deleteNote){ev.preventDefault();ev.stopPropagation();const room=data.rooms.find(r=>r.id===deleteNote.dataset.id);if(room){room[deleteNote.dataset.deleteRoomNote]='';saveData('Not silindi');}return}
+    const roomNoteToggle=ev.target.closest('[data-room-note-toggle]');
+    if(roomNoteToggle){
+      const row=roomNoteToggle.closest('[data-room-row]');
+      const key=roomNoteToggle.dataset.roomNoteToggle;
+      const input=row?.querySelector(`[data-room-note="${key}"]`);
+      if(input){
+        input.classList.remove('hidden');
+        row.querySelector(`[data-note-display="${key}"]`)?.classList.add('hidden');
+        input.focus();input.select();
+      }
+      return;
+    }
+    const noteToggle=ev.target.closest('[data-assistant-note-toggle]');
+    if(noteToggle){
+      const row=noteToggle.closest('[data-room-row]');
+      const input=row?.querySelector('[data-assistant-note]');
+      if(input){
+        input.classList.remove('hidden');
+        row.querySelector('[data-note-display="assistantNote"]')?.classList.add('hidden');
+        input.focus();input.select();
+      }
+      return;
+    }
+    const trigger=ev.target.closest('[data-room-picker-trigger]');
+    if(trigger){
+      const rowId=trigger.dataset.roomPickerTrigger;
+      const menu=trigger.parentElement.querySelector('.room-picker-menu');
+      const open=menu.classList.contains('hidden');
+      document.querySelectorAll('.room-picker-menu').forEach(m=>m.classList.add('hidden'));
+      document.querySelectorAll('[data-room-picker-trigger]').forEach(b=>b.setAttribute('aria-expanded','false'));
+      if(open){menu.classList.remove('hidden');trigger.setAttribute('aria-expanded','true')}
+      ev.stopPropagation();return;
+    }
+    const btn=ev.target.closest('[data-delete-room]');
+    if(btn){const room=data.rooms.find(r=>r.id===btn.dataset.deleteRoom);if(room&&confirm('Bu oda satırı silinsin mi?')){data.rooms=data.rooms.filter(r=>r.id!==room.id);saveData('Oda satırı silindi')}}
+  });
+  document.addEventListener('click',ev=>{
+    if(!ev.target.closest('.room-select-wrap')){
+      document.querySelectorAll('.room-picker-menu').forEach(m=>m.classList.add('hidden'));
+      document.querySelectorAll('[data-room-picker-trigger]').forEach(b=>b.setAttribute('aria-expanded','false'));
+    }
+  });
+  $('rosterBody').addEventListener('keydown',ev=>{
+    const input=ev.target.closest('[data-assistant-note],[data-room-note]');if(input&&ev.key==='Enter'){ev.preventDefault();input.blur()}
+  });
+  // Close an unused note editor when focus leaves it. If an existing note was
+  // opened but not changed, return to its compact display; never leave an empty box.
+  $('rosterBody').addEventListener('focusout',ev=>{
+    const input=ev.target.closest('[data-assistant-note],[data-room-note]');
+    if(!input)return;
+    setTimeout(()=>{
+      if(!input.isConnected)return; // change handler may already have saved and re-rendered
+      const row=input.closest('[data-room-row]');
+      const roomId=input.dataset.id||input.dataset.assistantNote;
+      const key=input.matches('[data-room-note]')?input.dataset.roomNote:'assistantNote';
+      const room=data.rooms.find(r=>r.id===roomId);
+      const saved=String(room?.[key]||'').trim();
+      const typed=String(input.value||'').trim();
+      if(typed!==saved)return;
+      input.classList.add('hidden');
+      const display=row?.querySelector(`[data-note-display="${key}"]`);
+      if(saved&&display)display.classList.remove('hidden');
+    },0);
+  });
+  $('rosterBody').addEventListener('change',ev=>{
+    const el=ev.target;
+    const roomNote=el.closest('[data-room-note]');
+    if(roomNote){const room=data.rooms.find(r=>r.id===roomNote.dataset.id);if(room){room[roomNote.dataset.roomNote]=roomNote.value.trim();persistWithoutRender('Uzman hekim notu kaydedildi');renderRoster();}return}
+    const assistantNote=el.closest('[data-assistant-note]');
+    if(assistantNote){const room=data.rooms.find(r=>r.id===assistantNote.dataset.assistantNote);if(room){room.assistantNote=assistantNote.value.trim();persistWithoutRender('Asistan notu kaydedildi');renderRoster();}return}
+
+    if(el.matches('[data-room-check]')){
+      const row=el.closest('[data-room-row]');const room=data.rooms.find(r=>r.id===row?.dataset.roomRow);if(!room)return;
+      const value=el.dataset.roomCheck;
+      if(el.checked&&data.rooms.some(r=>r.id!==room.id&&roomUnits(r.name).includes(value))){alert(`Oda ${value} başka bir satırda zaten seçili. Önce diğer satırdan kaldırın.`);renderRoster(room.id);return}
+      let selected=roomUnits(room.name);selected=el.checked?[...selected,value]:selected.filter(n=>n!==value);
+      room.name=BASE_ROOMS.filter(n=>selected.includes(n)).join(',');
+      if(!selected.includes('19'))room.expert2='';
+      persistWithoutRender('Oda seçimi güncellendi');renderRoster(room.id);renderStaffSummary();return;
+    }
+    const staff=el.closest('[data-room-staff]');if(staff){const room=data.rooms.find(r=>r.id===staff.dataset.id);if(room){const key=staff.dataset.roomStaff,name=staff.value;if(name&&isDuplicatePersonUse(name,{kind:'room',id:room.id,key})){renderAll();return}room[key]=name;saveData('Ekip ataması güncellendi');return}}
+  });
+  // Her tarih/blok için oda ve hekim atamalarını ayrı arşivle; geçmişe dönünce aynı planı geri yükle.
+  function switchDailyPlan(){
+    const previousKey=currentPlanKey||activeKey();
+    saveRoomPlanForKey(previousKey);
+    const nextKey=activeKey();
+    if(nextKey!==previousKey){
+      if(Object.prototype.hasOwnProperty.call(data.dailyRooms,nextKey)){
+        data.rooms=normalizeRoomSnapshot(data.dailyRooms[nextKey]);
+      }else{
+        // İlk kez açılan bir gün, aynı oda yapısıyla başlar ancak önceki günün personel atamaları/notları taşınmaz.
+        data.rooms=clearDailyRoomAssignments(normalizeRoomSnapshot(data.rooms));
+        data.dailyRooms[nextKey]=clone(data.rooms);
+      }
+      currentPlanKey=nextKey;
+    }
+    saveData('Tarih kaydedildi; günlük oda/hekim planı arşivlendi');
+  }
+  $('planDate').addEventListener('change',switchDailyPlan);
+  $('blockSelect').addEventListener('change',switchDailyPlan);$('eventSearch').addEventListener('input',renderSchedule);
+
+  // Ders alanında Enter kaydeder; Ctrl+Enter yeni satır ekler.
+  const lessonsField=$('noteLessons');
+  if(lessonsField){
+    lessonsField.addEventListener('keydown',ev=>{
+      if(ev.key==='Enter'&&ev.ctrlKey){
+        ev.preventDefault();
+        const start=lessonsField.selectionStart,end=lessonsField.selectionEnd;
+        lessonsField.setRangeText('\n',start,end,'end');
+        lessonsField.dispatchEvent(new Event('input',{bubbles:true}));
+        lessonsField.style.height='auto';lessonsField.style.height=Math.max(24,lessonsField.scrollHeight+2)+'px';
+        return;
+      }
+      if(ev.key==='Enter'){ev.preventDefault();lessonsField.blur();}
+    });
+    lessonsField.addEventListener('input',()=>{
+      lessonsField.style.height='auto';lessonsField.style.height=Math.max(24,lessonsField.scrollHeight+2)+'px';
+      currentNotes().lessons=lessonsField.value;
+      try{persistToStorage();$('saveStatus').textContent='Ders notu kaydedildi · '+new Date().toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});}catch(e){}
+    });
+  }
+  document.querySelectorAll('[data-note]').forEach(el=>el.addEventListener('change',()=>{
+    const key=el.dataset.note,value=el.value,oldValue=currentNotes()[key]||'';
+    if(el.dataset.roleNote&&value&&isDuplicatePersonUse(value,{kind:'note',key})){el.value=oldValue;return}
+    if(['clinicA','clinicC','lessons'].includes(key)){
+      const duplicate=namesInText(value).find(p=>personUsageLocations(p.name,{kind:'note',key}).length>0);
+      if(duplicate){duplicateWarning(duplicate.name,personUsageLocations(duplicate.name,{kind:'note',key}))}
+    }
+    currentNotes()[key]=value;saveData('Alt bilgi güncellendi');
+  }));
+  document.querySelectorAll('[data-clinic-note-input]').forEach(input=>{
+    input.addEventListener('input',()=>{
+      const key=input.dataset.clinicNoteInput;
+      currentNotes()[key]=input.value;
+      const text=document.querySelector(`[data-clinic-note-text="${key}"]`);
+      if(text)text.textContent=input.value;
+      try{persistToStorage();$('saveStatus').textContent='Poliklinik notu kaydedildi · '+new Date().toLocaleTimeString('tr-TR',{hour:'2-digit',minute:'2-digit'});}catch(e){}
+    });
+    input.addEventListener('keydown',ev=>{if(ev.key==='Enter'){ev.preventDefault();input.blur();}});
+    input.addEventListener('blur',()=>setTimeout(()=>{
+      if(!input.isConnected)return;
+      const key=input.dataset.clinicNoteInput,value=input.value.trim();
+      currentNotes()[key]=value;
+      input.classList.add('hidden');
+      const display=document.querySelector(`[data-clinic-note-display="${key}"]`);
+      const text=document.querySelector(`[data-clinic-note-text="${key}"]`);
+      if(text)text.textContent=value;
+      if(display)display.classList.toggle('hidden',!value);
+      const toggle=document.querySelector(`[data-clinic-note-toggle="${key}"]`);
+      if(toggle){toggle.textContent='+';toggle.title=value?'Poliklinik notunu düzenle':'Poliklinik notu ekle';}
+      try{persistToStorage()}catch(e){}
+    },0));
+  });
+  // One clear action resets every field in the bottom notes area.
+  function clearAllNotes(){
+    if(!confirm('Nakil, poliklinik, izin, MR, nöbet ertesi ve ders alanlarının tamamı temizlensin mi?'))return;
+    const notes=currentNotes();
+    ['clinicA','clinicC','clinicANote','clinicCNote','leaveExpert','leaveAssistant','mr','nextExpert','nextAssistant','lessons'].forEach(key=>{
+      notes[key]=['leaveExpert','leaveAssistant','nextExpert','nextAssistant','mr'].includes(key)?[]:'';
+    });
+    notes.transfer=[];
+    delete notes.thoracic;
+    saveData('Alt bilgi alanlarının tamamı temizlendi');
+  }
+  $('clearAllNotesBtn').onclick=clearAllNotes;
+  // Yalnızca seçili tarihin tüm planlama verilerini temizle; diğer tarihler ve personel envanteri korunur.
+  function clearEverythingExceptStaff(){
+    const date=$('planDate').value||today();
+    const ok=confirm(`${dateLabel(date)} tarihine ait TÜM GÜNLÜK VERİLER temizlenecek.\n\nBu tarihin tüm bloklarındaki gün içi program, oda/hekim atamaları ve oda notları, Hekim satırı seçimleri ile günlük notlar silinecek. Diğer tarihlerdeki kayıtlar ve personel envanteri korunacak.\n\nBu işlem seçili tarih için geri alınamaz. Devam edilsin mi?`);
+    if(!ok)return;
+    // Gün içi program girdileri tarih bazında tutulur.
+    data.events=(data.events||[]).filter(e=>e.date!==date);
+    // Günlük notlar ve oda planları YYYY-MM-DD|Blok anahtarıyla saklanır; yalnızca seçili günün anahtarlarını kaldır.
+    if(!data.dailyNotes||typeof data.dailyNotes!=='object')data.dailyNotes={};
+    Object.keys(data.dailyNotes).forEach(key=>{if(key===date||key.startsWith(date+'|'))delete data.dailyNotes[key]});
+    ensureDailyRoomArchive();
+    Object.keys(data.dailyRooms).forEach(key=>{if(key===date||key.startsWith(date+'|'))delete data.dailyRooms[key]});
+    ensureDailyStaffArchive();
+    Object.keys(data.dailyStaff).forEach(key=>{if(key===date||key.startsWith(date+'|'))delete data.dailyStaff[key]});
+    // Ekrandaki aktif oda planını temizle; oda satırlarının yapısı ve tüm personel envanteri korunur.
+    data.rooms=clearDailyRoomAssignments(normalizeRoomSnapshot(data.rooms));
+    currentPlanKey=activeKey();
+    data.dailyRooms[currentPlanKey]=clone(data.rooms);
+    saveData(`${dateLabel(date)} gününün verileri temizlendi; diğer tarihler korundu`);
+  }
+  $('clearEverythingBtn').onclick=clearEverythingExceptStaff;
+  // Tam sıfırlama: personel envanteri ve oda satırlarının yapısı korunur; tüm planlama verileri ve geçmiş arşivi temizlenir.
+  $('fullResetBtn').onclick=()=>{
+    const ok=confirm('RESET: Personel listesi ve oda satırlarının yapısı KORUNACAK. Bunun dışındaki tüm planlama verileri, oda/hekim atamaları, günlük programlar, notlar ve geçmiş tarihlere ait kayıtlar tamamen silinecek. Bu işlem geri alınamaz. Devam edilsin mi?');
+    if(!ok)return;
+    const preservedStaff=data.staff.map(p=>({...p}));
+    const preservedRooms=normalizeRoomSnapshot(data.rooms).map(r=>({...r,expert:'',expert2:'',expertNote:'',expert2Note:'',assistant:'',assistantNote:'',rotation:'',area:''}));
+    data.staff=preservedStaff;
+    data.rooms=preservedRooms;
+    data.events=[];
+    data.dailyNotes={};
+    data.dailyRooms={};
+    data.dailyStaff={};
+    data.assistantRotations=[];
+    data.settings=data.settings||{};
+    data.settings.expertLine='';
+    data.settings.assistantLine='';
+    data.settings.extraRooms=[];
+    currentPlanKey=activeKey();
+    data.dailyRooms[currentPlanKey]=clone(data.rooms);
+    saveData('Tüm planlama verileri ve geçmiş temizlendi; personel listesi korundu');
+  };
+  // JSON yedekleme: personel envanteri, oda yapısı, günlük programlar ve tarih bazlı notlar birlikte aktarılır.
+  $('jsonExportBtn').onclick=()=>{
+    try{
+      persistToStorage();
+      const payload={format:'ameliyathane-planlama-json',version:2,exportedAt:new Date().toISOString(),data};
+      const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json;charset=utf-8'});
+      const url=URL.createObjectURL(blob);const a=document.createElement('a');
+      a.href=url;a.download=`ameliyathane_yedek_${today()}.json`;document.body.appendChild(a);a.click();a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),1000);showToast('JSON yedeği indirildi');
+    }catch(err){alert('JSON yedeği oluşturulamadı.');}
+  };
+  $('jsonImportBtn').onclick=()=> $('jsonImportFile').click();
+  $('jsonImportFile').onchange=async ev=>{
+    const file=ev.target.files&&ev.target.files[0];if(!file)return;
+    try{
+      const parsed=JSON.parse(await file.text());const imported=parsed&&parsed.data?parsed.data:parsed;
+      if(!imported||!Array.isArray(imported.rooms)||!Array.isArray(imported.staff)||!Array.isArray(imported.events)){
+        alert('Bu dosya geçerli bir ameliyathane JSON yedeği değil.');return;
+      }
+      if(!confirm('JSON yedeği yüklenecek. Mevcut tarayıcı kayıtlarının üzerine yazılacak. Önce mevcut verileri JSON Aktar ile yedeklemek ister misiniz?'))return;
+      localStorage.setItem('ameliyathanePlanlamaABlokV1',JSON.stringify(imported));
+      alert('JSON yedeği yüklendi. Sayfa yenilenecek.');window.location.reload();
+    }catch(err){alert('JSON dosyası okunamadı veya geçersiz.');}
+    finally{ev.target.value='';}
+  };
+  // Toolbar buttons and dialogs.
+  $('addRosterRow').onclick=addRosterRow;$('pasteScheduleBtn').onclick=openPasteSchedule;$('manageStaffBtn').onclick=staffManager;$('printBtn').onclick=()=>{const d=$('planDate').value||today();document.title=`${dateLabel(d)} A Blok`;refreshStaffSummaryForOutput();window.print()};$('togglePrintStaffBtn').onclick=()=>{data.settings=data.settings||{};const shown=data.settings.showPersonnelRosterWhenPrinting!==false;data.settings.showPersonnelRosterWhenPrinting=!shown;syncPrintStaffToggle();persistToStorage();showToast(data.settings.showPersonnelRosterWhenPrinting?'Personel listesi çıktı için açıldı':'Personel listesi çıktı için gizlendi')};$('photoExportBtn').onclick=exportSheetAsPhoto;$('closeModal').onclick=closeModal;$('cancelModal').onclick=closeModal;$('clearAssistantsBtn').onclick=clearAssistantAssignments;$('clearDoctorsBtn').onclick=clearDoctorRow;$('clearScheduleBtn').onclick=clearDailySchedule;
+
+  async function exportSheetAsPhoto(){
+    const btn=$('photoExportBtn');
+    const sheet=$('sheet');
+    const date=$('planDate').value||today();
+    refreshStaffSummaryForOutput();
+    const oldText=btn.textContent;
+    btn.disabled=true;btn.textContent='Fotoğraf hazırlanıyor…';
+    try{
+      // Load html2canvas only when needed so the planning page remains lightweight.
+      if(!window.html2canvas){
+        await new Promise((resolve,reject)=>{
+          const script=document.createElement('script');
+          script.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+          script.onload=resolve;script.onerror=()=>reject(new Error('Fotoğraf dışa aktarma kütüphanesi yüklenemedi. İnternet bağlantısını kontrol edin.'));
+          document.head.appendChild(script);
+        });
+      }
+      const priorWidth=sheet.style.width,priorMinHeight=sheet.style.minHeight,priorPadding=sheet.style.padding,priorMargin=sheet.style.margin,priorClass=document.body.classList.contains('photo-export-mode');
+      document.body.classList.add('photo-export-mode');
+      sheet.style.width='794px';sheet.style.minHeight='1123px';sheet.style.padding='24px';sheet.style.margin='0';
+      // Wait for the browser to apply the A4-like export layout before rendering.
+      await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+      const canvas=await window.html2canvas(sheet,{backgroundColor:'#ffffff',scale:2,useCORS:true,logging:false,width:794,windowWidth:794,scrollX:0,scrollY:0});
+      const link=document.createElement('a');link.download=`${date.replace(/[^0-9-]/g,'-')}_A_Blok.png`;link.href=canvas.toDataURL('image/png');link.click();
+      sheet.style.width=priorWidth;sheet.style.minHeight=priorMinHeight;sheet.style.padding=priorPadding;sheet.style.margin=priorMargin;
+      if(!priorClass)document.body.classList.remove('photo-export-mode');
+    }catch(err){
+      document.body.classList.remove('photo-export-mode');
+      alert((err&&err.message)||'Fotoğraf oluşturulamadı. Lütfen tekrar deneyin.');
+    }finally{btn.disabled=false;btn.textContent=oldText;}
+  }
+
+  function prepareLessonsForPrint(){
+    const field=$('noteLessons');if(!field)return;
+    currentNotes().lessons=field.value;
+    try{persistToStorage()}catch(e){}
+    document.querySelectorAll('.lesson-print-copy').forEach(el=>el.remove());
+    const copy=document.createElement('div');copy.className='lesson-print-copy';copy.textContent=field.value||' ';
+    field.insertAdjacentElement('afterend',copy);
+  }
+  function cleanupLessonsAfterPrint(){document.querySelectorAll('.lesson-print-copy').forEach(el=>el.remove());}
+  window.addEventListener('beforeprint',()=>{
+    refreshStaffSummaryForOutput();
+    document.querySelectorAll('select').forEach(el=>{if(!el.value)el.classList.add('print-empty-select')});
+    prepareLessonsForPrint();
+  });
+  window.addEventListener('afterprint',()=>{
+    document.querySelectorAll('.print-empty-select').forEach(el=>el.classList.remove('print-empty-select'));
+    cleanupLessonsAfterPrint();
+  });
+  $('modalBackdrop').addEventListener('click',ev=>{if(ev.target===$('modalBackdrop'))closeModal()});document.addEventListener('keydown',ev=>{if(ev.key==='Escape')closeModal()});
+  renderAll();
+})();
+</script>
+
+<style id="print-maximum-contrast-override">
+/* Yazdır önizlemesinde soluk görünmeyi önle: bütün basılı metinler siyah, çizgiler belirgin olsun. */
+@media print {
+  html, body, .app, .sheet {
+    background: #fff !important;
+    color: #000 !important;
+    opacity: 1 !important;
+    filter: none !important;
+    -webkit-filter: none !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  body * {
+    opacity: 1 !important;
+    filter: none !important;
+    -webkit-filter: none !important;
+    color: #000 !important;
+    -webkit-text-fill-color: #000 !important;
+    text-shadow: none !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+  .sheet * {
+    -webkit-text-stroke: .12px #000 !important;
+  }
+  .roster, .roster th, .roster td,
+  .schedule, .schedule th, .schedule td,
+  .rotation-panel, .staff-overview-column,
+  .bottom-notes.top-notes .note-field {
+    border-color: #000 !important;
+  }
+  .roster th, .roster td, .schedule th, .schedule td {
+    border-style: solid !important;
+    border-width: 1px !important;
+  }
+  .roster th, .schedule thead th,
+  .section-label, .section-head .section-label,
+  .staff-overview-column > .meta-label,
+  .rotation-panel-title, .bottom-notes .note-field > label {
+    color: #000 !important;
+    -webkit-text-fill-color: #000 !important;
+    font-weight: 700 !important;
+  }
+  input, select, textarea, .multi-picker-trigger,
+  .staff-summary-person, .staff-summary-name,
+  .rotation-item, .rotation-item input, .rotation-item select,
+  .event, .event-name, .event-meta {
+    color: #000 !important;
+    -webkit-text-fill-color: #000 !important;
+  }
+  input::placeholder, textarea::placeholder {
+    color: #000 !important;
+    -webkit-text-fill-color: #000 !important;
+    opacity: 1 !important;
+  }
+}
+</style>
+
+
+<style id="print-readable-a4-four-room-layout">
+/* A4 önizlemesinde metin ve çizgiler daha okunaklı; sadece yazdırma çıktısı etkilenir. */
+@media print {
+  @page { size: A4 portrait; margin: 6mm; }
+  html, body { width: 100% !important; height: auto !important; font-size: 10px !important; }
+  .app { max-width: none !important; width: 100% !important; margin: 0 !important; padding: 0 !important; }
+  .sheet { width: 100% !important; padding: 0 !important; margin: 0 !important; border: 0 !important; box-shadow: none !important; }
+  .sheet-title { font-size: 12px !important; line-height: 1.2 !important; }
+  .sheet-head-top { min-height: 24px !important; margin-bottom: 4px !important; }
+  .metadata-line { min-height: 17px !important; font-size: 9px !important; }
+  .section-label, .section-head .section-label { font-size: 10px !important; line-height: 1.15 !important; margin: 6px 0 3px !important; }
+  .staff-overview-grid { margin: 3px 0 5px !important; gap: 7px !important; }
+  .staff-overview-column { padding: 3px 4px !important; }
+  .staff-overview-column > .meta-label { font-size: 10px !important; line-height: 1.15 !important; margin-bottom: 2px !important; }
+  .staff-overview-column .staff-summary-person,
+  .staff-summary-person,
+  .staff-summary-name { font-size: 10px !important; line-height: 1.12 !important; min-height: 11px !important; }
+  .staff-summary-rotation { font-size: 8.5px !important; line-height: 1.1 !important; }
+  .bottom-notes.top-notes { margin: 4px 0 !important; padding: 2px 3px !important; gap: 7px !important; }
+  .bottom-notes.top-notes .note-field { min-height: 15px !important; grid-template-columns: 89px minmax(0,1fr) !important; gap: 3px !important; }
+  .bottom-notes.top-notes .note-field label,
+  .bottom-notes.top-notes .note-field input,
+  .bottom-notes.top-notes .note-field select,
+  .bottom-notes.top-notes .note-field textarea,
+  .bottom-notes.top-notes .note-field .multi-picker-trigger,
+  .bottom-notes.top-notes .note-field .lesson-print-copy,
+  .lesson-print-copy { font-size: 11px !important; line-height: 1.12 !important; }
+  .roster { font-size: 10px !important; }
+  .roster th, .roster td { height: 23px !important; padding: 1px 4px !important; font-size: 10px !important; line-height: 1.15 !important; }
+  .roster th { font-size: 10px !important; }
+  .roster th:first-child, .roster td:first-child { width: 90px !important; }
+  .roster th:nth-child(2), .roster td:nth-child(2),
+  .roster th:nth-child(3), .roster td:nth-child(3) { width: auto !important; }
+  .roster select, .roster input { font-size: 10px !important; line-height: 1.15 !important; }
+  .roster td:first-child .room-picker-trigger,
+  .roster td:first-child .room-picker-value,
+  .roster td:first-child .room-group-label { font-size: 12px !important; line-height: 1.15 !important; }
+  .room-picker-trigger { min-height: 0 !important; padding: 0 !important; }
+  .schedule { font-size: 10px !important; }
+  .schedule thead th { height: 23px !important; padding: 2px 3px !important; font-size: 10px !important; line-height: 1.15 !important; }
+  .schedule thead th:first-child { width: 43px !important; }
+  .schedule tbody td { height: 21px !important; padding: 1px 2px !important; }
+  .schedule tbody td:first-child { font-size: 10px !important; }
+  .event { padding: 1px 2px !important; margin: 0 0 1px !important; min-height: 0 !important; }
+  .event-name { font-size: 9.5px !important; line-height: 1.12 !important; }
+  .event-meta { font-size: 8px !important; line-height: 1.1 !important; }
+  .doctor-row td { height: 22px !important; }
+  .doctor-row input { height: 18px !important; font-size: 10px !important; }
+  .roster-wrap, .schedule-wrap { overflow: visible !important; }
+}
+</style>
+
+
+<style id="schedule-headers-and-doctor-row-centered-final">
+/* Gün İçi Program: sütun başlıkları ve Hekim satırındaki seçili isimler tam ortalı. */
+.schedule thead th { text-align:center!important; }
+.schedule .doctor-row .multi-picker-trigger { position:relative!important; justify-content:center!important; text-align:center!important; padding-left:4px!important; padding-right:20px!important; }
+.schedule .doctor-row .multi-picker-label { display:block!important; flex:1 1 100%!important; width:100%!important; text-align:center!important; }
+.schedule .doctor-row .multi-picker-badge { position:absolute!important; right:4px!important; top:50%!important; transform:translateY(-50%)!important; }
+@media print {
+  .schedule thead th { text-align:center!important; }
+  .schedule .doctor-row .multi-picker-trigger,
+  .schedule .doctor-row .multi-picker-label { text-align:center!important; }
+}
+body.photo-export-mode .schedule thead th,
+body.photo-export-mode .schedule .doctor-row .multi-picker-label { text-align:center!important; }
+</style>
+<style id="final-print-personnel-filter-priority-fix">
+/* Son yazdırma stillerindeki display:block/flex kurallarının, kullanım filtresini ezmesini önle. */
+@media print {
+  #expertSummary .staff-summary-person[data-output-used="false"],
+  #assistantSummary .staff-summary-person[data-output-used="false"],
+  #expertSummary .staff-summary-person:not([data-output-used="true"]),
+  #assistantSummary .staff-summary-person:not([data-output-used="true"]) {
+    display: none !important;
+  }
+  body.hide-staff-list-on-output .staff-overview-grid {
+    display: none !important;
+  }
+}
+</style>
+
+<script id="a-blok-pwa-bootstrap">
+(() => {
+  const installButton = document.getElementById('installAppBtn');
+  let installPrompt = null;
+  window.addEventListener('beforeinstallprompt', (event) => {
+    event.preventDefault();
+    installPrompt = event;
+    if (installButton) installButton.hidden = false;
+  });
+  if (installButton) {
+    installButton.addEventListener('click', async () => {
+      if (!installPrompt) {
+        alert('Yükleme seçeneği görünmüyorsa tarayıcı menüsünden “Uygulamayı yükle” veya “Ana Ekrana Ekle” seçeneğini kullanın.');
+        return;
+      }
+      installPrompt.prompt();
+      await installPrompt.userChoice;
+      installPrompt = null;
+      installButton.hidden = true;
+    });
+  }
+  window.addEventListener('appinstalled', () => {
+    if (installButton) installButton.hidden = true;
+  });
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js').catch(err => console.warn('PWA çevrimdışı desteği kaydedilemedi:', err));
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
