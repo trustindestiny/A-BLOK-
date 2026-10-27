@@ -1615,7 +1615,7 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     const readOnly=quickNameModeOn();
     const title=readOnly?'':' title="Metni düzenlemek için tıklayın"';
     const deleteButton=readOnly?'':`<button type="button" class="event-delete screen-only" data-delete-event="${esc(e.id)}" aria-label="Program kaydını sil" title="Sil">×</button>`;
-    return `<div class="event" data-event-id="${esc(e.id)}"${title}><span class="event-name">${esc(e.name).replace(/\\n/g,'<br>')}</span>${deleteButton}</div>`;
+    return `<div class="event" data-event-id="${esc(e.id)}"${title}><span class="event-name">${esc(e.name).replace(/\n/g,'<br>')}</span>${deleteButton}</div>`;
   }
   function renderSchedule(){
     const date=$('planDate').value||today(),block=$('blockSelect').value;let out='';
@@ -2046,7 +2046,7 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
   function addQuickScheduleEvent(cell,service){
     if(!cell||!['OPU','DOĞUMHANE','MR'].includes(service))return;
     const date=$('planDate').value||today(),block=$('blockSelect').value,time=cell.dataset.time;
-    if(data.events.some(event=>event.date===date&&event.block===block&&event.time===time&&event.service===service&&eventMatches(event))){
+    if(data.events.some(event=>event.date===date&&event.block===block&&event.time===time&&event.service===service)){
       return;
     }
     data.events.push({id:makeId('e'),date,block,time,service,name:service});
