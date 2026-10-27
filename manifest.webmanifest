@@ -1,7 +1,7 @@
 {
-  "name": "A Blok Ameliyathane Planlama",
-  "short_name": "A Blok",
-  "description": "A Blok ameliyathane günlük planlama uygulaması",
+  "name": "EN SEVDİKLERİM",
+  "short_name": "EN SEVDİKLERİM",
+  "description": "EN SEVDİKLERİM — A Blok ameliyathane günlük planlama",
   "lang": "tr-TR",
   "start_url": "./",
   "scope": "./",
@@ -10,6 +10,17 @@
   "background_color": "#e9e6df",
   "theme_color": "#234b78",
   "icons": [
-    {"src": "./icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any"}
+    {
+      "src": "./icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "./icons/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
   ]
 }

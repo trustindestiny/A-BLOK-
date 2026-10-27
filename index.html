@@ -4,11 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#234b78">
-<meta name="description" content="A Blok ameliyathane günlük planlama uygulaması">
+<meta name="application-name" content="EN SEVDİKLERİM">
+<meta name="apple-mobile-web-app-title" content="EN SEVDİKLERİM">
+<meta name="description" content="EN SEVDİKLERİM — A Blok ameliyathane günlük planlama uygulaması">
 <link rel="manifest" href="./manifest.webmanifest">
-<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon.svg">
-<link rel="apple-touch-icon" href="./icons/icon.svg">
-<title>A Blok</title>
+<link rel="icon" type="image/svg+xml" href="./icons/icon.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="./icons/apple-touch-icon.png">
+<title>EN SEVDİKLERİM · A Blok</title>
 <style>
 :root{--ink:#202020;--muted:#646464;--line:#9b9b9b;--paper:#fffefa;--bg:#e9e6df;--accent:#234b78;--soft:#f4f6f8;--red:#a33d3d}
 *{box-sizing:border-box}html{background:var(--bg)}body{margin:0;color:var(--ink);font-family:Arial,Helvetica,sans-serif;font-size:12px;background:var(--bg)}button,input,select,textarea{font:inherit}button{cursor:pointer}.app{max-width:1240px;margin:0 auto;padding:18px}.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:0 0 14px}.toolbar-title{display:flex;align-items:center;gap:10px}.toolbar-title .mark{height:38px;width:38px;border-radius:8px;display:grid;place-items:center;background:var(--accent);color:white;font-size:19px;font-weight:bold}.toolbar-title h1{font-size:19px;margin:0;letter-spacing:-.3px}.toolbar-title p{margin:3px 0 0;color:#555;font-size:11px}.toolbar-actions{display:flex;gap:7px;flex-wrap:wrap}.btn{border:1px solid #c4cbd2;background:#fff;color:#202830;padding:8px 11px;border-radius:6px;font-weight:700;font-size:11px}.btn:hover{background:#eef3f8}.btn-primary{background:var(--accent);border-color:var(--accent);color:#fff}.btn-primary:hover{background:#193d65}.btn-danger{color:var(--red);border-color:#e3c6c6}.sheet{width:100%;background:var(--paper);padding:18px 20px 16px;box-shadow:0 5px 22px #00000014;border:1px solid #ddd9d1}.sheet-head{border-bottom:1px solid var(--line);padding-bottom:7px;margin-bottom:10px}.sheet-head-top{display:grid;grid-template-columns:1fr 1fr 1fr;align-items:center;gap:8px;margin-bottom:8px;min-height:28px}.micro-title{font-size:10px;color:var(--muted)}.sheet-title{text-align:center;font-weight:800;letter-spacing:1.3px;font-size:14px;align-self:center}.date-box{display:flex;align-items:center;justify-content:flex-end;gap:6px}.date-box label{font-size:10px;color:#444;font-weight:700}.date-box input{border:0;border-bottom:1px solid #777;background:transparent;padding:3px 2px;max-width:132px;color:#222;font-weight:700}.metadata-line{display:grid;grid-template-columns:112px minmax(0,1fr);align-items:center;min-height:25px;gap:7px}.meta-label{font-weight:700;color:#333}.line-input{width:100%;border:0;border-bottom:1px solid #c2c2c2;background:transparent;padding:4px 3px;color:#222;min-width:0;outline:none}.line-input:focus{border-bottom:2px solid var(--accent);background:#f5f8fc}.small-note{font-size:9px;color:#777;margin:4px 0 0 119px}.section-label{font-size:11px;font-weight:800;letter-spacing:.45px;margin:11px 0 4px}.roster-layout{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(260px,1fr);gap:10px;align-items:start}.roster-wrap{overflow-x:auto}.roster{width:100%;border-collapse:collapse;table-layout:fixed;font-size:11px}.roster th,.roster td{border:1px solid var(--line);padding:2px 5px;height:24px;text-align:left}.roster th{font-size:10px;background:#f2f2f0;font-weight:800}.roster th:first-child,.roster td:first-child{width:58px}.roster th:nth-child(2),.roster td:nth-child(2){width:42%}.roster th:nth-child(3),.roster td:nth-child(3){width:42%}.roster th:nth-child(4),.roster td:nth-child(4){width:28px}.roster td:first-child{font-weight:700}.roster select,.roster input{width:100%;border:0;background:transparent;padding:2px 0;outline:none;color:#202020;min-width:0;font-size:11px}.roster select:focus,.roster input:focus{background:#edf4ff;outline:1px solid #98b4d8}.row-tools{width:28px!important;text-align:center!important}.icon-btn{border:0;background:transparent;color:#666;padding:1px 4px;font-size:14px}.icon-btn:hover{color:var(--red)}.rotation-panel{border:1px solid var(--line);background:#fffefa;min-width:0}.rotation-panel-head{display:flex;align-items:center;justify-content:space-between;gap:6px;padding:5px 6px;background:#f2f2f0;border-bottom:1px solid var(--line)}.rotation-panel-title{font-size:10px;font-weight:800;letter-spacing:.35px}.rotation-list-head,.rotation-item{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) 24px;gap:4px;align-items:center}.rotation-list-head{padding:4px 5px;background:#f7f7f4;border-bottom:1px solid #c7c7c7;font-size:9px;font-weight:800}.rotation-item{padding:3px 5px;border-bottom:1px solid #dedede;min-height:28px}.rotation-item:last-child{border-bottom:0}.rotation-item select,.rotation-item input{width:100%;min-width:0;border:0;background:transparent;padding:3px 1px;font-size:10px;outline:none}.rotation-item select:focus,.rotation-item input:focus{background:#edf4ff;outline:1px solid #98b4d8}.rotation-empty{padding:10px 6px;color:#777;font-size:10px}.rotation-add{padding:5px 7px;font-size:10px}.rotation-remove{border:0;background:transparent;color:#777;font-size:14px;padding:2px}.rotation-remove:hover{color:var(--red)}.section-head{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:12px 0 4px}.section-head .section-label{margin:0}.schedule-wrap{overflow:auto}.schedule{width:100%;border-collapse:collapse;table-layout:fixed;font-size:10.5px}.schedule th,.schedule td{border:1px solid var(--line)}.schedule thead th{background:#f1f1ef;padding:6px 5px;text-align:left;font-size:10px;font-weight:800;height:30px}.schedule thead th:first-child{width:60px;text-align:center}.schedule tbody td{height:29px;padding:2px 3px;vertical-align:top}.schedule tbody td:first-child{background:#f7f7f4;font-weight:700;text-align:center;vertical-align:middle;padding:2px}.schedule td.drop-target{cursor:pointer;position:relative;background:transparent}.schedule td.drop-target:hover{background:#edf4ff}.add-cell{opacity:0;border:1px dashed #9fb4d0;background:#f7faff;color:var(--accent);border-radius:4px;width:100%;height:100%;min-height:22px;font-size:15px}.schedule td.drop-target:hover .add-cell{opacity:1}.event{background:#edf3fa;border-left:3px solid #376b9d;padding:3px 4px;margin:1px 0 2px;min-height:23px;line-height:1.18;border-radius:1px;cursor:pointer;overflow-wrap:anywhere}.event:nth-child(2){background:#f0f5f2;border-color:#53806a}.event-name{display:block;font-weight:700;font-size:10px}.event-meta{display:block;color:#555;font-size:8.5px;margin-top:2px;line-height:1.2}.doctor-row td{height:28px!important;background:#f7f7f4}.doctor-row td:not(:first-child){padding:2px}.doctor-row input{width:100%;height:22px;border:0;background:transparent;outline:none;min-width:0;font-size:10px}.doctor-row input:focus{background:#edf4ff}.bottom-notes{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:12px}.notes-col{display:grid;gap:3px;align-content:start}.note-field{display:grid;grid-template-columns:145px minmax(0,1fr);gap:6px;align-items:center;min-height:23px}.note-field label{font-size:10px;color:#333;font-weight:700}.note-field input,.note-field select,.note-field textarea{width:100%;min-width:0;border:0;background:transparent;padding:3px 2px;outline:none;font-size:10.5px;color:#202020}.note-field textarea{resize:vertical;min-height:22px;line-height:1.35;font-family:inherit}.note-field input:focus,.note-field select:focus,.note-field textarea:focus{background:#edf4ff;outline:1px solid #c3d5e8}.print-footer{display:flex;justify-content:space-between;gap:10px;margin-top:8px;padding-top:5px;border-top:1px solid #c9c9c9;color:#777;font-size:9px}.save-state{color:#467155}.hint-strip{margin:10px 0 0;color:#5d6470;font-size:10px;line-height:1.45}.hidden{display:none!important}
@@ -992,7 +994,7 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
 </style>
 </head>
 <body>
-<div id="splashScreen" class="splash-screen" role="status" aria-live="polite" aria-label="En Sevdiklerim yükleniyor">
+<div id="splashScreen" class="splash-screen" role="status" aria-live="polite" aria-label="EN SEVDİKLERİM yükleniyor">
   <div class="splash-aura"></div>
   <div class="splash-emblem" aria-hidden="true">
     <svg viewBox="0 0 160 160" role="img" aria-label="Hipokrat sembolü">
@@ -1005,7 +1007,7 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
       <path class="splash-staff-cap" d="M71 33 Q77 28 83 33"></path>
     </svg>
   </div>
-  <div class="splash-title">En Sevdiklerim</div>
+  <div class="splash-title">EN SEVDİKLERİM</div>
   <div class="splash-subtitle">A BLOK · AMELİYATHANE</div>
   <div class="splash-loader" aria-hidden="true"><span></span></div>
 </div>
@@ -2862,6 +2864,30 @@ body.photo-export-mode .schedule .event-name {
 <style id="quick-name-toggle-style">
 #quickNameBtn[aria-pressed="true"]{border-color:#8aa9cd!important}
 #quickNameBtn[aria-pressed="false"]{background:#fff!important}
+</style>
+
+
+<style id="clinic-name-descender-fix">
+/* Poliklinik A/C Blok seçili isimlerinde Y, ş, g gibi alt uzantılar kesilmesin. */
+.bottom-notes.top-notes .clinic-select-line {
+  min-height: 35px !important;
+  align-items: center !important;
+  overflow: visible !important;
+}
+.bottom-notes.top-notes .clinic-select-line select,
+.bottom-notes.top-notes #noteClinicA,
+.bottom-notes.top-notes #noteClinicC {
+  box-sizing: border-box !important;
+  height: 35px !important;
+  min-height: 35px !important;
+  padding: 6px 26px 7px 6px !important;
+  font-size: 11px !important;
+  line-height: 1.4 !important;
+  vertical-align: middle !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  color: #000 !important;
+}
 </style>
 
 </body>
