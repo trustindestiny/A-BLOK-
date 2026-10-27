@@ -974,19 +974,20 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
 </head>
 <body>
 <div class="app">
-  <header class="toolbar screen-only">
-    <div class="toolbar-title"><div class="mark">+</div><div><h1>Ameliyathane Günlük Çalışma Listesi</h1></div></div>
-    <div class="toolbar-actions">
-      <button class="btn btn-primary" id="installAppBtn" type="button" hidden>Uygulamayı Yükle</button>
-      <button class="btn" id="manageStaffBtn">Personel listesi</button>
-      <button class="btn" id="printBtn">Yazdır / PDF</button>
-      <button class="btn" id="togglePrintStaffBtn" type="button" aria-pressed="true" title="Yazdırma ve fotoğraf çıktısındaki personel listesini göster/gizle">Personel Listesi: Yazdırmada Göster</button>
-      <button class="btn btn-primary" id="photoExportBtn" type="button">Fotoğraf İndir</button>
+  <header class="toolbar screen-only app-header">
+    <div class="toolbar-title"><div class="mark" aria-hidden="true">A</div><div><h1>A Blok Ameliyathane</h1><p>Günlük planlama</p></div></div>
+    <div class="top-utility-actions">
+      <button class="btn btn-primary utility-install" id="installAppBtn" type="button" hidden>Uygulamayı Yükle</button>
+      <button class="btn utility-btn utility-clear" id="clearEverythingBtn" type="button" title="Yalnızca seçili tarihin verilerini temizle; diğer tarihler ve personel envanteri korunur">Bugünü Temizle</button>
+      <button class="btn utility-btn utility-reset" id="fullResetBtn" type="button" title="Personel listesi korunarak tüm planlama verilerini ve geçmişi temizle">RESET</button>
+    </div>
+    <div class="legacy-actions hidden" aria-hidden="true">
+      <button class="btn" id="manageStaffBtn" type="button">Personel listesi</button>
+      <button class="btn" id="printBtn" type="button">Yazdır / PDF</button>
+      <button class="btn" id="togglePrintStaffBtn" type="button" aria-pressed="true">Personel Listesi: Yazdırmada Göster</button>
       <button class="btn" id="jsonExportBtn" type="button">JSON Aktar</button>
       <button class="btn" id="jsonImportBtn" type="button">JSON Yükle</button>
       <input id="jsonImportFile" type="file" accept=".json,application/json" hidden>
-      <button class="btn btn-danger" id="clearEverythingBtn" type="button" title="Yalnızca seçili tarihin tüm verilerini temizle; diğer tarihler ve personel envanteri korunur">Bugünü Temizle</button>
-      <button class="btn" id="fullResetBtn" type="button" style="background:#c62828!important;border-color:#c62828!important;color:#fff!important" title="Personel listesi korunarak tüm planlama verilerini ve geçmişi temizle">RESET</button>
     </div>
   </header>
 
@@ -1026,7 +1027,7 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     </section>
 
     <section>
-      <div class="section-head"><div class="section-label">GÜN İÇİ PROGRAM</div><div class="toolbar-actions"><button type="button" class="btn btn-primary screen-only" id="pasteScheduleBtn">Programı Yapıştır</button><button type="button" class="btn screen-only" id="clearScheduleBtn">Temizle</button></div></div><input id="eventSearch" type="hidden" value=""><input id="blockSelect" type="hidden" value="A Blok">
+      <div class="section-head"><div class="section-label">GÜN İÇİ PROGRAM</div><div class="schedule-toolbar-actions screen-only"><button type="button" class="btn btn-primary" id="quickNameBtn">Kısa İsim Ekle</button><button type="button" class="btn" id="clearScheduleBtn">Temizle</button></div></div><input id="eventSearch" type="hidden" value=""><input id="blockSelect" type="hidden" value="A Blok">
       <div class="schedule-wrap"><table class="schedule"><thead><tr><th>Saat</th><th>OPU</th><th>DOĞUMHANE</th><th>MR</th></tr></thead><tbody id="scheduleBody"></tbody><tbody><tr class="doctor-row"><td><div class="doctor-row-label"><span>Hekim</span><button type="button" class="clear-doctors-btn screen-only" id="clearDoctorsBtn">Temizle</button></div></td><td><div class="multi-picker" data-multi-picker="doctorSlots" data-index="0" data-role-filter="all"></div></td><td><div class="multi-picker" data-multi-picker="doctorSlots" data-index="1" data-role-filter="all"></div></td><td><div class="multi-picker" data-multi-picker="doctorSlots" data-index="2" data-role-filter="all"></div></td></tr></tbody></table></div>
     </section>
 
@@ -1034,6 +1035,18 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     <div class="print-footer"><span id="saveStatus" class="save-state">Değişiklikler bu tarayıcıda saklanır.</span><span>Ameliyathane çizelgesi · <span id="footerDate">22.10.2026</span></span></div>
   </main>
 </div>
+
+<nav class="bottom-nav screen-only" aria-label="Ana gezinme">
+  <button type="button" class="bottom-nav-item is-active" id="navPlanBtn" data-bottom-nav="plan" aria-current="page">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="16" rx="2.5"></rect><path d="M8 2.8v4M16 2.8v4M3.5 9.5h17M7.5 13h3M13.5 13h3M7.5 16.5h3"></path></svg><span>Günlük Plan</span>
+  </button>
+  <button type="button" class="bottom-nav-item" id="navStaffBtn" data-bottom-nav="staff">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"></circle><path d="M2.8 20v-1.5a5.7 5.7 0 0 1 11.4 0V20M16 5.5a3 3 0 0 1 0 5.9M17.5 14a4.8 4.8 0 0 1 3.7 4.7V20"></path></svg><span>Personel</span>
+  </button>
+  <button type="button" class="bottom-nav-item" id="photoExportBtn" data-bottom-nav="photo">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="15" rx="2.4"></rect><circle cx="8.5" cy="9" r="1.3"></circle><path d="m4.5 17 5-4.7 3.2 2.6 2.7-3 4.1 5.1"></path></svg><span>Fotoğraf İndir</span>
+  </button>
+</nav>
 
 <div class="modal-backdrop" id="modalBackdrop" aria-hidden="true"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-head"><h2 id="modalTitle">Yeni kayıt</h2><button class="close" id="closeModal" aria-label="Kapat">×</button></div><form id="modalForm"><div class="modal-body" id="modalBody"></div><div class="modal-actions"><button type="button" class="btn" id="cancelModal">Vazgeç</button><div class="modal-actions-right"><button type="button" class="btn btn-danger hidden" id="deleteModal">Kaydı sil</button><button type="submit" class="btn btn-primary">Kaydet</button></div></div></form></section></div>
 <div class="toast" id="toast" role="status"></div>
@@ -1510,6 +1523,13 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
       person.setAttribute('data-output-used',used?'true':'false');
     });
   }
+  function setBottomNavActive(name){
+    document.querySelectorAll('[data-bottom-nav]').forEach(button=>{
+      const active=button.dataset.bottomNav===name;
+      button.classList.toggle('is-active',active);
+      if(active)button.setAttribute('aria-current','page');else button.removeAttribute('aria-current');
+    });
+  }
   function syncPrintStaffToggle(){
     const button=$('togglePrintStaffBtn');if(!button)return;
     data.settings=data.settings||{};
@@ -1517,6 +1537,11 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     document.body.classList.toggle('hide-staff-list-on-output',!shown);
     button.textContent=shown?'Personel Listesi: Yazdırmada Göster':'Personel Listesi: Yazdırmada Gizle';
     button.setAttribute('aria-pressed',shown?'true':'false');
+    const staffButton=$('staffPrintToggleBtn');
+    if(staffButton){
+      staffButton.textContent=shown?'Personel listesi: yazdırmada göster':'Personel listesi: yazdırmada gizle';
+      staffButton.setAttribute('aria-pressed',shown?'true':'false');
+    }
   }
   function renderStaffSummary(){
     const definitions=[['Uzman hekim','expertSummary','experts'],['Asistan','assistantSummary','assistants']];
@@ -1547,8 +1572,8 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
   }
   function eventMatches(e){const q=$('eventSearch').value.trim().toLocaleLowerCase('tr-TR');return !q||[e.name,e.service,e.room,e.expert,e.assistant,e.notes,e.time].join(' ').toLocaleLowerCase('tr-TR').includes(q)}
   function emptyScheduleCellButton(service){
-    const isOpu=service==='OPU';
-    return `<button class="add-cell ${isOpu?'quick-add-opu':''}" type="button" ${isOpu?'data-quick-add="OPU"':''} aria-label="${isOpu?'OPU Ekle':'Bu hücreye metin yaz'}">${isOpu?'OPU Ekle':'＋'}</button>`;
+    const label=service==='DOĞUMHANE'?'Doğumhane Ekle':service==='MR'?'MR Ekle':'OPU Ekle';
+    return `<button class="add-cell quick-add-service screen-only" type="button" data-quick-add="${esc(service)}" aria-label="${esc(label)}" title="${esc(label)}">${esc(label)}</button>`;
   }
   function renderSchedule(){
     const date=$('planDate').value||today(),block=$('blockSelect').value;let out='';
@@ -1726,10 +1751,13 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     $('deleteModal').onclick=function(){if(!existing)return;if(confirm('Bu metin silinsin mi?')){data.events=data.events.filter(x=>x.id!==existing.id);closeModal();saveData('Metin silindi')}};
   }
   function staffManager(){
-    let html='<div class="notice">Rotasyon/görev bilgisi isteğe bağlıdır; elle yazılır. Personelleri sürükleme simgesinden sıralayabilirsin.</div><div class="manage-header"><span></span><span>PERSONEL</span><span>GÖREV</span><span>ROTASYON / AÇIKLAMA</span><span></span></div><div class="manage-list">';
+    let html='<div class="staff-modal-controls screen-only"><button type="button" class="btn btn-primary" id="staffPrintBtn">Yazdır / PDF</button><button type="button" class="btn" id="staffPrintToggleBtn" aria-pressed="true">Personel listesi: yazdırmada göster</button></div><div class="notice">Rotasyon/görev bilgisi isteğe bağlıdır; elle yazılır. Personelleri sürükleme simgesinden sıralayabilirsin.</div><div class="manage-header"><span></span><span>PERSONEL</span><span>GÖREV</span><span>ROTASYON / AÇIKLAMA</span><span></span></div><div class="manage-list">';
     html+=data.staff.map(p=>`<div class="manage-person" data-person-row="${esc(p.id)}"><button type="button" class="drag-handle" data-drag-handle="${esc(p.id)}" draggable="true" title="Sürükleyerek sırala" aria-label="${esc(p.name)} sıralama tutamacı">⠿</button><input data-person-name="${esc(p.id)}" value="${esc(p.name)}" aria-label="Personel adı"><select data-person-role="${esc(p.id)}"><option value="Uzman hekim" ${p.role==='Uzman hekim'?'selected':''}>Uzman hekim</option><option value="Asistan" ${p.role==='Asistan'?'selected':''}>Asistan hekim</option><option value="Poliklinikçi uzman hekim" ${p.role==='Poliklinikçi uzman hekim'?'selected':''}>Poliklinikçi uzman hekim</option></select><input data-person-rotation="${esc(p.id)}" value="${esc(p.rotation||'')}" aria-label="Rotasyon veya açıklama" placeholder="Elle yazın"><button type="button" class="btn btn-danger" data-remove-person="${esc(p.id)}">Sil</button></div>`).join('');
     html+='</div><div class="person-modal-add"><input id="newPersonName" placeholder="Yeni personel adı"><select id="newPersonRole"><option value="Uzman hekim">Uzman hekim</option><option value="Asistan">Asistan hekim</option><option value="Poliklinikçi uzman hekim">Poliklinikçi uzman hekim</option></select><input id="newPersonRotation" placeholder="Rotasyon / açıklama (isteğe bağlı)"><button type="button" class="btn btn-primary" id="addPersonNow">Ekle</button></div>';
     openModal('Personel listesi',html,false);
+    syncPrintStaffToggle();
+    $('staffPrintBtn').onclick=()=>{closeModal();setTimeout(()=>$('printBtn').click(),120)};
+    $('staffPrintToggleBtn').onclick=()=>$('togglePrintStaffBtn').click();
     $('modalForm').onsubmit=function(e){e.preventDefault();closeModal()};
     let draggedId='';
     $('modalBody').ondragstart=function(ev){const handle=ev.target.closest('[data-drag-handle]');if(!handle){ev.preventDefault();return}draggedId=handle.dataset.dragHandle;const row=handle.closest('[data-person-row]');if(row)row.classList.add('dragging');if(ev.dataTransfer){ev.dataTransfer.effectAllowed='move';ev.dataTransfer.setData('text/plain',draggedId)}};
@@ -1891,6 +1919,32 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     const t=String(Number(m[1])).padStart(2,'0')+':'+m[2];
     return TIMES.includes(t)?t:'';
   }
+  function openQuickNameDialog(){
+    const serviceNames={'OPU':'OPU','DOĞUMHANE':'Doğumhane','MR':'MR'};
+    const selectedTime=TIMES.includes('08:00')?'08:00':TIMES[0];
+    const timeOptions=TIMES.map(time=>`<option value="${esc(time)}" ${time===selectedTime?'selected':''}>${esc(time)}</option>`).join('');
+    const serviceOptions=SERVICES.map(service=>`<option value="${esc(service)}" ${service==='OPU'?'selected':''}>${esc(serviceNames[service]||service)}</option>`).join('');
+    const body=`<div class="quick-name-dialog-grid">
+      <div class="field"><label for="quickNameTime">Saat</label><select id="quickNameTime">${timeOptions}</select></div>
+      <div class="field"><label for="quickNameService">Birim</label><select id="quickNameService">${serviceOptions}</select></div>
+      <div class="field span-2"><label for="quickNameLabel">Kısa isim</label><input id="quickNameLabel" maxlength="80" value="OPU" placeholder="Örn. OPU, Doğumhane, MR" required></div>
+      <div class="notice span-2">Seçtiğin saat ve birime kısa ad doğrudan eklenir. Kayıttan sonra hücreye dokunarak metni düzenleyebilirsin.</div>
+    </div>`;
+    openModal('Kısa isim ekle',body,false);
+    $('modalForm').onsubmit=function(ev){
+      ev.preventDefault();
+      const time=$('quickNameTime').value,service=$('quickNameService').value,name=$('quickNameLabel').value.trim();
+      if(!time||!service||!name){showToast('Saat, birim ve kısa isim gerekli');return}
+      data.events.push({id:makeId('e'),date:$('planDate').value||today(),block:$('blockSelect').value,time,service,name});
+      closeModal();saveData('Kısa isim eklendi');
+    };
+    $('quickNameService').onchange=function(){
+      const field=$('quickNameLabel');
+      if(!field)return;
+      const defaults=['OPU','Doğumhane','MR'];
+      if(!field.value.trim()||defaults.includes(field.value.trim()))field.value=serviceNames[this.value]||this.value;
+    };
+  }
   function openPasteSchedule(){
     const body=`<div class="notice"><strong>Google Sheets'ten aktarım</strong><br>Google Sheets'te başlık satırıyla birlikte Saat, OPU, DOĞUMHANE ve MR sütunlarını kopyalayın. Saatler ve sütun sırası kontrol edilir. Aktarım, seçili tarih ve bloktaki mevcut gün içi programın yerine geçer; işlem öncesi onay istenir.</div><div class="field"><label for="schedulePasteArea">Kopyalanan tablo (Ctrl+V / ⌘V)</label><textarea id="schedulePasteArea" rows="12" placeholder="Saat\tOPU\tDOĞUMHANE\tMR" style="font-family:monospace;white-space:pre;min-height:220px"></textarea></div><div id="pasteScheduleStatus" class="notice">Beklenen sütun sayısı: 4 (Saat + 3 birim). Boş hücreler boş kalır.</div>`;
     openModal('Gün içi programı yapıştır',body,false);
@@ -1963,7 +2017,16 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     if(found.length)cell.innerHTML=found.map(e=>`<div class="event" data-event-id="${esc(e.id)}" title="Metni düzenlemek için tıklayın"><span class="event-name">${esc(e.name).replace(/\n/g,'<br>')}</span><button type="button" class="event-delete screen-only" data-delete-event="${esc(e.id)}" aria-label="Program kaydını sil" title="Sil">×</button></div>`).join('');
     else cell.innerHTML=emptyScheduleCellButton(service);
   }
-  // Edit text directly in its schedule cell; Enter saves, Shift+Enter adds a line.
+  function addQuickScheduleEvent(cell,service){
+    const shortName=service==='DOĞUMHANE'?'Doğumhane':service==='MR'?'MR':'OPU';
+    const date=$('planDate').value||today(),block=$('blockSelect').value,time=cell.dataset.time;
+    if(data.events.some(event=>event.date===date&&event.block===block&&event.time===time&&event.service===service)){
+      showToast('Bu hücrede zaten kayıt var');return;
+    }
+    data.events.push({id:makeId('e'),date,block,time,service,name:shortName});
+    saveData(shortName+' eklendi');
+  }
+  // Edit existing text directly; quick-add buttons above create a saved short name immediately.
   function startInlineEditor(cell, existing=null, initialText=''){
     if(!cell||cell.querySelector('.schedule-inline-editor'))return;
     const initial=existing?existing.name:initialText;
@@ -1996,7 +2059,8 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     const deleteButton=ev.target.closest('[data-delete-event]');
     if(deleteButton){ev.preventDefault();ev.stopPropagation();const id=deleteButton.dataset.deleteEvent;data.events=data.events.filter(e=>e.id!==id);saveData('Program kaydı silindi');return}
     const cell=ev.target.closest('td[data-time]');if(!cell)return;
-    const quickAdd=ev.target.closest('[data-quick-add]');    if(quickAdd){ev.preventDefault();ev.stopPropagation();startInlineEditor(cell,null,quickAdd.dataset.quickAdd);return}
+    const quickAdd=ev.target.closest('[data-quick-add]');
+    if(quickAdd){ev.preventDefault();ev.stopPropagation();addQuickScheduleEvent(cell,quickAdd.dataset.quickAdd);return}
     const eventEl=ev.target.closest('[data-event-id]');
     if(eventEl){const event=data.events.find(e=>e.id===eventEl.dataset.eventId);if(event)startInlineEditor(cell,event);return}
     if(ev.target.closest('.add-cell')||ev.target===cell)startInlineEditor(cell,null);
@@ -2239,7 +2303,7 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     finally{ev.target.value='';}
   };
   // Toolbar buttons and dialogs.
-  $('addRosterRow').onclick=addRosterRow;$('pasteScheduleBtn').onclick=openPasteSchedule;$('manageStaffBtn').onclick=staffManager;$('printBtn').onclick=()=>{const d=$('planDate').value||today();document.title=`${dateLabel(d)} A Blok`;refreshStaffSummaryForOutput();window.print()};$('togglePrintStaffBtn').onclick=()=>{data.settings=data.settings||{};const shown=data.settings.showPersonnelRosterWhenPrinting!==false;data.settings.showPersonnelRosterWhenPrinting=!shown;syncPrintStaffToggle();persistToStorage();showToast(data.settings.showPersonnelRosterWhenPrinting?'Personel listesi çıktı için açıldı':'Personel listesi çıktı için gizlendi')};$('photoExportBtn').onclick=exportSheetAsPhoto;$('closeModal').onclick=closeModal;$('cancelModal').onclick=closeModal;$('clearAssistantsBtn').onclick=clearAssistantAssignments;$('clearDoctorsBtn').onclick=clearDoctorRow;$('clearScheduleBtn').onclick=clearDailySchedule;
+  $('addRosterRow').onclick=addRosterRow;$('quickNameBtn').onclick=openQuickNameDialog;$('manageStaffBtn').onclick=staffManager;$('printBtn').onclick=()=>{const d=$('planDate').value||today();document.title=`${dateLabel(d)} A Blok`;refreshStaffSummaryForOutput();window.print()};$('togglePrintStaffBtn').onclick=()=>{data.settings=data.settings||{};const shown=data.settings.showPersonnelRosterWhenPrinting!==false;data.settings.showPersonnelRosterWhenPrinting=!shown;syncPrintStaffToggle();persistToStorage();showToast(data.settings.showPersonnelRosterWhenPrinting?'Personel listesi çıktı için açıldı':'Personel listesi çıktı için gizlendi')};$('photoExportBtn').onclick=()=>{setBottomNavActive('photo');exportSheetAsPhoto()};$('navPlanBtn').onclick=()=>{setBottomNavActive('plan');closeModal();$('sheet').scrollIntoView({behavior:'smooth',block:'start'})};$('navStaffBtn').onclick=()=>{setBottomNavActive('staff');$('manageStaffBtn').click()};$('closeModal').onclick=closeModal;$('cancelModal').onclick=closeModal;$('clearAssistantsBtn').onclick=clearAssistantAssignments;$('clearDoctorsBtn').onclick=clearDoctorRow;$('clearScheduleBtn').onclick=clearDailySchedule;
 
   async function exportSheetAsPhoto(){
     const btn=$('photoExportBtn');
@@ -2270,7 +2334,7 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     }catch(err){
       document.body.classList.remove('photo-export-mode');
       alert((err&&err.message)||'Fotoğraf oluşturulamadı. Lütfen tekrar deneyin.');
-    }finally{btn.disabled=false;btn.textContent=oldText;}
+    }finally{btn.disabled=false;btn.textContent=oldText;setBottomNavActive('plan');}
   }
 
   function prepareLessonsForPrint(){
@@ -2469,5 +2533,140 @@ body.photo-export-mode .schedule .doctor-row .multi-picker-label { text-align:ce
 })();
 </script>
 
+
+<style id="modern-mobile-app-overrides">
+:root{--ink:#1f2937;--muted:#64748b;--line:#d7e0eb;--paper:#fff;--bg:#f1f5f9;--accent:#24538a;--soft:#f3f7fc;--red:#b42332}
+html,body{background:#f1f5f9!important;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+body{color:#1f2937;font-size:13px;padding-bottom:100px}
+.app{max-width:1200px;margin:0 auto;padding:16px 16px 26px}
+.app-header{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 16px;margin:0 0 14px;background:rgba(255,255,255,.96);border:1px solid #e0e8f1;border-radius:18px;box-shadow:0 5px 24px rgba(23,51,82,.06)}
+.toolbar-title{gap:12px}
+.toolbar-title .mark{height:44px;width:44px;border-radius:14px;background:linear-gradient(145deg,#2f6eb0,#20456e);box-shadow:0 4px 12px rgba(36,83,138,.22);font-size:18px}
+.toolbar-title h1{font-size:18px;letter-spacing:-.35px;color:#1f2d3d}
+.toolbar-title p{margin:3px 0 0;color:#758399;font-size:11px}
+.top-utility-actions{display:flex;align-items:center;justify-content:flex-end;gap:7px;width:auto!important;flex:0 0 auto;flex-wrap:wrap}
+.utility-btn{padding:5px 8px!important;min-height:26px;border-radius:8px!important;font-size:9px!important;font-weight:650!important;letter-spacing:0}
+.utility-clear{color:#9a3140!important;background:#fff7f7!important;border-color:#f0d4d8!important}
+.utility-reset{color:#fff!important;background:#a72a38!important;border:1px solid #a72a38!important}
+.utility-install{padding:7px 10px!important;border-radius:10px!important}
+.sheet{background:#fff;border:1px solid #e0e7ef;border-radius:18px;box-shadow:0 8px 28px rgba(31,54,82,.07);padding:20px}
+.sheet-head{border-bottom:1px solid #dce4ee}
+.sheet-title{font-size:14px;color:#223c5c;letter-spacing:1.1px}
+.date-picker-display{border:1px solid #d6e0eb!important;border-radius:9px!important;background:#f8fafc!important;padding:7px 9px!important;color:#234568!important}
+.date-box label{color:#607087!important}
+.section-head{margin:15px 0 7px;gap:10px}
+.section-head .section-label{font-size:11px;color:#30445c;letter-spacing:.35px}
+.schedule-toolbar-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.schedule-toolbar-actions .btn{padding:7px 10px;border-radius:10px;font-size:10px}
+.btn{border-radius:10px;border-color:#d5deea;padding:8px 11px;font-size:11px;transition:background .15s,border-color .15s,transform .15s}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:#24538a;border-color:#24538a}
+.btn-danger{background:#fff7f7;color:#ad3341;border-color:#f0d8dc}
+.roster-wrap,.schedule-wrap{overflow-x:hidden!important;max-width:100%}
+.roster,.schedule{width:100%!important;min-width:0!important;table-layout:fixed}
+.roster th,.roster td{border-color:#d7e0eb;padding:4px 5px}
+.roster th{background:#f3f6fa;color:#46586e}
+.schedule{font-size:10px;border-collapse:separate;border-spacing:0;border-radius:12px;overflow:hidden}
+.schedule th,.schedule td{border-color:#d9e2ed}
+.schedule thead th{background:#edf3fa;color:#3b526d;text-align:center!important;vertical-align:middle;height:31px;padding:5px 3px;font-size:10px}
+.schedule thead th:first-child{width:48px}
+.schedule tbody td{height:30px;padding:3px 3px;vertical-align:middle}
+.schedule tbody td:first-child{width:48px;background:#f7f9fc;color:#5b6d82}
+.schedule td.drop-target{text-align:center;vertical-align:middle;min-width:0;overflow-wrap:anywhere}
+.schedule .add-cell{opacity:1!important;display:block;width:100%;min-height:25px;height:auto;padding:5px 1px;border:1px dashed #bed0e3;border-radius:7px;background:#f8fbff;color:#24538a;font-size:9px;font-weight:700;line-height:1.1;white-space:normal}
+.schedule .add-cell.quick-add-service:focus-visible{outline:2px solid #6b9bd0;outline-offset:1px}
+.schedule .event{min-height:24px;padding:4px 15px 4px 4px;margin:1px 0;border-radius:7px;border-left:3px solid #4a7aa9;background:#eef5fc!important;text-align:center}
+.schedule .event-name{font-size:9px;line-height:1.2;text-align:center;overflow-wrap:anywhere}
+.schedule .event-delete{position:absolute;top:1px;right:1px;border-radius:5px;font-size:11px;padding:0 3px;background:#fff}
+.doctor-row td{background:#f7f9fc!important}
+.bottom-notes.top-notes{gap:14px;margin-top:12px}
+.bottom-notes.top-notes .note-field{border:1px solid #e0e7f0;border-radius:10px;background:#fbfcfe;padding:4px 7px;grid-template-columns:140px minmax(0,1fr);min-height:31px}
+.bottom-notes.top-notes .note-field label{color:#51647b;font-size:10px}
+.bottom-notes.top-notes .note-field input,.bottom-notes.top-notes .note-field select,.bottom-notes.top-notes .note-field textarea{font-size:11px}
+.staff-overview-column{border:1px solid #dbe4ef;border-radius:11px;background:#fbfdff;padding:8px 10px}
+.staff-overview-column>.meta-label,.staff-overview-head .meta-label{color:#36516d;font-size:11px}
+.bottom-nav{position:fixed;z-index:100;left:50%;transform:translateX(-50%);bottom:max(9px,env(safe-area-inset-bottom));width:min(520px,calc(100% - 20px));display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;padding:7px;border:1px solid rgba(211,222,234,.92);border-radius:20px;background:rgba(255,255,255,.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 10px 38px rgba(25,48,75,.18)}
+.bottom-nav-item{display:flex;min-width:0;flex-direction:column;align-items:center;justify-content:center;gap:4px;border:0;border-radius:13px;padding:7px 3px;background:transparent;color:#718096;font-size:10px;font-weight:700;line-height:1.15}
+.bottom-nav-item svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round;flex:0 0 auto}
+.bottom-nav-item span{white-space:nowrap}
+.bottom-nav-item.is-active{background:#eaf2fc;color:#24538a}
+.modal{border-radius:18px;border:1px solid #dfe7f0}
+.modal-head{padding:14px 16px;background:#fbfcfe}
+.modal-head h2{color:#243b56;font-size:16px}
+.modal-body{padding:14px 16px}
+.modal-actions{padding:11px 16px}
+.staff-modal-controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px;padding:9px;border:1px solid #dce6f1;border-radius:12px;background:#f7faff}
+.staff-modal-controls .btn{flex:1 1 160px;min-height:38px}
+.quick-name-dialog-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}
+.quick-name-dialog-grid .span-2{grid-column:1/-1}
+.quick-name-dialog-grid .field input,.quick-name-dialog-grid .field select{min-height:40px}
+body.photo-export-mode .bottom-nav{display:none!important}
+body.photo-export-mode .schedule .add-cell,body.photo-export-mode .quick-name-actions{display:none!important}
+@media(max-width:760px){
+  body{padding-bottom:92px}
+  .app{padding:8px 7px 100px}
+  .app-header{padding:10px 10px;gap:8px;border-radius:15px;margin-bottom:9px}
+  .toolbar-title{gap:8px;min-width:0}
+  .toolbar-title .mark{height:38px;width:38px;border-radius:12px;font-size:16px}
+  .toolbar-title h1{font-size:14px;letter-spacing:-.2px;white-space:nowrap}
+  .toolbar-title p{font-size:10px}
+  .top-utility-actions{gap:4px;max-width:130px}
+  .utility-btn{padding:4px 6px!important;min-height:23px;font-size:8px!important;border-radius:7px!important}
+  .app-header .utility-install{font-size:9px!important;padding:5px!important}
+  .sheet{padding:11px 8px;border-radius:14px}
+  .sheet-head-top{grid-template-columns:minmax(0,1fr) auto;gap:5px}
+  .sheet-title{font-size:12px;text-align:left}
+  .date-box{gap:3px}
+  .date-box label{font-size:9px}
+  .date-picker-display{font-size:10px!important;padding:5px 6px!important}
+  .weekday-name{font-size:9px}
+  .staff-overview-grid{gap:6px}
+  .staff-overview-column{padding:6px}
+  .staff-summary-person,.staff-summary-name{font-size:10px}
+  .bottom-notes.top-notes{grid-template-columns:1fr;gap:5px;margin-top:8px}
+  .bottom-notes.top-notes .note-field{grid-template-columns:118px minmax(0,1fr);gap:5px;padding:3px 5px;min-height:29px}
+  .section-head{margin:11px 0 5px;align-items:center}
+  .section-head .section-label{font-size:9px;line-height:1.2}
+  .schedule-toolbar-actions{gap:4px}
+  .schedule-toolbar-actions .btn{padding:6px 7px;font-size:9px;border-radius:8px}
+  .roster th,.roster td{padding:3px 3px;font-size:9px;height:25px}
+  .roster th:first-child,.roster td:first-child{width:48px!important}
+  .roster th:nth-child(2),.roster td:nth-child(2),.roster th:nth-child(3),.roster td:nth-child(3){width:auto!important}
+  .roster select,.roster input{font-size:9px!important}
+  .schedule-wrap{overflow-x:hidden!important}
+  .schedule{min-width:0!important;width:100%!important;font-size:9px}
+  .schedule thead th{height:27px;padding:4px 1px;font-size:9px}
+  .schedule thead th:first-child,.schedule tbody td:first-child{width:42px!important}
+  .schedule tbody td{height:28px;padding:2px 1px}
+  .schedule .add-cell{font-size:8px;padding:5px 0;min-height:25px}
+  .schedule .event{padding:4px 12px 4px 2px}
+  .schedule .event-name{font-size:8.5px}
+  .schedule .event-delete{font-size:10px}
+  .schedule .doctor-row .multi-picker-trigger{padding:5px 17px 5px 2px!important}
+  .schedule .doctor-row .multi-picker-label{font-size:8.5px!important;overflow-wrap:anywhere}
+  .note-field{grid-template-columns:118px minmax(0,1fr)}
+  .form-grid{grid-template-columns:1fr}
+  .quick-name-dialog-grid{grid-template-columns:1fr}
+  .quick-name-dialog-grid .span-2{grid-column:auto}
+  .manage-header,.manage-person{grid-template-columns:minmax(0,1fr) 88px auto!important}
+  .manage-header>span:first-child,.manage-person .drag-handle{display:none}
+  .manage-header>span:nth-child(4){display:none}
+  .manage-person [data-person-rotation]{grid-column:1/-1}
+}
+@media(max-width:360px){
+  .toolbar-title h1{font-size:12px}
+  .top-utility-actions{max-width:112px}
+  .schedule thead th:first-child,.schedule tbody td:first-child{width:37px!important}
+  .schedule .add-cell{font-size:7.5px}
+  .bottom-nav-item span{font-size:9px}
+  .bottom-nav-item svg{width:18px;height:18px}
+}
+@media print{
+  body{padding:0!important;background:#fff!important}
+  .bottom-nav,.top-utility-actions,.staff-modal-controls{display:none!important}
+  .app-header{display:none!important}
+  .app{padding:0!important}
+}
+</style>
 </body>
 </html>
