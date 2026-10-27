@@ -2123,8 +2123,11 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
   function startInlineEditor(cell, existing=null, initialText=''){
     if(!cell||cell.querySelector('.schedule-inline-editor'))return;
     const initial=existing?existing.name:initialText;
-    cell.innerHTML='<textarea class="schedule-inline-editor" rows="1" aria-label="Program metni" placeholder=""></textarea>';
-    const editor=cell.querySelector('.schedule-inline-editor');editor.value=initial;let finished=false;
+    cell.innerHTML='<textarea class="schedule-inline-editor" rows="1" aria-label="Program metni" placeholder="" style="font-size:16px!important;line-height:1.25;zoom:1;transform:none;touch-action:manipulation"></textarea>';
+    const editor=cell.querySelector('.schedule-inline-editor');
+    editor.style.setProperty('font-size','16px','important');
+    editor.style.setProperty('-webkit-text-size-adjust','100%','important');
+    editor.value=initial;let finished=false;
     const finish=(cancel=false,fullRefresh=true)=>{
       if(finished)return;finished=true;
       if(cancel){if(fullRefresh)renderSchedule();else renderScheduleCell(cell);return}
@@ -2146,7 +2149,7 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     editor.addEventListener('input',()=>{editor.style.height='auto';editor.style.height=Math.max(26,editor.scrollHeight)+'px'});
     editor.addEventListener('keydown',ev=>{if(ev.key==='Enter'&&ev.ctrlKey){ev.preventDefault();const start=editor.selectionStart,end=editor.selectionEnd;editor.setRangeText('\n',start,end,'end');editor.style.height='auto';editor.style.height=Math.max(26,editor.scrollHeight)+'px';return}if(ev.key==='Enter'){ev.preventDefault();finish(false,true)}else if(ev.key==='Escape'){ev.preventDefault();finish(true,true)}});
     editor.addEventListener('blur',()=>finish(false,false));
-    editor.focus();if(!existing&&initialText)editor.setSelectionRange(0,editor.value.length);else editor.setSelectionRange(editor.value.length,editor.value.length);
+    try{editor.focus({preventScroll:true})}catch(e){editor.focus()}if(!existing&&initialText)editor.setSelectionRange(0,editor.value.length);else editor.setSelectionRange(editor.value.length,editor.value.length);
   }
   $('scheduleBody').addEventListener('click',ev=>{
     const cell=ev.target.closest('td[data-time]');
@@ -2429,36 +2432,128 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
   // Toolbar buttons and dialogs.
   $('addRosterRow').onclick=addRosterRow;$('quickNameBtn').onclick=toggleQuickNameMode;$('manageStaffBtn').onclick=staffManager;$('printBtn').onclick=()=>{const d=$('planDate').value||today();document.title=`${dateLabel(d)} A Blok`;refreshStaffSummaryForOutput();window.print()};$('togglePrintStaffBtn').onclick=()=>{data.settings=data.settings||{};const shown=data.settings.showPersonnelRosterWhenPrinting!==false;data.settings.showPersonnelRosterWhenPrinting=!shown;syncPrintStaffToggle();persistToStorage();showToast(data.settings.showPersonnelRosterWhenPrinting?'Personel listesi çıktı için açıldı':'Personel listesi çıktı için gizlendi')};$('photoExportBtn').onclick=()=>{setBottomNavActive('photo');exportSheetAsPhoto()};$('navPlanBtn').onclick=()=>{setBottomNavActive('plan');closeModal();$('sheet').scrollIntoView({behavior:'smooth',block:'start'})};$('navStaffBtn').onclick=()=>{setBottomNavActive('staff');$('manageStaffBtn').click()};$('closeModal').onclick=closeModal;$('cancelModal').onclick=closeModal;$('clearAssistantsBtn').onclick=clearAssistantAssignments;$('clearDoctorsBtn').onclick=clearDoctorRow;$('clearScheduleBtn').onclick=clearDailySchedule;
 
+  let photoBlobForShare=null,photoUrlForShare='',photoNameForShare='';
   async function exportSheetAsPhoto(){
     const btn=$('photoExportBtn');
     const sheet=$('sheet');
     const date=$('planDate').value||today();
     refreshStaffSummaryForOutput();
     const oldText=btn.textContent;
-    btn.disabled=true;btn.textContent='Fotoğraf hazırlanıyor…';
+    const layoutSnapshot={
+      width:sheet.style.width,
+      minHeight:sheet.style.minHeight,
+      padding:sheet.style.padding,
+      margin:sheet.style.margin,
+      photoMode:document.body.classList.contains('photo-export-mode')
+    };
     try{
-      // Load html2canvas only when needed so the planning page remains lightweight.
+      btn.disabled=true;
+      btn.textContent='Fotoğraf hazırlanıyor…';
       if(!window.html2canvas){
         await new Promise((resolve,reject)=>{
           const script=document.createElement('script');
           script.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
-          script.onload=resolve;script.onerror=()=>reject(new Error('Fotoğraf dışa aktarma kütüphanesi yüklenemedi. İnternet bağlantısını kontrol edin.'));
+          script.onload=resolve;
+          script.onerror=()=>reject(new Error('Fotoğraf oluşturma kütüphanesi yüklenemedi. İnternet bağlantısını kontrol edin.'));
           document.head.appendChild(script);
         });
       }
-      const priorWidth=sheet.style.width,priorMinHeight=sheet.style.minHeight,priorPadding=sheet.style.padding,priorMargin=sheet.style.margin,priorClass=document.body.classList.contains('photo-export-mode');
       document.body.classList.add('photo-export-mode');
-      sheet.style.width='794px';sheet.style.minHeight='1123px';sheet.style.padding='24px';sheet.style.margin='0';
-      // Wait for the browser to apply the A4-like export layout before rendering.
+      sheet.style.width='794px';
+      sheet.style.minHeight='1123px';
+      sheet.style.padding='24px';
+      sheet.style.margin='0';
       await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
-      const canvas=await window.html2canvas(sheet,{backgroundColor:'#ffffff',scale:2,useCORS:true,logging:false,width:794,windowWidth:794,scrollX:0,scrollY:0});
-      const link=document.createElement('a');link.download=`${date.replace(/[^0-9-]/g,'-')}_A_Blok.png`;link.href=canvas.toDataURL('image/png');link.click();
-      sheet.style.width=priorWidth;sheet.style.minHeight=priorMinHeight;sheet.style.padding=priorPadding;sheet.style.margin=priorMargin;
-      if(!priorClass)document.body.classList.remove('photo-export-mode');
+      const canvas=await window.html2canvas(sheet,{
+        backgroundColor:'#ffffff',scale:2,useCORS:true,logging:false,
+        width:794,windowWidth:794,scrollX:0,scrollY:0
+      });
+      const blob=await new Promise((resolve,reject)=>{
+        if(!canvas.toBlob){
+          try{
+            const dataUrl=canvas.toDataURL('image/png');
+            const parts=dataUrl.split(',');
+            const binary=atob(parts[1]);
+            const bytes=new Uint8Array(binary.length);
+            for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);
+            resolve(new Blob([bytes],{type:'image/png'}));
+          }catch(err){reject(err)}
+          return;
+        }
+        canvas.toBlob(result=>{
+          if(result)resolve(result);
+          else reject(new Error('Fotoğraf dosyası oluşturulamadı. Tekrar deneyin.'));
+        },'image/png');
+      });
+      const safeDate=date.replace(/[^0-9-]/g,'-');
+      const filename=safeDate+'_A_Blok.png';
+      if(photoUrlForShare){try{URL.revokeObjectURL(photoUrlForShare)}catch(e){}}
+      photoBlobForShare=blob;
+      photoNameForShare=filename;
+      photoUrlForShare=URL.createObjectURL(blob);
+
+      // Try a direct download first. On iPhone/PWA a second, explicit Share/Save action is available below.
+      const directLink=document.createElement('a');
+      directLink.href=photoUrlForShare;
+      directLink.download=filename;
+      directLink.style.display='none';
+      document.body.appendChild(directLink);
+      directLink.click();
+      directLink.remove();
+
+      const resultBody=
+        '<div class="photo-save-panel">'+
+          '<p class="photo-save-message">Fotoğraf hazır. İndirme başlamadıysa aşağıdaki düğmeyle Fotoğraflara kaydedebilir veya paylaşabilirsin.</p>'+
+          '<img class="photo-save-preview" src="'+photoUrlForShare+'" alt="Gün içi program fotoğrafı">'+
+          '<button type="button" class="btn btn-primary photo-save-action" id="photoSaveShareBtn">Fotoğrafı Kaydet / Paylaş</button>'+
+          '<a class="photo-save-retry" id="photoRetryDownloadLink" href="'+photoUrlForShare+'" download="'+filename+'" target="_blank" rel="noopener">Fotoğrafı tekrar indir / aç</a>'+
+        '</div>';
+      openModal('Fotoğraf hazır',resultBody,false);
+      $('cancelModal').textContent='Kapat';
+      $('modalForm').onsubmit=ev=>ev.preventDefault();
+      const submit=$('modalForm').querySelector('button[type="submit"]');
+      if(submit)submit.classList.add('hidden');
+      $('photoSaveShareBtn').onclick=async()=>{
+        const blobToSave=photoBlobForShare;
+        const urlToSave=photoUrlForShare;
+        const nameToSave=photoNameForShare;
+        if(!blobToSave||!urlToSave)return;
+        try{
+          const file=new File([blobToSave],nameToSave,{type:'image/png'});
+          if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
+            await navigator.share({files:[file],title:'EN SEVDİKLERİM',text:'Gün içi ameliyathane programı'});
+            showToast('Paylaşım menüsü açıldı.');
+            return;
+          }
+        }catch(err){
+          if(err&&err.name==='AbortError')return;
+        }
+        const fallback=document.createElement('a');
+        fallback.href=urlToSave;
+        fallback.download=nameToSave;
+        fallback.target='_blank';
+        fallback.rel='noopener';
+        document.body.appendChild(fallback);
+        fallback.click();
+        fallback.remove();
+        showToast('İndirme başlatıldı. Açılan görseli kaydedebilirsin.');
+      };
+      $('photoRetryDownloadLink').onclick=()=>{
+        showToast('Fotoğraf dosyası açılıyor veya indiriliyor.');
+      };
+      showToast('Fotoğraf hazırlandı.');
     }catch(err){
-      document.body.classList.remove('photo-export-mode');
       alert((err&&err.message)||'Fotoğraf oluşturulamadı. Lütfen tekrar deneyin.');
-    }finally{btn.disabled=false;btn.textContent=oldText;setBottomNavActive('plan');}
+    }finally{
+      sheet.style.width=layoutSnapshot.width;
+      sheet.style.minHeight=layoutSnapshot.minHeight;
+      sheet.style.padding=layoutSnapshot.padding;
+      sheet.style.margin=layoutSnapshot.margin;
+      if(!layoutSnapshot.photoMode)document.body.classList.remove('photo-export-mode');
+      btn.disabled=false;
+      btn.textContent=oldText;
+      setBottomNavActive('plan');
+    }
   }
 
   function prepareLessonsForPrint(){
@@ -3038,6 +3133,16 @@ body.photo-export-mode .schedule .event-name {
 }
 .bottom-notes.top-notes .clinic-note-action-line,
 .bottom-notes.top-notes .clinic-note-display-line{margin-top:0!important}
+</style>
+
+
+<style id="photo-export-save-actions">
+.photo-save-panel{display:grid;gap:10px;justify-items:center;min-width:0}
+.photo-save-message{margin:0;color:#334155;font-size:12px;line-height:1.45;text-align:center}
+.photo-save-preview{display:block;width:auto;max-width:100%;max-height:55vh;object-fit:contain;border:1px solid #dbe3ec;border-radius:7px;background:#fff}
+.photo-save-action{width:100%;min-height:42px;font-size:12px!important}
+.photo-save-retry{display:block;padding:5px 8px;color:#24538a;font-size:12px;text-decoration:underline;text-align:center}
+@media(max-width:760px){.photo-save-preview{max-height:48vh}.photo-save-message{font-size:11px}}
 </style>
 
 </body>
