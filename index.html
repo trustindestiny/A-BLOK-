@@ -1795,7 +1795,7 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
   }
   function renderAll(){syncMetadata();syncQuickNameToggle();renderRoster();renderSchedule();renderNotes();renderMultiPickers();renderStaffSummary();syncPrintStaffToggle()}
   function addRosterRow(){data.rooms.push({id:makeId('r'),name:'',groupLabel:'Ek satır',expert:'',assistant:'',rotation:''});saveData('Oda satırı eklendi')}
-  function openModal(title,body,editing=false){$('modalTitle').textContent=title;$('modalBody').innerHTML=body;$('modalBackdrop').classList.add('open');$('modalBackdrop').setAttribute('aria-hidden','false');$('deleteModal').classList.toggle('hidden',!editing);setTimeout(()=>{const input=$('modalBody').querySelector('input,select,textarea');if(input)input.focus()},20)}
+  function openModal(title,body,editing=false){$('modalTitle').textContent=title;$('modalBody').innerHTML=body;$('modalBackdrop').classList.add('open');$('modalBackdrop').setAttribute('aria-hidden','false');$('deleteModal').classList.toggle('hidden',!editing);$('cancelModal').textContent='Vazgeç';const submit=$('modalForm').querySelector('button[type="submit"]');if(submit)submit.classList.remove('hidden');setTimeout(()=>{const input=$('modalBody').querySelector('input,select,textarea');if(input)input.focus()},20)}
   function closeModal(){$('modalBackdrop').classList.remove('open');$('modalBackdrop').setAttribute('aria-hidden','true');$('modalForm').onsubmit=null;editingEvent=null}
   function eventForm(existing=null,initial={}){
     editingEvent=existing?existing.id:null;
