@@ -1,4 +1,4 @@
-const CACHE_NAME = "a-blok-pwa-v9";
+const CACHE_NAME = "a-blok-pwa-v10";
 const APP_SHELL = [
   "./",
   "./index.html",
