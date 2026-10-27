@@ -971,8 +971,44 @@ body.photo-export-mode .staff-overview-grid .staff-summary-person[data-output-us
 body.photo-export-mode .staff-overview-grid .staff-summary-person:not([data-output-used="true"]) { display:none!important; }
 body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:none!important; }
 </style>
+
+<style id="en-sevdiklerim-splash-style">
+.splash-screen{position:fixed;inset:0;z-index:10000;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;overflow:hidden;background:radial-gradient(ellipse at 50% 38%,#1e456f 0%,#112b49 52%,#0a172b 100%);color:#fff;opacity:1;visibility:visible;transition:opacity .42s ease,visibility .42s ease}
+.splash-screen.is-hidden{opacity:0;visibility:hidden;pointer-events:none}
+.splash-aura{position:absolute;width:min(80vw,480px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,rgba(102,159,214,.18),rgba(102,159,214,0) 68%);pointer-events:none}
+.splash-emblem{z-index:1;width:clamp(104px,26vw,142px);height:clamp(104px,26vw,142px);display:grid;place-items:center;border-radius:50%;border:1px solid rgba(255,255,255,.17);background:linear-gradient(145deg,rgba(255,255,255,.11),rgba(255,255,255,.025));box-shadow:0 20px 60px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.12)}
+.splash-emblem svg{width:88%;height:88%;overflow:visible}
+.splash-emblem-ring{fill:none;stroke:rgba(228,239,250,.22);stroke-width:1}
+.splash-staff,.splash-serpent,.splash-staff-cap,.splash-snake-tongue{fill:none;stroke:#f5d28d;stroke-width:4.4;stroke-linecap:round;stroke-linejoin:round}
+.splash-serpent{stroke:#f9fafb;stroke-width:5}
+.splash-snake-head{fill:#f9fafb;stroke:#f5d28d;stroke-width:2}
+.splash-snake-eye{fill:#173452}
+.splash-title{position:relative;z-index:1;margin-top:24px;font-size:clamp(25px,6vw,31px);font-weight:650;letter-spacing:.15px;color:#fff;text-align:center;text-shadow:0 2px 18px rgba(0,0,0,.2)}
+.splash-subtitle{position:relative;z-index:1;margin-top:9px;font-size:10px;font-weight:600;letter-spacing:2.4px;color:#b8cbe0;text-align:center}
+.splash-loader{position:relative;z-index:1;width:64px;height:3px;border-radius:999px;overflow:hidden;margin-top:36px;background:rgba(255,255,255,.14)}
+.splash-loader span{display:block;width:36%;height:100%;border-radius:999px;background:#f5d28d;animation:splashLoading 1s ease-in-out infinite alternate}
+@keyframes splashLoading{from{transform:translateX(0)}to{transform:translateX(178%)}}
+@media(prefers-reduced-motion:reduce){.splash-screen{transition:none}.splash-loader span{animation:none;width:70%}}
+</style>
 </head>
 <body>
+<div id="splashScreen" class="splash-screen" role="status" aria-live="polite" aria-label="En Sevdiklerim yükleniyor">
+  <div class="splash-aura"></div>
+  <div class="splash-emblem" aria-hidden="true">
+    <svg viewBox="0 0 160 160" role="img" aria-label="Hipokrat sembolü">
+      <circle class="splash-emblem-ring" cx="80" cy="80" r="70"></circle>
+      <path class="splash-staff" d="M77 40 L77 126 M68 126 H87 M72 40 H82"></path>
+      <path class="splash-serpent" d="M83 43 C111 41 116 60 91 67 C59 76 58 91 83 98 C106 104 106 117 82 121"></path>
+      <circle class="splash-snake-head" cx="87" cy="39" r="7"></circle>
+      <circle class="splash-snake-eye" cx="89.5" cy="37.5" r="1.1"></circle>
+      <path class="splash-snake-tongue" d="M93 39 L99 36 M96 37 L99 39"></path>
+      <path class="splash-staff-cap" d="M71 33 Q77 28 83 33"></path>
+    </svg>
+  </div>
+  <div class="splash-title">En Sevdiklerim</div>
+  <div class="splash-subtitle">A BLOK · AMELİYATHANE</div>
+  <div class="splash-loader" aria-hidden="true"><span></span></div>
+</div>
 <div class="app">
   <header class="toolbar screen-only app-header">
     <div class="toolbar-title"><div class="mark" aria-hidden="true">A</div><div><h1>A Blok Ameliyathane</h1><p>Günlük planlama</p></div></div>
@@ -1027,7 +1063,7 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     </section>
 
     <section>
-      <div class="section-head"><div class="section-label">GÜN İÇİ PROGRAM</div><div class="schedule-toolbar-actions screen-only"><button type="button" class="btn btn-primary" id="quickNameBtn">Kısa İsim Ekle</button><button type="button" class="btn" id="clearScheduleBtn">Temizle</button></div></div><input id="eventSearch" type="hidden" value=""><input id="blockSelect" type="hidden" value="A Blok">
+      <div class="section-head"><div class="section-label">GÜN İÇİ PROGRAM</div><div class="schedule-toolbar-actions screen-only"><button type="button" class="btn" id="clearScheduleBtn">Temizle</button></div></div><input id="eventSearch" type="hidden" value=""><input id="blockSelect" type="hidden" value="A Blok">
       <div class="schedule-wrap"><table class="schedule"><thead><tr><th>Saat</th><th>OPU</th><th>DOĞUMHANE</th><th>MR</th></tr></thead><tbody id="scheduleBody"></tbody><tbody><tr class="doctor-row"><td><div class="doctor-row-label"><span>Hekim</span><button type="button" class="clear-doctors-btn screen-only" id="clearDoctorsBtn">Temizle</button></div></td><td><div class="multi-picker" data-multi-picker="doctorSlots" data-index="0" data-role-filter="all"></div></td><td><div class="multi-picker" data-multi-picker="doctorSlots" data-index="1" data-role-filter="all"></div></td><td><div class="multi-picker" data-multi-picker="doctorSlots" data-index="2" data-role-filter="all"></div></td></tr></tbody></table></div>
     </section>
 
@@ -1572,8 +1608,7 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
   }
   function eventMatches(e){const q=$('eventSearch').value.trim().toLocaleLowerCase('tr-TR');return !q||[e.name,e.service,e.room,e.expert,e.assistant,e.notes,e.time].join(' ').toLocaleLowerCase('tr-TR').includes(q)}
   function emptyScheduleCellButton(service){
-    const label=service==='DOĞUMHANE'?'Doğumhane Ekle':service==='MR'?'MR Ekle':'OPU Ekle';
-    return `<button class="add-cell quick-add-service screen-only" type="button" data-quick-add="${esc(service)}" aria-label="${esc(label)}" title="${esc(label)}">${esc(label)}</button>`;
+    return '<button class="add-cell screen-only" type="button" aria-label="Program metni ekle" title="Bu hücreye yaz">＋</button>';
   }
   function renderSchedule(){
     const date=$('planDate').value||today(),block=$('blockSelect').value;let out='';
@@ -1919,32 +1954,6 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     const t=String(Number(m[1])).padStart(2,'0')+':'+m[2];
     return TIMES.includes(t)?t:'';
   }
-  function openQuickNameDialog(){
-    const serviceNames={'OPU':'OPU','DOĞUMHANE':'Doğumhane','MR':'MR'};
-    const selectedTime=TIMES.includes('08:00')?'08:00':TIMES[0];
-    const timeOptions=TIMES.map(time=>`<option value="${esc(time)}" ${time===selectedTime?'selected':''}>${esc(time)}</option>`).join('');
-    const serviceOptions=SERVICES.map(service=>`<option value="${esc(service)}" ${service==='OPU'?'selected':''}>${esc(serviceNames[service]||service)}</option>`).join('');
-    const body=`<div class="quick-name-dialog-grid">
-      <div class="field"><label for="quickNameTime">Saat</label><select id="quickNameTime">${timeOptions}</select></div>
-      <div class="field"><label for="quickNameService">Birim</label><select id="quickNameService">${serviceOptions}</select></div>
-      <div class="field span-2"><label for="quickNameLabel">Kısa isim</label><input id="quickNameLabel" maxlength="80" value="OPU" placeholder="Örn. OPU, Doğumhane, MR" required></div>
-      <div class="notice span-2">Seçtiğin saat ve birime kısa ad doğrudan eklenir. Kayıttan sonra hücreye dokunarak metni düzenleyebilirsin.</div>
-    </div>`;
-    openModal('Kısa isim ekle',body,false);
-    $('modalForm').onsubmit=function(ev){
-      ev.preventDefault();
-      const time=$('quickNameTime').value,service=$('quickNameService').value,name=$('quickNameLabel').value.trim();
-      if(!time||!service||!name){showToast('Saat, birim ve kısa isim gerekli');return}
-      data.events.push({id:makeId('e'),date:$('planDate').value||today(),block:$('blockSelect').value,time,service,name});
-      closeModal();saveData('Kısa isim eklendi');
-    };
-    $('quickNameService').onchange=function(){
-      const field=$('quickNameLabel');
-      if(!field)return;
-      const defaults=['OPU','Doğumhane','MR'];
-      if(!field.value.trim()||defaults.includes(field.value.trim()))field.value=serviceNames[this.value]||this.value;
-    };
-  }
   function openPasteSchedule(){
     const body=`<div class="notice"><strong>Google Sheets'ten aktarım</strong><br>Google Sheets'te başlık satırıyla birlikte Saat, OPU, DOĞUMHANE ve MR sütunlarını kopyalayın. Saatler ve sütun sırası kontrol edilir. Aktarım, seçili tarih ve bloktaki mevcut gün içi programın yerine geçer; işlem öncesi onay istenir.</div><div class="field"><label for="schedulePasteArea">Kopyalanan tablo (Ctrl+V / ⌘V)</label><textarea id="schedulePasteArea" rows="12" placeholder="Saat\tOPU\tDOĞUMHANE\tMR" style="font-family:monospace;white-space:pre;min-height:220px"></textarea></div><div id="pasteScheduleStatus" class="notice">Beklenen sütun sayısı: 4 (Saat + 3 birim). Boş hücreler boş kalır.</div>`;
     openModal('Gün içi programı yapıştır',body,false);
@@ -2017,15 +2026,6 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     if(found.length)cell.innerHTML=found.map(e=>`<div class="event" data-event-id="${esc(e.id)}" title="Metni düzenlemek için tıklayın"><span class="event-name">${esc(e.name).replace(/\n/g,'<br>')}</span><button type="button" class="event-delete screen-only" data-delete-event="${esc(e.id)}" aria-label="Program kaydını sil" title="Sil">×</button></div>`).join('');
     else cell.innerHTML=emptyScheduleCellButton(service);
   }
-  function addQuickScheduleEvent(cell,service){
-    const shortName=service==='DOĞUMHANE'?'Doğumhane':service==='MR'?'MR':'OPU';
-    const date=$('planDate').value||today(),block=$('blockSelect').value,time=cell.dataset.time;
-    if(data.events.some(event=>event.date===date&&event.block===block&&event.time===time&&event.service===service)){
-      showToast('Bu hücrede zaten kayıt var');return;
-    }
-    data.events.push({id:makeId('e'),date,block,time,service,name:shortName});
-    saveData(shortName+' eklendi');
-  }
   // Edit existing text directly; quick-add buttons above create a saved short name immediately.
   function startInlineEditor(cell, existing=null, initialText=''){
     if(!cell||cell.querySelector('.schedule-inline-editor'))return;
@@ -2035,7 +2035,7 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     const finish=(cancel=false,fullRefresh=true)=>{
       if(finished)return;finished=true;
       if(cancel){if(fullRefresh)renderSchedule();else renderScheduleCell(cell);return}
-      const value=editor.value.trim();let message='';
+      const value=editor.value.trim().toLocaleUpperCase('tr-TR');let message='';
       if(value){
         const duplicate=namesInText(value).find(p=>personUsageLocations(p.name,{kind:'event',id:existing?existing.id:''}).length>0);
         if(duplicate){duplicateWarning(duplicate.name,personUsageLocations(duplicate.name,{kind:'event',id:existing?existing.id:''}))}
@@ -2059,8 +2059,6 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     const deleteButton=ev.target.closest('[data-delete-event]');
     if(deleteButton){ev.preventDefault();ev.stopPropagation();const id=deleteButton.dataset.deleteEvent;data.events=data.events.filter(e=>e.id!==id);saveData('Program kaydı silindi');return}
     const cell=ev.target.closest('td[data-time]');if(!cell)return;
-    const quickAdd=ev.target.closest('[data-quick-add]');
-    if(quickAdd){ev.preventDefault();ev.stopPropagation();addQuickScheduleEvent(cell,quickAdd.dataset.quickAdd);return}
     const eventEl=ev.target.closest('[data-event-id]');
     if(eventEl){const event=data.events.find(e=>e.id===eventEl.dataset.eventId);if(event)startInlineEditor(cell,event);return}
     if(ev.target.closest('.add-cell')||ev.target===cell)startInlineEditor(cell,null);
@@ -2303,7 +2301,7 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     finally{ev.target.value='';}
   };
   // Toolbar buttons and dialogs.
-  $('addRosterRow').onclick=addRosterRow;$('quickNameBtn').onclick=openQuickNameDialog;$('manageStaffBtn').onclick=staffManager;$('printBtn').onclick=()=>{const d=$('planDate').value||today();document.title=`${dateLabel(d)} A Blok`;refreshStaffSummaryForOutput();window.print()};$('togglePrintStaffBtn').onclick=()=>{data.settings=data.settings||{};const shown=data.settings.showPersonnelRosterWhenPrinting!==false;data.settings.showPersonnelRosterWhenPrinting=!shown;syncPrintStaffToggle();persistToStorage();showToast(data.settings.showPersonnelRosterWhenPrinting?'Personel listesi çıktı için açıldı':'Personel listesi çıktı için gizlendi')};$('photoExportBtn').onclick=()=>{setBottomNavActive('photo');exportSheetAsPhoto()};$('navPlanBtn').onclick=()=>{setBottomNavActive('plan');closeModal();$('sheet').scrollIntoView({behavior:'smooth',block:'start'})};$('navStaffBtn').onclick=()=>{setBottomNavActive('staff');$('manageStaffBtn').click()};$('closeModal').onclick=closeModal;$('cancelModal').onclick=closeModal;$('clearAssistantsBtn').onclick=clearAssistantAssignments;$('clearDoctorsBtn').onclick=clearDoctorRow;$('clearScheduleBtn').onclick=clearDailySchedule;
+  $('addRosterRow').onclick=addRosterRow;$('manageStaffBtn').onclick=staffManager;$('printBtn').onclick=()=>{const d=$('planDate').value||today();document.title=`${dateLabel(d)} A Blok`;refreshStaffSummaryForOutput();window.print()};$('togglePrintStaffBtn').onclick=()=>{data.settings=data.settings||{};const shown=data.settings.showPersonnelRosterWhenPrinting!==false;data.settings.showPersonnelRosterWhenPrinting=!shown;syncPrintStaffToggle();persistToStorage();showToast(data.settings.showPersonnelRosterWhenPrinting?'Personel listesi çıktı için açıldı':'Personel listesi çıktı için gizlendi')};$('photoExportBtn').onclick=()=>{setBottomNavActive('photo');exportSheetAsPhoto()};$('navPlanBtn').onclick=()=>{setBottomNavActive('plan');closeModal();$('sheet').scrollIntoView({behavior:'smooth',block:'start'})};$('navStaffBtn').onclick=()=>{setBottomNavActive('staff');$('manageStaffBtn').click()};$('closeModal').onclick=closeModal;$('cancelModal').onclick=closeModal;$('clearAssistantsBtn').onclick=clearAssistantAssignments;$('clearDoctorsBtn').onclick=clearDoctorRow;$('clearScheduleBtn').onclick=clearDailySchedule;
 
   async function exportSheetAsPhoto(){
     const btn=$('photoExportBtn');
@@ -2503,6 +2501,19 @@ body.photo-export-mode .schedule .doctor-row .multi-picker-label { text-align:ce
 
 <script id="a-blok-pwa-bootstrap">
 (() => {
+  const splash = document.getElementById('splashScreen');
+  let splashHideScheduled = false;
+  const scheduleSplashHide = () => {
+    if (!splash || splashHideScheduled) return;
+    splashHideScheduled = true;
+    window.setTimeout(() => {
+      splash.classList.add('is-hidden');
+      window.setTimeout(() => { splash.hidden = true; }, 460);
+    }, 420);
+  };
+  if (document.readyState === 'complete') scheduleSplashHide();
+  else window.addEventListener('load', scheduleSplashHide, { once: true });
+  window.setTimeout(scheduleSplashHide, 2200);
   const installButton = document.getElementById('installAppBtn');
   let installPrompt = null;
   window.addEventListener('beforeinstallprompt', (event) => {
@@ -2666,6 +2677,51 @@ body.photo-export-mode .schedule .add-cell,body.photo-export-mode .quick-name-ac
   .bottom-nav,.top-utility-actions,.staff-modal-controls{display:none!important}
   .app-header{display:none!important}
   .app{padding:0!important}
+}
+</style>
+
+<style id="minimal-white-fields-and-direct-entry">
+.schedule .event,.schedule .event:nth-child(2),body.photo-export-mode .schedule .event{
+  background:#fff!important;color:#263548!important;border:1px solid #dfe5ec!important;border-left:2px solid #c7d2df!important;
+  box-shadow:none!important;border-radius:5px!important;font-weight:500!important;
+}
+.schedule .event-name{color:#263548!important;font-weight:600!important;text-transform:uppercase;letter-spacing:.05px}
+.schedule .event-meta{color:#64748b!important;background:transparent!important}
+.staff-summary-person.is-used .staff-summary-name{font-weight:500!important;color:#334155!important}
+.staff-summary-status,.staff-summary-status.print-only-duty{
+  display:inline-block!important;border:0!important;border-radius:0!important;background:transparent!important;
+  box-shadow:none!important;color:#68788b!important;padding:0!important;margin-left:3px!important;
+  font-size:9px!important;font-weight:500!important;line-height:1.25!important;white-space:normal!important
+}
+.multi-picker-trigger.has-selection,.room-note-picker .multi-picker-trigger.has-selection,
+.note-field .multi-picker-trigger.has-selection{
+  background:#fff!important;border-color:#dfe5ec!important;color:#334155!important;box-shadow:none!important
+}
+.multi-picker-trigger[aria-expanded="true"],.note-field .multi-picker-trigger[aria-expanded="true"],
+.room-note-picker .multi-picker-trigger[aria-expanded="true"]{
+  background:#fff!important;border-color:#cbd5e1!important;box-shadow:none!important
+}
+.multi-option.checked{background:#fff!important;font-weight:500!important;color:#334155!important}
+.multi-option.checked .multi-check{background:#fff!important;border-color:#cbd5e1!important;color:#64748b!important;box-shadow:none!important}
+.bottom-notes.top-notes .note-field{background:#fff!important;border-color:#e4e9f0!important;box-shadow:none!important}
+.staff-overview-column{background:#fff!important;border-color:#e0e7ef!important;box-shadow:none!important}
+.schedule .add-cell{
+  opacity:1!important;display:flex;align-items:center;justify-content:center;width:100%;min-height:27px;height:100%;
+  padding:2px!important;border:1px dashed #d7e0e9!important;border-radius:5px!important;
+  background:#fff!important;color:#8190a1!important;font-size:16px!important;font-weight:400!important;line-height:1!important
+}
+.schedule td.drop-target:hover .add-cell{background:#f8fafc!important;color:#526b85!important;border-color:#b9c8d8!important}
+.schedule .schedule-inline-editor{
+  display:block;width:100%;min-width:0;max-width:100%;min-height:36px;padding:5px 4px;box-sizing:border-box;
+  font-family:inherit;font-size:16px!important;line-height:1.25;text-align:center;color:#1f2937;
+  text-transform:uppercase;border:1px solid #b7c7d9;border-radius:6px;background:#fff;outline:none;resize:none;
+  box-shadow:0 0 0 2px rgba(36,83,138,.06);touch-action:manipulation;-webkit-appearance:none;appearance:none
+}
+.schedule .schedule-inline-editor:focus{border-color:#8da8c8;box-shadow:0 0 0 2px rgba(36,83,138,.1)}
+@media(max-width:760px){.schedule .schedule-inline-editor,.schedule textarea.schedule-inline-editor{font-size:16px!important;transform:none!important}}
+body.photo-export-mode .schedule .add-cell{display:none!important}
+body.photo-export-mode .schedule .event,body.photo-export-mode .schedule .event:nth-child(2){
+  background:#fff!important;border:1px solid #dfe5ec!important;border-left:2px solid #c7d2df!important;color:#263548!important
 }
 </style>
 </body>
