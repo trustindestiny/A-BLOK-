@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+<rect width="512" height="512" rx="96" fill="#234b78"/>
+<path d="M256 92 91 420h82l83-173 83 173h82L256 92Z" fill="#fff"/>
+<path d="M201 313h110l-27-55h-56z" fill="#234b78"/>
+<text x="256" y="465" font-family="Arial,sans-serif" font-size="40" font-weight="700" text-anchor="middle" fill="#fff">A BLOK</text>
+</svg>
