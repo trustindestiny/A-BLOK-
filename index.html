@@ -2179,12 +2179,7 @@ body.photo-export-mode.hide-staff-list-on-output .staff-overview-grid { display:
     }
     if(eventEl){
       const event=data.events.find(e=>e.id===eventEl.dataset.eventId);
-      if(event){
-        if(service==='OPU'&&event.name==='OPU'){
-          data.events=data.events.filter(e=>e.id!==event.id);
-          saveData('OPU silindi');
-        }else startInlineEditor(cell,event);
-      }
+      if(event)startInlineEditor(cell,event);
       return;
     }
     if(addButton||ev.target===cell){
@@ -3143,6 +3138,15 @@ body.photo-export-mode .schedule .event-name {
 .photo-save-action{width:100%;min-height:42px;font-size:12px!important}
 .photo-save-retry{display:block;padding:5px 8px;color:#24538a;font-size:12px;text-decoration:underline;text-align:center}
 @media(max-width:760px){.photo-save-preview{max-height:48vh}.photo-save-message{font-size:11px}}
+</style>
+
+
+<style id="manual-event-edit-delete-mobile">
+/* Elle yazılan metin: metne dokununca düzenle, ayrı × düğmesiyle sil. */
+.event{display:flex!important;align-items:center!important;gap:3px!important;min-width:0!important}
+.event .event-name{flex:1 1 auto!important;min-width:0!important;overflow-wrap:anywhere!important}
+.event-delete{z-index:3!important;flex:0 0 18px!important;width:18px!important;height:18px!important;min-width:18px!important;opacity:1!important;pointer-events:auto!important;display:flex!important;align-items:center!important;justify-content:center!important;background:#fff!important;border:1px solid #d8a5a5!important;color:#a33!important;font-size:14px!important;line-height:1!important}
+@media print{.event-delete{display:none!important}}
 </style>
 
 </body>
