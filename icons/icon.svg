@@ -1,37 +1,32 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="EN SEVDİKLERİM">
   <defs>
-    <linearGradient id="navy" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#102e50"/>
-      <stop offset="1" stop-color="#041326"/>
-    </linearGradient>
-    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#fff0bd"/>
-      <stop offset=".42" stop-color="#d7ad59"/>
-      <stop offset="1" stop-color="#8b6128"/>
-    </linearGradient>
+    <linearGradient id="navy" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#163d63"/><stop offset=".55" stop-color="#071d35"/><stop offset="1" stop-color="#020d1b"/></linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff1bd"/><stop offset=".28" stop-color="#f5d17c"/><stop offset=".62" stop-color="#c28a35"/><stop offset="1" stop-color="#ffe5a0"/></linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="4"/></filter>
   </defs>
-  <rect width="512" height="512" rx="82" fill="url(#navy)"/>
-  <rect x="12" y="12" width="488" height="488" rx="74" fill="none" stroke="url(#gold)" stroke-width="5"/>
-  <circle cx="256" cy="211" r="143" fill="none" stroke="#bb9654" stroke-width="2.5" opacity=".8"/>
-  <path d="M256 104V359" fill="none" stroke="url(#gold)" stroke-width="13" stroke-linecap="round"/>
-  <path d="M238 112H274M242 126H270M247 352H265" fill="none" stroke="url(#gold)" stroke-width="5" stroke-linecap="round"/>
-  <circle cx="256" cy="91" r="17" fill="url(#gold)" stroke="#f6df9b" stroke-width="2"/>
-  <path d="M277 119
-           C319 122 322 155 281 176
-           C239 197 231 219 267 235
-           C304 251 305 278 266 295
-           C228 311 229 337 257 355"
-        fill="none" stroke="#7e5728" stroke-width="21" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M277 119
-           C319 122 322 155 281 176
-           C239 197 231 219 267 235
-           C304 251 305 278 266 295
-           C228 311 229 337 257 355"
-        fill="none" stroke="url(#gold)" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
-  <ellipse cx="280" cy="118" rx="16" ry="11" transform="rotate(-18 280 118)" fill="url(#gold)" stroke="#8c622b" stroke-width="2.5"/>
-  <circle cx="285" cy="115" r="2.2" fill="#06182c"/>
-  <path d="M293 119l8-4m-4 2 4 4" fill="none" stroke="#f5d68a" stroke-width="2.5" stroke-linecap="round"/>
-  <path d="M72 397H192M320 397H440" stroke="#bb9654" stroke-width="2" opacity=".85"/>
-  <path d="M256 389l8 8-8 8-8-8z" fill="url(#gold)"/>
-  <text x="256" y="454" text-anchor="middle" font-family="Georgia,serif" font-size="34" font-weight="700" letter-spacing="1.2" fill="#f8e7b8">EN SEVDİKLERİM</text>
+  <rect width="512" height="512" rx="88" fill="url(#navy)"/>
+  <rect x="13" y="13" width="486" height="486" rx="75" fill="none" stroke="#8c632e" stroke-width="10" opacity=".65"/>
+  <rect x="17" y="17" width="478" height="478" rx="72" fill="none" stroke="url(#gold)" stroke-width="3.5"/>
+  <circle cx="256" cy="215" r="145" fill="none" stroke="#cda65c" stroke-width="3" opacity=".8"/>
+  <circle cx="256" cy="215" r="137" fill="none" stroke="#e5c57d" stroke-width="1" opacity=".28"/>
+  <g fill="none" stroke="url(#gold)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M256 96V357" stroke-width="15"/>
+    <path d="M241 111h30M246 124h20" stroke-width="5"/>
+    <circle cx="256" cy="88" r="18" fill="url(#gold)" stroke-width="3"/>
+    <path d="M273 122 C318 126 323 156 285 178 C245 199 236 219 268 237 C303 255 304 278 267 297 C231 314 234 337 256 354" stroke="#6c4822" stroke-width="25"/>
+    <path d="M273 122 C318 126 323 156 285 178 C245 199 236 219 268 237 C303 255 304 278 267 297 C231 314 234 337 256 354" stroke-width="17"/>
+  </g>
+  <path d="M273 122 C258 110 242 118 244 132 C246 144 263 144 279 132" fill="url(#gold)" stroke="#8c632e" stroke-width="3"/>
+  <circle cx="260" cy="128" r="2.8" fill="#06172a"/>
+  <path d="M278 134l10-4m-6 3 5 5" stroke="#fff0bd" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <g fill="url(#gold)" stroke="#8c632e" stroke-width="2">
+    <path d="M177 326C133 305 112 278 108 244C137 258 163 284 177 326Z"/>
+    <path d="M166 291C137 260 132 232 140 207C162 228 174 256 166 291Z"/>
+    <path d="M155 258C136 225 140 198 154 178C169 201 170 230 155 258Z"/>
+    <path d="M335 326C379 305 400 278 404 244C375 258 349 284 335 326Z"/>
+    <path d="M346 291C375 260 380 232 372 207C350 228 338 256 346 291Z"/>
+    <path d="M357 258C376 225 372 198 358 178C343 201 342 230 357 258Z"/>
+  </g>
+  <g fill="none" stroke="#d6b16a" stroke-width="2"><path d="M74 398H188M324 398H438"/><path d="M256 389l9 9-9 9-9-9z" fill="url(#gold)"/></g>
+  <text x="256" y="454" text-anchor="middle" font-family="Georgia,serif" font-size="33" font-weight="700" letter-spacing=".8" fill="#fff0c1">EN SEVDİKLERİM</text>
 </svg>
